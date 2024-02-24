@@ -31,3 +31,5 @@ atomic_tests:
       del %temp%\..\Microsoft\ExplorerSync.db 2>null
       del %temp%\ExplorerSync.db 2>null
     name: command_prompt
+  run_on:
+  - windows

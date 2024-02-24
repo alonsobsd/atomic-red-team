@@ -3,7 +3,8 @@ display_name: Browser Extensions
 atomic_tests:
 - name: Chrome/Chromium (Developer Mode)
   auto_generated_guid: 3ecd790d-2617-4abf-9a8c-4e8d47da9ee1
-  description: Turn on Chrome/Chromium developer mode and Load Extension found in the src directory
+  description: Turn on Chrome/Chromium developer mode and Load Extension found in
+    the src directory
   supported_platforms:
   - linux
   - windows
@@ -18,6 +19,11 @@ atomic_tests:
 
       3. Click 'Select'
     name: manual
+  run_on:
+  - freebsd
+  - linux
+  - windows
+  - macos
 - name: Chrome/Chromium (Chrome Web Store)
   auto_generated_guid: 4c83940d-8ca5-4bb2-8100-f46dc914bc3f
   description: Install the "Minimum Viable Malicious Extension" Chrome extension
@@ -32,6 +38,11 @@ atomic_tests:
 
       2. Click 'Add to Chrome'
     name: manual
+  run_on:
+  - freebsd
+  - linux
+  - windows
+  - macos
 - name: Firefox
   auto_generated_guid: cb790029-17e6-4c43-b96f-002ce5f10938
   description: |
@@ -49,6 +60,11 @@ atomic_tests:
 
       3. Then click 'Open'
     name: manual
+  run_on:
+  - freebsd
+  - linux
+  - windows
+  - macos
 - name: Edge Chromium Addon - VPN
   auto_generated_guid: 3d456e2b-a7db-4af8-b5b3-720e7c4d9da5
   description: |
@@ -63,13 +79,15 @@ atomic_tests:
 
       2. Click 'Get'
     name: manual
-
+  run_on:
+  - windows
+  - macos
 - name: Google Chrome Load Unpacked Extension With Command Line
   auto_generated_guid: 7a714703-9f6b-461c-b06d-e6aeac650f27
 
   description: |-
     This test loads an unpacked extension in Google Chrome with the `--load-extension` parameter. This technique was previously used by the Grandoreiro malware to load a malicious extension that would capture the browsing history, steal cookies and other user information. Other malwares also leverage this technique to hijack searches, steal passwords, inject ads, and more.
-    
+
     References:
     https://attack.mitre.org/techniques/T1176/
     https://securityintelligence.com/posts/grandoreiro-malware-now-targeting-banks-in-spain/
@@ -82,7 +100,7 @@ atomic_tests:
       type: string
       default: $env:TEMP
   executor:
-    command: |-
+    command: |2-
 
       # Chromium
       $chromium =  "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Win_x64/1153778/chrome-win.zip"
@@ -110,3 +128,5 @@ atomic_tests:
 
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

@@ -27,6 +27,8 @@ atomic_tests:
       update-ca-trust
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Install root CA on FreeBSD
   auto_generated_guid: f4568003-1438-44ab-a234-b3252ea7e7a3
   description: |
@@ -53,6 +55,8 @@ atomic_tests:
       certctl rehash
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Install root CA on Debian/Ubuntu
   auto_generated_guid: 53bcf8a0-1549-4b85-b919-010c56d724ff
   description: |
@@ -83,6 +87,8 @@ atomic_tests:
       echo sudo update-ca-certificates
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Install root CA on macOS
   auto_generated_guid: cc4a0b8c-426f-40ff-9426-4e10e5bf4c49
   description: |
@@ -112,6 +118,8 @@ atomic_tests:
       sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" "#{cert_filename}"
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Install root CA on Windows
   auto_generated_guid: 76f49d86-5eb1-461a-a032-a480f86652f1
   description: |
@@ -146,6 +154,8 @@ atomic_tests:
       catch { }
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Install root CA on Windows with certutil
   auto_generated_guid: 5fdb1a7a-a93c-4fbe-aa29-ddd9ef94ed1f
   description: |
@@ -178,6 +188,8 @@ atomic_tests:
       } catch { }
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Add Root Certificate to CurrentUser Certificate Store
   auto_generated_guid: ca20a3f1-42b5-4e21-ad3f-1049199ec2e0
   description: |
@@ -193,3 +205,5 @@ atomic_tests:
       Get-ChildItem -Path Cert:\ -Recurse | Where-Object { $_.Thumbprint -eq '1F3D38F280635F275BE92B87CF83E40E40458400' } | remove-item 
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

@@ -24,6 +24,8 @@ atomic_tests:
       kubectl get cronjobs -n #{namespace}
     name: bash
     elevation_required: false
+  run_on:
+  - containers
 - name: CreateCronjob
   auto_generated_guid: f2fa019e-fb2a-4d28-9dc6-fd1a9b7f68c3
   description: |
@@ -49,3 +51,5 @@ atomic_tests:
       kubectl delete cronjob art -n #{namespace}
     name: bash
     elevation_required: false
+  run_on:
+  - containers

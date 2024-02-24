@@ -22,6 +22,8 @@ atomic_tests:
     cleanup_command: |
       del -f #{shortcut_file_path} >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Create shortcut to cmd in startup folders
   auto_generated_guid: cfdc954d-4bb0-4027-875b-a1893ce406f2
   description: |
@@ -51,3 +53,5 @@ atomic_tests:
       Remove-Item "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\T1547.009.lnk" -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

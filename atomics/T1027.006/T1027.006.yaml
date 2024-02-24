@@ -20,8 +20,9 @@ atomic_tests:
   executor:
     command: |
       & "PathToAtomicsFolder\T1027.006\bin\T1027_006_remote.html"
-    cleanup_command:
-      $user = [System.Environment]::UserName;
-      Remove-Item -Path C:\Users\$user\Downloads\FeelTheBurn.iso -ErrorAction Ignore
+    cleanup_command: $user = [System.Environment]::UserName; Remove-Item -Path C:\Users\$user\Downloads\FeelTheBurn.iso
+      -ErrorAction Ignore
     name: powershell
     elevation_required: false
+  run_on:
+  - windows

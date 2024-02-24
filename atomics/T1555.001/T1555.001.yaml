@@ -2,7 +2,7 @@ attack_technique: T1555.001
 display_name: 'Credentials from Password Stores: Keychain'
 atomic_tests:
 
-- name: Keychain Dump 
+- name: Keychain Dump
   auto_generated_guid: 88e1fa00-bf63-4e5b-a3e1-e2ea51c8cca6
   description: |-
     This command will dump keychain credential information from login.keychain. 
@@ -21,6 +21,8 @@ atomic_tests:
     name: sh
     elevation_required: true
 
+  run_on:
+  - macos
 - name: Export Certificate Item(s)
   auto_generated_guid: 1864fdec-ff86-4452-8c30-f12507582a93
   description: |
@@ -39,6 +41,8 @@ atomic_tests:
     name: sh
     elevation_required: false
 
+  run_on:
+  - macos
 - name: Import Certificate Item(s) into Keychain
   auto_generated_guid: e544bbcb-c4e0-4bd0-b614-b92131635f59
   description: |
@@ -55,3 +59,5 @@ atomic_tests:
       security import #{cert_export} -k
     name: sh
     elevation_required: false
+  run_on:
+  - macos

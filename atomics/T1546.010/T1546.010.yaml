@@ -47,3 +47,5 @@ atomic_tests:
       reg.exe import "#{registry_cleanup_file}" >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

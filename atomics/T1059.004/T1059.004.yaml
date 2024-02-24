@@ -22,6 +22,10 @@ atomic_tests:
     cleanup_command: |
       rm #{script_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Command-Line Interface
   auto_generated_guid: d0c88567-803d-4dca-99b4-7ce65e7b257c
   description: |
@@ -38,6 +42,10 @@ atomic_tests:
     cleanup_command: |
       rm /tmp/art-fish.txt
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Harvest SUID executable files
   auto_generated_guid: 46274fc6-08a7-4956-861b-24cbbaa0503c
   description: |
@@ -68,6 +76,8 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{autosuid}
     name: sh
+  run_on:
+  - linux
 - name: LinEnum tool execution
   auto_generated_guid: a2b35a63-9df1-4806-9a4d-5fe0500845f2
   description: |
@@ -82,7 +92,8 @@ atomic_tests:
     linenum_url:
       description: Path to download LinEnum shell script
       type: url
-      default: https://raw.githubusercontent.com/rebootuser/LinEnum/c47f9b226d3ce2848629f25fe142c1b2986bc427/LinEnum.sh
+      default: 
+        https://raw.githubusercontent.com/rebootuser/LinEnum/c47f9b226d3ce2848629f25fe142c1b2986bc427/LinEnum.sh
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -98,6 +109,8 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{linenum}
     name: sh
+  run_on:
+  - linux
 - name: New script file in the tmp directory
   auto_generated_guid: 8cd1947b-4a54-41fb-b5ea-07d0ace04f81
   description: |
@@ -114,6 +127,9 @@ atomic_tests:
     cleanup_command: |
       rm $TMPFILE
       unset TMPFILE
+  run_on:
+  - freebsd
+  - linux
 - name: What shell is running
   auto_generated_guid: 7b38e5cc-47be-44f0-a425-390305c76c17
   description: |
@@ -127,6 +143,9 @@ atomic_tests:
       echo $0
       if $(env |grep "SHELL" >/dev/null); then env |grep "SHELL"; fi
       if $(printenv SHELL >/dev/null); then printenv SHELL; fi
+  run_on:
+  - freebsd
+  - linux
 - name: What shells are available
   auto_generated_guid: bf23c7dc-1004-4949-8262-4c1d1ef87702
   description: |
@@ -138,6 +157,9 @@ atomic_tests:
     elevation_required: false
     command: |
       cat /etc/shells 
+  run_on:
+  - freebsd
+  - linux
 - name: Command line scripts
   auto_generated_guid: b04ed73c-7d43-4dc8-b563-a2fc595cba1a
   description: |
@@ -148,6 +170,9 @@ atomic_tests:
     name: sh
     command: |
       for i in $(seq 1 5); do echo "$i, Atomic Red Team was here!"; sleep 1; done
+  run_on:
+  - freebsd
+  - linux
 - name: Obfuscated command line scripts
   auto_generated_guid: 5bec4cc8-f41e-437b-b417-33ff60acf9af
   description: |
@@ -163,6 +188,9 @@ atomic_tests:
       echo "\$ART=$ART"
       echo -n "$ART" | $decodecmd |/bin/bash
       unset ART
+  run_on:
+  - freebsd
+  - linux
 - name: Change login shell
   auto_generated_guid: c7ac59cb-13cc-4622-81dc-6d2fee9bfac7
   description: |
@@ -178,14 +206,17 @@ atomic_tests:
       echo "Automated installer not implemented yet, please install chsh manually"
   executor:
     name: bash
-    elevation_required: true 
+    elevation_required: true
     command: |
       [ "$(uname)" = 'FreeBSD' ] && pw useradd art -g wheel -s /bin/csh || useradd -s /bin/bash art
       cat /etc/passwd |grep ^art
       chsh -s /bin/sh art
       cat /etc/passwd |grep ^art
-    cleanup_command: | 
+    cleanup_command: |
       [ "$(uname)" = 'FreeBSD' ] && rmuser -y art || userdel art
+  run_on:
+  - freebsd
+  - linux
 - name: Environment variable scripts
   auto_generated_guid: bdaebd56-368b-4970-a523-f905ff4a8a51
   description: |
@@ -194,12 +225,15 @@ atomic_tests:
   - linux
   executor:
     name: sh
-    elevation_required: false 
+    elevation_required: false
     command: |
       export ART='echo "Atomic Red Team was here... T1059.004"'
       echo $ART |/bin/sh
-    cleanup_command: | 
+    cleanup_command: |
       unset ART
+  run_on:
+  - freebsd
+  - linux
 - name: Detecting pipe-to-shell
   auto_generated_guid: fca246a8-a585-4f28-a2df-6495973976a1
   description: |
@@ -210,7 +244,8 @@ atomic_tests:
     remote_url:
       description: url of remote payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/pipe-to-shell.sh
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/pipe-to-shell.sh
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -228,6 +263,9 @@ atomic_tests:
       ls -la /tmp/art.txt      
     cleanup_command: |
       rm /tmp/art.txt
+  run_on:
+  - freebsd
+  - linux
 - name: Current kernel information enumeration
   auto_generated_guid: 3a53734a-9e26-4f4b-ad15-059e767f5f14
   description: |
@@ -239,3 +277,7 @@ atomic_tests:
     elevation_required: false
     command: |
       uname -srm
+  run_on:
+  - freebsd
+  - linux
+

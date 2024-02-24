@@ -138,6 +138,13 @@ class AtomicRedTeam
         end
       end
 
+      valid_run_on = ['windows', 'macos', 'linux', ,'freebsd', 'office-365', 'azure-ad', 'google-workspace', 'saas', 'iaas', 'containers', 'iaas:aws', 'iaas:azure', 'iaas:gcp']
+      atomic['run_on'].each do |platform|
+        if !valid_run_on.include?(platform)
+          raise("`atomic_tests[#{i}].run_on` '#{platform}' must be one of #{valid_run_on.join(', ')}")
+        end
+      end
+
       if atomic['dependencies']
         atomic['dependencies'].each do |dependency|
           raise("`atomic_tests[#{i}].dependencies` '#{dependency}' must be have a description}") unless dependency.has_key?('description')

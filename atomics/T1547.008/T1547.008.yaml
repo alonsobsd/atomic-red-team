@@ -15,7 +15,7 @@ atomic_tests:
     dll_path:
       description: Module to be loaded into LSASS
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\lsass_lib.dll'
+      default: PathToAtomicsFolder\..\ExternalPayloads\lsass_lib.dll
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -33,3 +33,5 @@ atomic_tests:
       Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\NTDS" -Name "LsaDbExtPt" -ErrorAction Ignore | Out-Null
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

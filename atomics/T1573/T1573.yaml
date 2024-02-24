@@ -20,7 +20,7 @@ atomic_tests:
     server_port:
       description: The port to connect to on the external server
       type: string
-      default: "443"
+      default: '443'
   executor:
     command: |
       $server_ip = #{server_ip}
@@ -40,3 +40,5 @@ atomic_tests:
       $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
       $sslStream.Write($sendbyte,0,$sendbyte.Length);$sslStream.Flush()}
     name: powershell
+  run_on:
+  - windows

@@ -51,3 +51,5 @@ atomic_tests:
     cleanup_command: |
       remove-item #{output_directory} -recurse -force -erroraction silentlycontinue
     name: powershell
+  run_on:
+  - iaas:azure

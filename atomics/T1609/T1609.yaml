@@ -19,7 +19,7 @@ atomic_tests:
     path:
       description: Path to busybox.yaml file
       type: string
-      default: $PathtoAtomicsFolder/T1609/src/busybox.yaml  
+      default: $PathtoAtomicsFolder/T1609/src/busybox.yaml
   dependencies:
   - description: |
       kubectl must be installed
@@ -37,6 +37,8 @@ atomic_tests:
       kubectl delete pod busybox -n #{namespace}
     name: bash
     elevation_required: false
+  run_on:
+  - containers
 - name: Docker Exec Into Container
   auto_generated_guid: 900e2c49-221b-42ec-ae3c-4717e41e6219
   description: |
@@ -61,3 +63,5 @@ atomic_tests:
       docker rmi -f t1609:latest 
     name: bash
     elevation_required: false
+  run_on:
+  - containers

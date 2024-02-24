@@ -27,7 +27,8 @@ atomic_tests:
     gsecdump_url:
       description: Path to download Gsecdump binary file
       type: url
-      default: https://web.archive.org/web/20150606043951if_/http://www.truesec.se/Upload/Sakerhet/Tools/gsecdump-v2b5.exe
+      default: 
+        https://web.archive.org/web/20150606043951if_/http://www.truesec.se/Upload/Sakerhet/Tools/gsecdump-v2b5.exe
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -47,6 +48,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Credential Dumping with NPPSpy
   auto_generated_guid: 9e2173c0-ba26-4cdf-b0ed-8c54b27e3ad6
   description: |-
@@ -59,7 +62,8 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: NPPSpy.dll must be available in ExternalPayloads directory
-    prereq_command: if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\NPPSPY.dll") {exit 0} else {exit 1}
+    prereq_command: if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\NPPSPY.dll")
+      {exit 0} else {exit 1}
     get_prereq_command: |-
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
@@ -87,6 +91,8 @@ atomic_tests:
     name: powershell
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Dump svchost.exe to gather RDP credentials
   auto_generated_guid: d400090a-d8ca-4be0-982e-c70598a23de9
   description: |
@@ -105,6 +111,8 @@ atomic_tests:
       Remove-Item $env:TEMP\svchost-exe.dmp -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Retrieve Microsoft IIS Service Account Credentials Using AppCmd (using list)
   auto_generated_guid: 6c7a4fd3-5b0b-4b30-a93e-39411b25d889
   description: |-
@@ -115,7 +123,8 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: IIS must be installed prior to running the test
-    prereq_command: if ((Get-WindowsFeature Web-Server).InstallState -eq "Installed") {exit 0} else {exit 1}
+    prereq_command: if ((Get-WindowsFeature Web-Server).InstallState -eq "Installed")
+      {exit 0} else {exit 1}
     get_prereq_command: |-
       Install-WindowsFeature -name Web-Server -IncludeManagementTools
   executor:
@@ -125,6 +134,8 @@ atomic_tests:
       C:\Windows\System32\inetsrv\appcmd.exe list apppool /text:*
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Retrieve Microsoft IIS Service Account Credentials Using AppCmd (using config)
   auto_generated_guid: 42510244-5019-48fa-a0e5-66c3b76e6049
   description: |-
@@ -135,7 +146,8 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: IIS must be installed prior to running the test
-    prereq_command: if ((Get-WindowsFeature Web-Server).InstallState -eq "Installed") {exit 0} else {exit 1}
+    prereq_command: if ((Get-WindowsFeature Web-Server).InstallState -eq "Installed")
+      {exit 0} else {exit 1}
     get_prereq_command: |-
       Install-WindowsFeature -name Web-Server -IncludeManagementTools
   executor:
@@ -144,6 +156,8 @@ atomic_tests:
     name: powershell
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Dump Credential Manager using keymgr.dll and rundll32.exe
   auto_generated_guid: 84113186-ed3c-4d0d-8a3c-8980c86c1f4a
   description: |-
@@ -154,3 +168,5 @@ atomic_tests:
   executor:
     command: rundll32.exe keymgr,KRShowKeyMgr
     name: powershell
+  run_on:
+  - windows

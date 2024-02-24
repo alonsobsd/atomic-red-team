@@ -18,7 +18,10 @@ atomic_tests:
       export HISTCONTROL=ignoreboth
       #{evil_command}
     name: sh
-- name: Disable history collection (freebsd)
+  run_on:
+  - linux
+  - macos
+- name: Disable history collection (FreeBSD)
   auto_generated_guid: cada55b4-8251-4c60-819e-8ec1b33c9306
   description: |
     Disables history collection in shells
@@ -34,6 +37,8 @@ atomic_tests:
       export HISTSIZE=0
       #{evil_command}
     name: sh
+  run_on:
+  - freebsd
 - name: Mac HISTCONTROL
   auto_generated_guid: 468566d5-83e5-40c1-b338-511e1659628d
   description: |
@@ -51,6 +56,9 @@ atomic_tests:
       3. ls
       4. whoami > recon.txt
     name: manual
+  run_on:
+  - macos
+  - linux
 - name: Clear bash history
   auto_generated_guid: 878794f7-c511-4199-a950-8c28b3ed8e5b
   description: |
@@ -73,6 +81,9 @@ atomic_tests:
       if [ $(history |wc -l) -eq 1 ]; then echo "History cache cleared"; fi
     cleanup_command: |
       mv -f $HISTFILE.OLD $HISTFILE 
+  run_on:
+  - freebsd
+  - linux
 - name: Setting the HISTCONTROL environment variable
   auto_generated_guid: 10ab786a-028e-4465-96f6-9e83ca6c5f24
   description: |
@@ -99,6 +110,9 @@ atomic_tests:
       if [ $(history |wc -l) -eq 2 ]; then echo "Their is only one entry for ls -la $HISTFILE"; fi
     cleanup_command: |
       export HISTCONTROL=$(echo $TEST)
+  run_on:
+  - freebsd
+  - linux
 - name: Setting the HISTFILESIZE environment variable
   auto_generated_guid: 5cafd6c1-2f43-46eb-ac47-a5301ba0a618
   description: |
@@ -118,6 +132,9 @@ atomic_tests:
       # -> $HISTFILESIZE is zero
     cleanup_command: |
       export HISTCONTROL=$(echo $TEST)
+  run_on:
+  - freebsd
+  - linux
 - name: Setting the HISTSIZE environment variable
   auto_generated_guid: 386d3850-2ce7-4508-b56b-c0558922c814
   description: |
@@ -136,8 +153,10 @@ atomic_tests:
       # -> $HISTSIZE is zero
     cleanup_command: |
       export HISTSIZE=100
-
-- name: Setting the HISTFILE environment variable 
+  run_on:
+  - freebsd
+  - linux
+- name: Setting the HISTFILE environment variable
   auto_generated_guid: b3dacb6c-a9e3-44ec-bf87-38db60c5cad1
   description: |
     An Adversary may clear, unset or redirect the history environment variable HISTFILE to prevent logging of commands to the history file after they log out of the system.
@@ -156,7 +175,9 @@ atomic_tests:
       # -> $HISTFILE is /dev/null
     cleanup_command: |
       export HISTFILE=$(echo $TEST)
-- name: Setting the HISTFILE environment variable (freebsd)
+  run_on:
+  - linux
+- name: Setting the HISTFILE environment variable (FreeBSD)
   auto_generated_guid: f7308845-6da8-468e-99f2-4271f2f5bb67
   description: |
     An Adversary may clear, unset or redirect the history environment variable HISTFILE to prevent logging of commands to the history file after they log out of the system.
@@ -174,7 +195,9 @@ atomic_tests:
       # -> $HISTFILE is /dev/null
     cleanup_command: |
       export HISTFILE=~/.sh_history
-- name: Setting the HISTIGNORE environment variable 
+  run_on:
+  - freebsd
+- name: Setting the HISTIGNORE environment variable
   auto_generated_guid: f12acddb-7502-4ce6-a146-5b62c59592f1
   description: |
     An Adversary may take advantage of the HISTIGNORE environment variable either to ignore particular commands or all commands. 
@@ -204,3 +227,5 @@ atomic_tests:
       # -> History cache is empty
     cleanup_command: |
       unset HISTIGNORE
+  run_on:
+  - linux

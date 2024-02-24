@@ -61,3 +61,5 @@ atomic_tests:
       Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\T1567.002" -recurse -force
     name: powershell
     elevation_required: false
+  run_on:
+  - windows

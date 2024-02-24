@@ -23,7 +23,7 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: |
-     MSOnline module must be installed.
+      MSOnline module must be installed.
     prereq_command: |
       try {if (Get-InstalledModule -Name MSOnline -ErrorAction SilentlyContinue) {exit 0} else {exit 1}} catch {exit 1}
     get_prereq_command: |
@@ -39,7 +39,10 @@ atomic_tests:
       Remove-MsolRoleMember -RoleName "Company Administrator" -RoleMemberType User -RoleMemberEmailAddress "#{target_user}"
     name: powershell
     elevation_required: false
-- name: Simulate - Post BEC persistence via user password reset followed by user added to company administrator role
+  run_on:
+  - azure-ad
+- name: Simulate - Post BEC persistence via user password reset followed by user added
+    to company administrator role
   auto_generated_guid: 14f3af20-61f1-45b8-ad31-4637815f3f44
   description: |
     This test looks at simulating the an adversary described in the following blog post. It involves resetting the password of a normal user and adding to the company administrator role within M365.
@@ -56,7 +59,8 @@ atomic_tests:
       type: string
       default: p4sswd
     target_user:
-      description: Name of the user whose password be reset and added to the admin role.
+      description: Name of the user whose password be reset and added to the admin
+        role.
       type: string
       default: default
     target_password:
@@ -66,7 +70,7 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: |
-     MSOnline and AzureAD modules must be installed.
+      MSOnline and AzureAD modules must be installed.
     prereq_command: |
       $required_mods = 'AzureAD', 'MSOnline'
       $installed_mods = @((Get-Module $required_mods -ListAvailable -ErrorAction SilentlyContinue).Name  | Select-Object -Unique)
@@ -95,13 +99,13 @@ atomic_tests:
       $targetsecurepw = ConvertTo-SecureString -String "#{target_password}" -AsPlainText -Force
       Connect-MsolService -Credential $credential -ErrorAction:SilentlyContinue
       Connect-AzureAD -Credential $credential -ErrorAction:SilentlyContinue
-      
+
       #Saving the ObjectId of the target_user into a variable
       $target_objid = Get-AzureADUser -filter "userPrincipalName eq '#{target_user}'" | Select-Object -ExpandProperty ObjectId
-      
+
       #Reset the password of the target_user
       Set-AzureADUserPassword -ObjectId  $target_objid -Password $targetsecurepw -ErrorAction:SilentlyContinue
-    
+
       #Adding target_user
       Add-MsolRoleMember -RoleName "Company Administrator" -RoleMemberEmailAddress "#{target_user}"
       Add-MsolRoleMember -RoleName "Global Reader" -RoleMemberEmailAddress "#{target_user}"
@@ -115,3 +119,5 @@ atomic_tests:
       Remove-MsolRoleMember -RoleName "Global Reader" -RoleMemberType User -RoleMemberEmailAddress "#{target_user}"
     name: powershell
     elevation_required: false
+  run_on:
+  - azure-ad

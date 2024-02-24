@@ -65,7 +65,9 @@ atomic_tests:
       rm -rf #{systemd_service_path}/#{systemd_service_file}
       systemctl daemon-reload
     name: bash
-- name: Create SysV Service
+  run_on:
+  - linux
+- name: Create SysV Service (FreeBSD)
   auto_generated_guid: 760fe8d2-79d9-494f-905e-a239a3df86f6
   description: |
     This test creates a SysV service unit file and enables it as a service.
@@ -110,7 +112,8 @@ atomic_tests:
       sysrc -x art_test_enable
       rm -f #{rc_service_path}/#{rc_service_file}
     name: sh
-
+  run_on:
+  - freebsd
 - name: Create Systemd Service file,  Enable the service , Modify and Reload the service.
   auto_generated_guid: c35ac4a8-19de-43af-b9f8-755da7e89c89
   description: |
@@ -155,3 +158,5 @@ atomic_tests:
       systemctl disable T1543.002
       rm -rf /etc/init.d/T1543.002
       systemctl daemon-reload
+  run_on:
+  - linux

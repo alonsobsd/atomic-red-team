@@ -11,7 +11,8 @@ atomic_tests:
   - windows
   input_arguments:
     service_executable:
-      description: Path of the executable used for the service and as the hijacked program.exe
+      description: Path of the executable used for the service and as the hijacked
+        program.exe
       type: path
       default: PathToAtomicsFolder\T1574.009\bin\WindowsServiceExample.exe
   executor:
@@ -28,3 +29,5 @@ atomic_tests:
       del "C:\Time.log" >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

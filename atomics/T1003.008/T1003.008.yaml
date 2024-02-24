@@ -20,6 +20,8 @@ atomic_tests:
       rm -f #{output_file}
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Access /etc/master.passwd (Local)
   auto_generated_guid: 5076874f-a8e6-4077-8ace-9e5ab54114a5
   description: |
@@ -39,6 +41,8 @@ atomic_tests:
       rm -f #{output_file}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Access /etc/passwd (Local)
   auto_generated_guid: 60e860b6-8ae6-49db-ad07-5e73edd88f5d
   description: |
@@ -57,6 +61,9 @@ atomic_tests:
     cleanup_command: |
       rm -f #{output_file}
     name: sh
+  run_on:
+  - freebsd
+  - linux
 - name: Access /etc/{shadow,passwd,master.passwd} with a standard bin that's not cat
   auto_generated_guid: df1a55ae-019d-4120-bc35-94f4bc5c4b0a
   description: |
@@ -69,13 +76,16 @@ atomic_tests:
       type: path
       default: /tmp/T1003.008.txt
   executor:
-    command: | 
+    command: |
       unamestr=$(uname)
       if [ "$unamestr" = 'Linux' ]; then echo -e "e /etc/passwd\n,p\ne /etc/shadow\n,p\n" | ed > ${output_file}; elif [ "$unamestr" = 'FreeBSD' ]; then echo -e "e /etc/passwd\n,p\ne /etc/master.passwd\n,p\ne /etc/shadow\n,p\n" | ed > ${output_file}; fi
     cleanup_command: |
       rm -f #{output_file}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Access /etc/{shadow,passwd,master.passwd} with shell builtins
   auto_generated_guid: f5aa6543-6cb2-4fae-b9c2-b96e14721713
   description: |
@@ -97,3 +107,7 @@ atomic_tests:
       rm -f #{output_file}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
+

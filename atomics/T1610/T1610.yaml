@@ -1,6 +1,5 @@
----
 attack_technique: T1610
-display_name: "Deploy a container"
+display_name: Deploy a container
 
 atomic_tests:
 - name: Deploy Docker container
@@ -10,21 +9,21 @@ atomic_tests:
 
   supported_platforms:
   - containers
-  
+
   dependency_executor_name: sh
-  dependencies: 
+  dependencies:
   - description: Verify docker is installed.
     prereq_command: |
       which docker
     get_prereq_command: |
       if [ "" == "`which docker`" ]; then echo "Docker Not Found"; if [ -n "`which apt-get`" ]; then sudo apt-get -y install docker ; elif [ -n "`which yum`" ]; then sudo yum -y install docker ; fi ; else echo "Docker installed"; fi
-  
+
   - description: Verify docker service is running.
     prereq_command: |
       sudo systemctl status docker  --no-pager
     get_prereq_command: |
       sudo systemctl start docker
-  
+
 
   executor:
     command: |
@@ -34,3 +33,5 @@ atomic_tests:
     cleanup_command: |
       docker stop t1610_container
       docker rmi -f t1610:latest 
+  run_on:
+  - containers

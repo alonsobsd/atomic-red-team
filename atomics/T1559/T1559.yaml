@@ -6,7 +6,7 @@ atomic_tests:
   auto_generated_guid: bd13b9fc-b758-496a-b81a-397462f82c72
   description: |
     Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes) executable from the Center for Threat Informed Defense to create a named pipe for inter-process communication.
-    
+
     The named pipe executable will pause for 30 seconds to allow the client and server to exchange a message through the pipe.
   supported_platforms:
   - windows
@@ -26,12 +26,13 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe" --pipe 1
     name: command_prompt
-    
+  run_on:
+  - windows
 - name: Cobalt Strike Lateral Movement (psexec_psh) pipe
   auto_generated_guid: 830c8b6c-7a70-4f40-b975-8bbe74558acd
   description: |
     Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes) executable from the Center for Threat Informed Defense to create a named pipe for inter-process communication.
-    
+
     The named pipe executable will pause for 30 seconds to allow the client and server to exchange a message through the pipe.
   supported_platforms:
   - windows
@@ -51,12 +52,13 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe" --pipe 2
     name: command_prompt
-    
+  run_on:
+  - windows
 - name: Cobalt Strike SSH (postex_ssh) pipe
   auto_generated_guid: d1f72fa0-5bc2-4b4b-bd1e-43b6e8cfb2e6
   description: |
     Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes) executable from the Center for Threat Informed Defense to create a named pipe for inter-process communication.
-    
+
     The named pipe executable will pause for 30 seconds to allow the client and server to exchange a message through the pipe.
   supported_platforms:
   - windows
@@ -76,12 +78,13 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe" --pipe 3
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Cobalt Strike post-exploitation pipe (4.2 and later)
   auto_generated_guid: 7a48f482-246f-4aeb-9837-21c271ebf244
   description: |
     Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes) executable from the Center for Threat Informed Defense to create a named pipe for inter-process communication.
-    
+
     The named pipe executable will pause for 30 seconds to allow the client and server to exchange a message through the pipe.
   supported_platforms:
   - windows
@@ -101,12 +104,13 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe" --pipe 4
     name: command_prompt
-    
+  run_on:
+  - windows
 - name: Cobalt Strike post-exploitation pipe (before 4.2)
   auto_generated_guid: 8dbfc15c-527b-4ab0-a272-019f469d367f
   description: |
     Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes) executable from the Center for Threat Informed Defense to create a named pipe for inter-process communication.
-    
+
     The named pipe executable will pause for 30 seconds to allow the client and server to exchange a message through the pipe.
   supported_platforms:
   - windows
@@ -126,3 +130,5 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe" --pipe 5
     name: command_prompt
+  run_on:
+  - windows

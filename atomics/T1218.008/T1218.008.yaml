@@ -25,6 +25,8 @@ atomic_tests:
     command: |
       odbcconf.exe /S /A {REGSVR "#{dll_payload}"}
     name: command_prompt
+  run_on:
+  - windows
 - name: Odbcconf.exe - Load Response File
   auto_generated_guid: 331ce274-f9c9-440b-9f8c-a1006e1fce0b
   description: |
@@ -55,3 +57,5 @@ atomic_tests:
       cd "#{rsp_file_path}"
       odbcconf.exe -f "#{rsp_file_name}"
     name: command_prompt
+  run_on:
+  - windows

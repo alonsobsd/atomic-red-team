@@ -10,7 +10,8 @@ atomic_tests:
   - windows
   input_arguments:
     domain_sid:
-      description: SID of the targeted domain, if you keep default it will automatically get the current domain SID
+      description: SID of the targeted domain, if you keep default it will automatically
+        get the current domain SID
       type: string
       default: S-1-5-21-DEFAULT
     domain:
@@ -26,13 +27,14 @@ atomic_tests:
       type: string
       default: '%logonserver:\\=%'
     service_aes256_key:
-      description: AES256 key (you will need to set to match your service key for your target)
+      description: AES256 key (you will need to set to match your service key for
+        your target)
       type: string
       default: b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9
     mimikatz_path:
       description: Mimikatz windows executable
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -104,3 +106,5 @@ atomic_tests:
       # cleanup temp files
       Remove-Item $env:TEMP\silver.bat -ErrorAction Ignore
       Remove-Item $env:TEMP\silver.txt -ErrorAction Ignore
+  run_on:
+  - windows

@@ -12,6 +12,8 @@ atomic_tests:
     command: |
       wmic useraccount get /ALL /format:csv
     name: command_prompt
+  run_on:
+  - windows
 - name: WMI Reconnaissance Processes
   auto_generated_guid: 5750aa16-0e59-4410-8b9a-8a47ca2788e2
   description: |
@@ -23,6 +25,8 @@ atomic_tests:
     command: |
       wmic process get caption,executablepath,commandline /format:csv
     name: command_prompt
+  run_on:
+  - windows
 - name: WMI Reconnaissance Software
   auto_generated_guid: 718aebaa-d0e0-471a-8241-c5afa69c7414
   description: |
@@ -34,6 +38,8 @@ atomic_tests:
     command: |
       wmic qfe get description,installedOn /format:csv
     name: command_prompt
+  run_on:
+  - windows
 - name: WMI Reconnaissance List Remote Services
   auto_generated_guid: 0fd48ef7-d890-4e93-a533-f7dedd5191d3
   description: |
@@ -57,6 +63,8 @@ atomic_tests:
     command: |
       wmic /node:"#{node}" service where (caption like "%#{service_search_string}%")
     name: command_prompt
+  run_on:
+  - windows
 - name: WMI Execute Local Process
   auto_generated_guid: b3bdfc91-b33e-4c6d-a5c8-d64bee0276b3
   description: |
@@ -75,6 +83,8 @@ atomic_tests:
     cleanup_command: |
       wmic process where name='#{process_to_execute}' delete >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: WMI Execute Remote Process
   auto_generated_guid: 9c8ef159-c666-472f-9874-90c8d60d136b
   description: |
@@ -106,6 +116,8 @@ atomic_tests:
     cleanup_command: |
       wmic /user:#{user_name} /password:#{password} /node:"#{node}" process where name='#{process_to_execute}' delete >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Create a Process using WMI Query and an Encoded Command
   auto_generated_guid: 7db7a7f9-9531-4840-9b30-46220135441c
   description: |
@@ -122,6 +134,8 @@ atomic_tests:
     command: |
       powershell -exec bypass -e SQBuAHYAbwBrAGUALQBXAG0AaQBNAGUAdABoAG8AZAAgAC0AUABhAHQAaAAgAHcAaQBuADMAMgBfAHAAcgBvAGMAZQBzAHMAIAAtAE4AYQBtAGUAIABjAHIAZQBhAHQAZQAgAC0AQQByAGcAdQBtAGUAbgB0AEwAaQBzAHQAIABuAG8AdABlAHAAYQBkAC4AZQB4AGUA
     name: command_prompt
+  run_on:
+  - windows
 - name: Create a Process using obfuscated Win32_Process
   auto_generated_guid: 10447c83-fc38-462a-a936-5102363b1c43
   description: |
@@ -149,6 +163,8 @@ atomic_tests:
     cleanup_command: |
       $CleanupClass = New-Object Management.ManagementClass(New-Object Management.ManagementPath("#{new_class}"))
       try { $CleanupClass.Delete() } catch {}
+  run_on:
+  - windows
 - name: WMI Execute rundll32
   auto_generated_guid: 00738d2a-4651-4d76-adf2-c43a41dfb243
   description: |
@@ -170,7 +186,8 @@ atomic_tests:
       default: StartW
   dependency_executor_name: powershell
   dependencies:
-  - description: DLL with function to execute must exist on disk at specified location (#{dll_to_execute})
+  - description: DLL with function to execute must exist on disk at specified location
+      (#{dll_to_execute})
     prereq_command: |
       if (Test-Path "#{dll_to_execute}") {exit 0} else {exit 1}
     get_prereq_command: |
@@ -182,24 +199,31 @@ atomic_tests:
     cleanup_command: |-
       taskkill /f /im calculator.exe
     name: command_prompt
+  run_on:
+  - windows
 - name: Application uninstall using WMIC
   auto_generated_guid: c510d25b-1667-467d-8331-a56d3e9bc4ff
-  description: Emulates uninstalling  applications using WMIC.  This method only works if the product was installed with an msi file.  APTs have been seen using this to uninstall security products.
+  description: Emulates uninstalling  applications using WMIC.  This method only works
+    if the product was installed with an msi file.  APTs have been seen using this
+    to uninstall security products.
   supported_platforms:
   - windows
   input_arguments:
     node:
-      description: Computer the action is being executed against but defaults to the localhost.
+      description: Computer the action is being executed against but defaults to the
+        localhost.
       type: string
       default: 127.0.0.1
     product:
-      description: Enter the product name being uninstalled.  This will default to TightVNC.
+      description: Enter the product name being uninstalled.  This will default to
+        TightVNC.
       type: string
       default: Tightvnc
   dependency_executor_name: powershell
   dependencies:
   - description: TightVNC must be installed.
-    prereq_command: if ((Test-Path "C:\Program Files\TightVNC\tvnviewer.exe")-Or (Test-Path "C:\Program Files (x86)\TightVNC\tvnviewer.exe")) {exit 0} else {exit 1}
+    prereq_command: if ((Test-Path "C:\Program Files\TightVNC\tvnviewer.exe")-Or (Test-Path
+      "C:\Program Files (x86)\TightVNC\tvnviewer.exe")) {exit 0} else {exit 1}
     get_prereq_command: |-
       Invoke-WebRequest 'https://www.tightvnc.com/download/2.8.63/tightvnc-2.8.63-gpl-setup-64bit.msi' -OutFile "PathToAtomicsFolder\..\ExternalPayloads\tightvncinstaller.msi"
       start-sleep -s 10
@@ -207,6 +231,9 @@ atomic_tests:
       start-sleep -s 15
   executor:
     command: wmic /node:"#{node}" product where "name like '#{product}%%'" call uninstall
-    cleanup_command: msiexec /i "PathToAtomicsFolder\..\ExternalPayloads\tightvncinstaller.msi" /qn /norestart
+    cleanup_command: msiexec /i "PathToAtomicsFolder\..\ExternalPayloads\tightvncinstaller.msi"
+      /qn /norestart
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

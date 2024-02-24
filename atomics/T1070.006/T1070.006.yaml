@@ -26,7 +26,10 @@ atomic_tests:
     cleanup_command: |
       rm -f #{target_filename}
     name: sh
-
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Set a file's modification timestamp
   auto_generated_guid: 20ef1523-8758-4898-b5a2-d026cc3d2c52
   description: |
@@ -52,6 +55,10 @@ atomic_tests:
     cleanup_command: |
       rm -f #{target_filename}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Set a file's creation timestamp
   auto_generated_guid: 8164a4a6-f99c-4661-ac4f-80f5e4e78d2b
   description: |
@@ -78,6 +85,10 @@ atomic_tests:
     cleanup_command: |
       rm -f #{target_filename}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Modify file timestamps using reference file
   auto_generated_guid: 631ea661-d661-44b0-abdb-7a7f3fc08e50
   description: |
@@ -109,6 +120,10 @@ atomic_tests:
     cleanup_command: |
       rm -f #{target_file_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Windows - Modify file creation timestamp with PowerShell
   auto_generated_guid: b3b2c408-2ff0-4a33-b89b-1cb46a9e6a9c
   description: |
@@ -138,6 +153,8 @@ atomic_tests:
     command: |
       Get-ChildItem "#{file_path}" | % { $_.CreationTime = "#{target_date_time}" }
     name: powershell
+  run_on:
+  - windows
 - name: Windows - Modify file last modified timestamp with PowerShell
   auto_generated_guid: f8f6634d-93e1-4238-8510-f8a90a20dcf2
   description: |
@@ -167,6 +184,8 @@ atomic_tests:
     command: |
       Get-ChildItem "#{file_path}" | % { $_.LastWriteTime = "#{target_date_time}" }
     name: powershell
+  run_on:
+  - windows
 - name: Windows - Modify file last access timestamp with PowerShell
   auto_generated_guid: da627f63-b9bd-4431-b6f8-c5b44d061a62
   description: |
@@ -196,6 +215,8 @@ atomic_tests:
     command: |
       Get-ChildItem "#{file_path}" | % { $_.LastAccessTime = "#{target_date_time}" }
     name: powershell
+  run_on:
+  - windows
 - name: Windows - Timestomp a File
   auto_generated_guid: d7512c33-3a75-4806-9893-69abc3ccdd43
   description: |
@@ -230,13 +251,15 @@ atomic_tests:
       import-module "#{file_path}\timestomp.ps1"
       timestomp -dest "#{file_path}\kxwn.lock"
     name: powershell
+  run_on:
+  - windows
 - name: MacOS - Timestomp Date Modified
   auto_generated_guid: 87fffff4-d371-4057-a539-e3b24c37e564
   description: |
     Stomps on the modification timestamp of a file using MacOS's SetFile utility
-  supported_platforms: 
-    - macos
-  input_arguments: 
+  supported_platforms:
+  - macos
+  input_arguments:
     target_filename:
       description: |
         Path of file that we are going to stomp on last modified time
@@ -259,3 +282,5 @@ atomic_tests:
       SetFile -m #{target_date} #{target_filename}
     cleanup_command: |
       rm -f #{target_filename}
+  run_on:
+  - macos

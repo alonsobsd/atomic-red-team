@@ -14,6 +14,8 @@ atomic_tests:
     cleanup_command: |
       reg delete HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v HideFileExt /f >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Modify Registry of Local Machine - cmd
   auto_generated_guid: 282f929a-6bc5-42b8-bd93-960c3ba35afe
   description: |
@@ -34,6 +36,8 @@ atomic_tests:
       reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v SecurityHealth /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Modify registry to store logon credentials
   auto_generated_guid: c0413fb5-33e2-40b7-9b6f-60b29f4a7a18
   description: |
@@ -49,6 +53,8 @@ atomic_tests:
       reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 0 /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Add domain to Trusted sites Zone
   auto_generated_guid: cf447677-5a4e-4937-a82c-e47d254afd57
   description: |
@@ -76,6 +82,8 @@ atomic_tests:
       $key = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\#{bad_domain}\"
       Remove-item  $key -Recurse -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Javascript in registry
   auto_generated_guid: 15f44ea9-4571-4837-be9e-802431a7bfae
   description: |
@@ -89,6 +97,8 @@ atomic_tests:
     cleanup_command: |
       Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name T1112 -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Change Powershell Execution Policy to Bypass
   auto_generated_guid: f3a6cceb-06c9-48e5-8df8-8867a6814245
   description: |
@@ -107,6 +117,8 @@ atomic_tests:
     cleanup_command: |
       try { Set-ExecutionPolicy -ExecutionPolicy #{default_execution_policy} -Scope LocalMachine -Force } catch {}
     name: powershell
+  run_on:
+  - windows
 - name: BlackByte Ransomware Registry Changes - CMD
   auto_generated_guid: 4f4e2f9f-6209-4fcf-9b15-3b7455706f5b
   description: |
@@ -131,6 +143,8 @@ atomic_tests:
       reg delete HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\ /v LongPathsEnabled /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: BlackByte Ransomware Registry Changes - Powershell
   auto_generated_guid: 0b79c06f-c788-44a2-8630-d69051f1123d
   description: |
@@ -155,6 +169,8 @@ atomic_tests:
       Remove-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name LongPathsEnabled -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Registry Tool
   auto_generated_guid: ac34b0f7-0f85-4ac0-b93e-3ced2bc69bb8
   description: |
@@ -169,6 +185,8 @@ atomic_tests:
       powershell Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\policies\system" -Name DisableRegistryTools -ErrorAction Ignore
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows CMD application
   auto_generated_guid: d2561a6d-72bd-408c-b150-13efe1801c2a
   description: |
@@ -183,6 +201,8 @@ atomic_tests:
       Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\System" -Name DisableCMD -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Task Manager application
   auto_generated_guid: af254e70-dd0e-4de6-9afe-a994d9ea8b62
   description: |
@@ -197,6 +217,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Notification Center
   auto_generated_guid: c0d6d67f-1f63-42cc-95c0-5fd6b20082ad
   description: |
@@ -211,6 +233,8 @@ atomic_tests:
       reg delete HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer /v DisableNotificationCenter /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Shutdown Button
   auto_generated_guid: 6e0d1131-2d7e-4905-8ca5-d6172f05d03d
   description: |
@@ -225,6 +249,8 @@ atomic_tests:
       reg delete "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v shutdownwithoutlogon /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows LogOff Button
   auto_generated_guid: e246578a-c24d-46a7-9237-0213ff86fb0c
   description: |
@@ -241,6 +267,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v StartMenuLogOff /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Change Password Feature
   auto_generated_guid: d4a6da40-618f-454d-9a9e-26af552aaeb0
   description: |
@@ -255,6 +283,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableChangePassword /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Lock Workstation Feature
   auto_generated_guid: 3dacb0d2-46ee-4c27-ac1b-f9886bf91a56
   description: |
@@ -269,6 +299,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableLockWorkstation /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoDesktop Group Policy Feature
   auto_generated_guid: 93386d41-525c-4a1b-8235-134a628dee17
   description: |
@@ -284,6 +316,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoDesktop /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoRun Group Policy Feature
   auto_generated_guid: d49ff3cc-8168-4123-b5b3-f057d9abbd55
   description: |
@@ -299,6 +333,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoRun /f 
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoFind Group Policy Feature
   auto_generated_guid: ffbb407e-7f1d-4c95-b22e-548169db1fbd
   description: |
@@ -314,6 +350,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoFind /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoControlPanel Group Policy Feature
   auto_generated_guid: a450e469-ba54-4de1-9deb-9023a6111690
   description: |
@@ -329,6 +367,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoFileMenu Group Policy Feature
   auto_generated_guid: 5e27bdb4-7fd9-455d-a2b5-4b4b22c9dea4
   description: |
@@ -344,6 +384,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoFileMenu /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoClose Group Policy Feature
   auto_generated_guid: 12f50e15-dbc6-478b-a801-a746e8ba1723
   description: |
@@ -359,6 +401,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoClose /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoSetTaskbar Group Policy Feature
   auto_generated_guid: d29b7faf-7355-4036-9ed3-719bd17951ed
   description: |
@@ -374,6 +418,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoSetTaskbar /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoTrayContextMenu Group Policy Feature
   auto_generated_guid: 4d72d4b1-fa7b-4374-b423-0fe326da49d2
   description: |
@@ -389,6 +435,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoTrayContextMenu /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Activate Windows NoPropertiesMyDocuments Group Policy Feature
   auto_generated_guid: 20fc9daa-bd48-4325-9aff-81b967a84b1d
   description: |
@@ -404,6 +452,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoPropertiesMyDocuments /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Hide Windows Clock Group Policy Feature
   auto_generated_guid: 8023db1e-ad06-4966-934b-b6a0ae52689e
   description: |
@@ -419,6 +469,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v HideClock /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows HideSCAHealth Group Policy Feature
   auto_generated_guid: a4637291-40b1-4a96-8c82-b28f1d73e54e
   description: |
@@ -434,6 +486,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v HideSCAHealth /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows HideSCANetwork Group Policy Feature
   auto_generated_guid: 3e757ce7-eca0-411a-9583-1c33b8508d52
   description: |
@@ -449,6 +503,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v HideSCANetwork /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows HideSCAPower Group Policy Feature
   auto_generated_guid: 8d85a5d8-702f-436f-bc78-fcd9119496fc
   description: |
@@ -464,6 +520,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v HideSCAPower /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows HideSCAVolume Group Policy Feature
   auto_generated_guid: 7f037590-b4c6-4f13-b3cc-e424c5ab8ade
   description: |
@@ -479,6 +537,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v HideSCAVolume /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows Modify Show Compress Color And Info Tip Registry
   auto_generated_guid: 795d3248-0394-4d4d-8e86-4e8df2a2693f
   description: |
@@ -494,6 +554,8 @@ atomic_tests:
       reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v ShowInfoTip /f >nul 2>&1
       reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v ShowCompColor /f >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Windows Powershell Logging Disabled
   auto_generated_guid: 95b25212-91a7-42ff-9613-124aca6845a8
   description: |
@@ -514,6 +576,8 @@ atomic_tests:
       reg delete HKCU\Software\Policies\Microsoft\Windows\PowerShell\Transcription /v EnableTranscripting /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows Add Registry Value to Load Service in Safe Mode without Network
   auto_generated_guid: 1dd59fb3-1cb3-4828-805d-cf80b4c3bbb5
   description: |
@@ -529,6 +593,8 @@ atomic_tests:
       reg delete "HKLM\SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\AtomicSafeMode" /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows Add Registry Value to Load Service in Safe Mode with Network
   auto_generated_guid: c173c948-65e5-499c-afbe-433722ed5bd4
   description: |
@@ -544,6 +610,8 @@ atomic_tests:
       reg delete "HKLM\SYSTEM\CurrentControlSet\Control\SafeBoot\Network\AtomicSafeMode" /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Toast Notifications
   auto_generated_guid: 003f466a-6010-4b15-803a-cbb478a314d7
   description: |
@@ -558,6 +626,8 @@ atomic_tests:
       reg delete HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\PushNotifications /v ToastEnabled /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Security Center Notifications
   auto_generated_guid: 45914594-8df6-4ea9-b3cc-7eb9321a807e
   description: |
@@ -572,6 +642,8 @@ atomic_tests:
       reg delete HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\ImmersiveShell /v UseActionCenterExperience /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Suppress Win Defender Notifications
   auto_generated_guid: c30dada3-7777-4590-b970-dc890b8cf113
   description: |
@@ -586,6 +658,8 @@ atomic_tests:
       reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\UX Configuration" /v Notification_Suppress /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Allow RDP Remote Assistance Feature
   auto_generated_guid: 86677d0e-0b5e-4a2b-b302-454175f9aa9e
   description: |
@@ -601,6 +675,8 @@ atomic_tests:
       reg delete "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fAllowToGetHelp /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: NetWire RAT Registry Key Creation
   auto_generated_guid: 65704cd4-6e36-4b90-b6c1-dc29a82c8e56
   description: |
@@ -618,6 +694,8 @@ atomic_tests:
       reg delete HKCU\SOFTWARE\NetWire /va /f >nul 2>&1
       reg delete HKCU\SOFTWARE\NetWire /f >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Ursnif Malware Registry Key Creation
   auto_generated_guid: c375558d-7c25-45e9-bd64-7b23a97c1db0
   description: |
@@ -632,6 +710,8 @@ atomic_tests:
       reg delete HKCU\Software\AppDataLow\Software\Microsoft\3A861D62-51E0-15700F2219A4 /va /f >nul 2>&1
       reg delete HKCU\Software\AppDataLow\Software\Microsoft\3A861D62-51E0-15700F2219A4 /f >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Terminal Server Client Connection History Cleared
   auto_generated_guid: 3448824b-3c35-4a9e-a8f5-f887f68bea21
   description: |
@@ -656,6 +736,8 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Servers" /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Error Reporting Settings
   auto_generated_guid: d2c9e41e-cd86-473d-980d-b6403562e3e1
   description: |
@@ -673,6 +755,8 @@ atomic_tests:
       reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting /v DisableEnhancedNotifications /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: DisallowRun Execution Of Certain Applications
   auto_generated_guid: 71db768a-5a9c-4047-b5e7-59e01f188e84
   description: |
@@ -691,6 +775,8 @@ atomic_tests:
       reg delete HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun /v art2 /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Enabling Restricted Admin Mode via Command_Prompt
   auto_generated_guid: fe7974e5-5813-477b-a7bd-311d4f535e83
   description: |
@@ -706,6 +792,8 @@ atomic_tests:
       reg delete "hklm\system\currentcontrolset\control\lsa" /f /v DisableRestrictedAdmin >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Mimic Ransomware - Enable Multiple User Sessions
   auto_generated_guid: 39f1f378-ba8a-42b3-96dc-2a6540cfc1e3
   description: |
@@ -720,6 +808,8 @@ atomic_tests:
       reg delete HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Winlogon /v AllowMultipleTSSessions /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Mimic Ransomware - Allow Multiple RDP Sessions per User
   auto_generated_guid: 35727d9e-7a7f-4d0c-a259-dc3906d6e8b9
   description: |
@@ -734,9 +824,14 @@ atomic_tests:
       reg delete "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fSingleSessionPerUser /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Event Viewer Registry Modification - Redirection URL
   auto_generated_guid: 6174be7f-5153-4afd-92c5-e0c3b7cdb5ae
-  description: Modify event viewer registry values to alter the behavior of the online help redirection. Upon opening an event in event viewer and attempting to view the help page for the event, it will open the URL or execute the program defined in the redirection URL registry entry.
+  description: Modify event viewer registry values to alter the behavior of the online
+    help redirection. Upon opening an event in event viewer and attempting to view
+    the help page for the event, it will open the URL or execute the program defined
+    in the redirection URL registry entry.
   supported_platforms:
   - windows
   input_arguments:
@@ -745,13 +840,21 @@ atomic_tests:
       type: url
       default: file://C:\windows\system32\notepad.exe
   executor:
-    command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer" /v MicrosoftRedirectionURL /t REG_SZ /d "#{redirection_url}" /f
-    cleanup_command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer" /v MicrosoftRedirectionURL /t REG_SZ /d "http://go.microsoft.com/fwlink/events.asp" /f
+    command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer"
+      /v MicrosoftRedirectionURL /t REG_SZ /d "#{redirection_url}" /f
+    cleanup_command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event
+      Viewer" /v MicrosoftRedirectionURL /t REG_SZ /d "http://go.microsoft.com/fwlink/events.asp"
+      /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Event Viewer Registry Modification - Redirection Program
   auto_generated_guid: 81483501-b8a5-4225-8b32-52128e2f69db
-  description: Modify event viewer registry values to alter the behavior of the online help redirection. Upon opening an event in event viewer and attempting to view the help page for the event, it will execute the program defined in the redirection program registry entry.
+  description: Modify event viewer registry values to alter the behavior of the online
+    help redirection. Upon opening an event in event viewer and attempting to view
+    the help page for the event, it will execute the program defined in the redirection
+    program registry entry.
   supported_platforms:
   - windows
   input_arguments:
@@ -760,10 +863,15 @@ atomic_tests:
       type: path
       default: C:\windows\system32\notepad.exe
   executor:
-    command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer" /v MicrosoftRedirectionProgram /t REG_EXPAND_SZ /d "#{redirection_program}" /f
-    cleanup_command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer" /v MicrosoftRedirectionProgram /t REG_EXPAND_SZ /f
+    command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event Viewer"
+      /v MicrosoftRedirectionProgram /t REG_EXPAND_SZ /d "#{redirection_program}"
+      /f
+    cleanup_command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Event
+      Viewer" /v MicrosoftRedirectionProgram /t REG_EXPAND_SZ /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Enabling Remote Desktop Protocol via Remote Registry
   auto_generated_guid: e3ad8e83-3089-49ff-817f-e52f8c948090
   description: |
@@ -777,6 +885,8 @@ atomic_tests:
       reg add "hklm\SYSTEM\CurrentControlSet\Control\Terminal Server\Winstations\RDP-Tcp" /v SecurityLayer /t REG_DWORD /d 2 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Win Defender Notification
   auto_generated_guid: 12e03af7-79f9-4f95-af48-d3f12f28a260
   description: |
@@ -790,6 +900,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v "DisableNotifications" /t REG_DWORD /d 0 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows OS Auto Update
   auto_generated_guid: 01b20ca8-c7a3-4d86-af59-059f15ed5474
   description: |
@@ -803,6 +915,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t REG_DWORD /d 0 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Auto Reboot for current logon user
   auto_generated_guid: 396f997b-c5f8-4a96-bb2c-3c8795cf459d
   description: |
@@ -816,6 +930,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoRebootWithLoggedOnUsers" /t REG_DWORD /d 0 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows Auto Update Option to Notify before download
   auto_generated_guid: 335a6b15-b8d2-4a3f-a973-ad69aa2620d7
   description: |
@@ -829,6 +945,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "AUOptions" /t REG_DWORD /d 3 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Do Not Connect To Win Update
   auto_generated_guid: d1de3767-99c2-4c6c-8c5a-4ba4586474c8
   description: |
@@ -842,6 +960,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "DoNotConnectToWindowsUpdateInternetLocations" /t REG_DWORD /d 0 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper Win Defender Protection
   auto_generated_guid: 3b625eaa-c10d-4635-af96-3eae7d2a2f3c
   description: |
@@ -857,6 +977,8 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Microsoft\Windows Defender\Features" /v "TamperProtection" /t REG_DWORD /d 5 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Snake Malware Registry Blob
   auto_generated_guid: 8318ad20-0488-4a64-98f4-72525a012f6b
   description: |
@@ -871,6 +993,8 @@ atomic_tests:
       $typicalPath = "HKLM:\SOFTWARE\Classes\.wav\OpenWithProgIds"; Remove-ItemProperty -Path $typicalPath -Name "AtomicSnake" -ErrorAction SilentlyContinue | Out-Null
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Allow Simultaneous Download Registry
   auto_generated_guid: 37950714-e923-4f92-8c7c-51e4b6fffbf6
   description: |
@@ -886,6 +1010,8 @@ atomic_tests:
       reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v "MaxConnectionsPer1_0Server" /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Modify Internet Zone Protocol Defaults in Current User Registry - cmd
   auto_generated_guid: c88ef166-50fa-40d5-a80c-e2b87d4180f7
   description: |
@@ -908,6 +1034,8 @@ atomic_tests:
       reg add "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\ProtocolDefaults" /v http /t REG_DWORD /d 3 /F
       reg add "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\ProtocolDefaults" /v https /t REG_DWORD /d 3 /F
     name: command_prompt
+  run_on:
+  - windows
 - name: Modify Internet Zone Protocol Defaults in Current User Registry - PowerShell
   auto_generated_guid: b1a4d687-ba52-4057-81ab-757c3dc0d3b5
   description: |
@@ -933,7 +1061,10 @@ atomic_tests:
       Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\ProtocolDefaults' -Name 'https' -Value 3
     name: powershell
 
-- name: Activities To Disable Secondary Authentication Detected By Modified Registry Value.
+  run_on:
+  - windows
+- name: Activities To Disable Secondary Authentication Detected By Modified Registry
+    Value.
   auto_generated_guid: c26fb85a-fa50-4fab-a64a-c51f5dc538d5
   description: |
     Detect the disable secondary authentication activities that adversary attempt to bypass MFA and to get the unauthorized access to the system or sensitive data.
@@ -946,8 +1077,11 @@ atomic_tests:
     cleanup_command: |
       reg add "HKLM\SOFTWARE\Policies\Microsoft\SecondaryAuthenticationFactor" /v "AllowSecondaryAuthenticationDevice" /t REG_DWORD /d 1 /f
     name: command_prompt
-    
-- name: Activities To Disable Microsoft [FIDO Aka Fast IDentity Online] Authentication Detected By Modified Registry Value.
+
+  run_on:
+  - windows
+- name: Activities To Disable Microsoft [FIDO Aka Fast IDentity Online] Authentication
+    Detected By Modified Registry Value.
   auto_generated_guid: ffeddced-bb9f-49c6-97f0-3d07a509bf94
   description: |
     Detect the Microsoft FIDO authentication disable activities that adversary attempt to gains access to login credentials (e.g., passwords), they may be able to impersonate the user and access sensitive accounts or data and also increases the risk of falling victim to phishing attacks.
@@ -959,8 +1093,10 @@ atomic_tests:
       reg add "HKLM\SOFTWARE\Policies\Microsoft\FIDO" /v "AllowExternalDeviceSignon" /t REG_DWORD /d 0 /f
     cleanup_command: |
       reg add "HKLM\SOFTWARE\Policies\Microsoft\FIDO" /v "AllowExternalDeviceSignon" /t REG_DWORD /d 1 /f
-    name: command_prompt  
+    name: command_prompt
 
+  run_on:
+  - windows
 - name: Scarab Ransomware Defense Evasion Activities
   auto_generated_guid: ca8ba39c-3c5a-459f-8e15-280aec65a910
   description: |
@@ -972,9 +1108,11 @@ atomic_tests:
     command: |
       reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" /v AllowEncryptionOracle /t REG_DWORD /d 2 /f
     cleanup_command: |
-       reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" /v AllowEncryptionOracle /t REG_DWORD /d 0 /f
+      reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" /v AllowEncryptionOracle /t REG_DWORD /d 0 /f
     name: command_prompt
 
+  run_on:
+  - windows
 - name: Disable Remote Desktop Anti-Alias Setting Through Registry
   auto_generated_guid: 61d35188-f113-4334-8245-8c6556d43909
   description: |
@@ -982,12 +1120,14 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableRemoteDesktopAntiAlias" /t REG_DWORD /d 1 /f
+    command: |
+      reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableRemoteDesktopAntiAlias" /t REG_DWORD /d 1 /f
     cleanup_command: |
-       reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableRemoteDesktopAntiAlias" /t REG_DWORD /d 0 /f
+      reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableRemoteDesktopAntiAlias" /t REG_DWORD /d 0 /f
     name: command_prompt
-  
+
+  run_on:
+  - windows
 - name: Disable Remote Desktop Security Settings Through Registry
   auto_generated_guid: 4b81bcfa-fb0a-45e9-90c2-e3efe5160140
   description: |
@@ -995,12 +1135,14 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableSecuritySettings" /t REG_DWORD /d 1 /f
+    command: |
+      reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableSecuritySettings" /t REG_DWORD /d 1 /f
     cleanup_command: |
-       reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableSecuritySettings" /t REG_DWORD /d 0 /f
+      reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" /v "DisableSecuritySettings" /t REG_DWORD /d 0 /f
     name: command_prompt
 
+  run_on:
+  - windows
 - name: Disabling ShowUI Settings of Windows Error Reporting (WER)
   auto_generated_guid: 09147b61-40f6-4b2a-b6fb-9e73a3437c96
   description: |
@@ -1009,12 +1151,14 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKCU\Software\Microsoft\Windows\Windows Error Reporting" /v DontShowUI /t REG_DWORD /d 1 /f
+    command: |
+      reg add "HKCU\Software\Microsoft\Windows\Windows Error Reporting" /v DontShowUI /t REG_DWORD /d 1 /f
     cleanup_command: |
-       reg add "HKCU\Software\Microsoft\Windows\Windows Error Reporting" /v DontShowUI /t REG_DWORD /d 0 /f
+      reg add "HKCU\Software\Microsoft\Windows\Windows Error Reporting" /v DontShowUI /t REG_DWORD /d 0 /f
     name: command_prompt
 
+  run_on:
+  - windows
 - name: Enable Proxy Settings
   auto_generated_guid: eb0ba433-63e5-4a8c-a9f0-27c4192e1336
   description: |
@@ -1022,12 +1166,14 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f
+    command: |
+      reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f
     cleanup_command: |
-       reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f
+      reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f
     name: command_prompt
 
+  run_on:
+  - windows
 - name: Set-Up Proxy Server
   auto_generated_guid: d88a3d3b-d016-4939-a745-03638aafd21b
   description: |
@@ -1035,13 +1181,15 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "proxy.atomic-test.com:8080" /f
+    command: |
+      reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "proxy.atomic-test.com:8080" /f
     cleanup_command: |
-       reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer
+      reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer
     name: command_prompt
 
 
+  run_on:
+  - windows
 - name: RDP Authentication Level Override
   auto_generated_guid: 7e7b62e9-5f83-477d-8935-48600f38a3c6
   description: |
@@ -1049,8 +1197,10 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: | 
-       reg add "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride /t REG_DWORD /d 0 /f
+    command: |
+      reg add "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride /t REG_DWORD /d 0 /f
     cleanup_command: |
-       reg delete "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride
+      reg delete "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride
     name: command_prompt
+  run_on:
+  - windows

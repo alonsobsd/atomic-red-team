@@ -23,6 +23,8 @@ atomic_tests:
         C:\Windows\System32\inetsrv\appcmd.exe set config "#{website_name}" /section:httplogging /dontLog:false *>$null
       }
     name: powershell
+  run_on:
+  - windows
 - name: Disable Windows IIS HTTP Logging via PowerShell
   auto_generated_guid: a957fb0f-1e85-49b2-a211-413366784b1e
   description: |
@@ -45,9 +47,12 @@ atomic_tests:
         C:\Windows\System32\inetsrv\appcmd.exe set config "#{website_name}" /section:httplogging /dontLog:false *>$null
       }
     name: powershell
+  run_on:
+  - windows
 - name: Kill Event Log Service Threads
   auto_generated_guid: 41ac52ba-5d5e-40c0-b267-573ed90489bd
-  description: 'Kill Windows Event Log Service Threads using Invoke-Phant0m. WARNING you will need to restart PC to return to normal state with Log Service. https://artofpwn.com/phant0m-killing-windows-event-log.html'
+  description: Kill Windows Event Log Service Threads using Invoke-Phant0m. WARNING
+    you will need to restart PC to return to normal state with Log Service. https://artofpwn.com/phant0m-killing-windows-event-log.html
   supported_platforms:
   - windows
   executor:
@@ -65,7 +70,9 @@ atomic_tests:
       Remove-Item "$env:TEMP\Invoke-Phant0m.ps1" -ErrorAction Ignore
     name: powershell
     elevation_required: true
-- name: 'Impair Windows Audit Log Policy'
+  run_on:
+  - windows
+- name: Impair Windows Audit Log Policy
   auto_generated_guid: 5102a3a7-e2d7-4129-9e45-f483f2e0eea8
   description: >-
     Disables the windows audit policy to prevent key host based telemetry being
@@ -85,10 +92,13 @@ atomic_tests:
       auditpol /set /category:"Logon/Logoff" /success:enable /failure:enable
     name: command_prompt
     elevation_required: true
-- name: 'Clear Windows Audit Policy Config'
+  run_on:
+  - windows
+- name: Clear Windows Audit Policy Config
   auto_generated_guid: 913c0e4e-4b37-4b78-ad0b-90e7b25010f6
   description: >-
-    Clear the Windows audit policy using auditpol utility. This action would stop certain audit events from being recorded in the security log.
+    Clear the Windows audit policy using auditpol utility. This action would stop
+    certain audit events from being recorded in the security log.
   supported_platforms:
   - windows
   executor:
@@ -101,6 +111,8 @@ atomic_tests:
       auditpol /set /category:"Logon/Logoff" /success:enable /failure:enable
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Event Logging with wevtutil
   auto_generated_guid: b26a3340-dad7-4360-9176-706269c74103
   description: |
@@ -119,7 +131,9 @@ atomic_tests:
     cleanup_command: |
       wevtutil sl "#{log_name}" /e:true
     name: command_prompt
-- name: 'Makes Eventlog blind with Phant0m'
+  run_on:
+  - windows
+- name: Makes Eventlog blind with Phant0m
   auto_generated_guid: 3ddf3d03-f5d6-462a-ad76-2c5ff7b6d741
   description: |
     Use [Phant0m](https://github.com/hlldz/Phant0m) to disable Eventlog
@@ -145,3 +159,5 @@ atomic_tests:
     cleanup_command: |
       echo "Sorry you have to reboot"
     name: command_prompt
+  run_on:
+  - windows

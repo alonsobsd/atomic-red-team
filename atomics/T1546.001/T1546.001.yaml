@@ -31,3 +31,5 @@ atomic_tests:
 
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

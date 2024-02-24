@@ -1,5 +1,5 @@
 attack_technique: T1564
-display_name: "Hide Artifacts"
+display_name: Hide Artifacts
 atomic_tests:
 - name: Extract binary files via VBA
   auto_generated_guid: 6afe288a-8a8b-4d33-a629-8d03ba9dad3a
@@ -39,6 +39,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item "$env:TEMP\extracted.exe" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Create a Hidden User Called "$"
   auto_generated_guid: 2ec63cc2-4975-41a6-bf09-dffdfb610778
   description: Creating a user with a username containing "$"
@@ -49,6 +51,8 @@ atomic_tests:
     elevation_required: true
     command: net user $ ATOMIC123! /add /active:yes
     cleanup_command: net user $ /DELETE 2>&1
+  run_on:
+  - windows
 - name: Create an "Administrator " user (with a space on the end)
   auto_generated_guid: 5bb20389-39a5-4e99-9264-aeb92a55a85c
   description: Creating a user with a username containing with a space on the end
@@ -59,6 +63,8 @@ atomic_tests:
     elevation_required: true
     command: New-LocalUser -Name "Administrator " -NoPassword
     cleanup_command: Remove-LocalUser -Name "Administrator " 2>&1 | out-null
+  run_on:
+  - windows
 - name: Create and Hide a Service with sc.exe
   auto_generated_guid: 333c7de0-6fbe-42aa-ac2b-c7e40b18246a
   description: |
@@ -78,7 +84,7 @@ atomic_tests:
     executable_command:
       description: Command to execute as a service
       type: string
-      default: 'C:\Windows\System32\calc.exe'
+      default: C:\Windows\System32\calc.exe
   executor:
     command: |
       sc.exe create #{service_name} binPath= "#{executable_command}"
@@ -88,6 +94,8 @@ atomic_tests:
       sc.exe delete #{service_name}
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Command Execution with NirCmd
   auto_generated_guid: 2748ab4a-1e0b-4cf2-a2b0-8ef765bec7be
   description: |
@@ -125,3 +133,5 @@ atomic_tests:
       cmd /c "#{nircmd_location}" #{cleanup_command_to_execute} -erroraction silentlycontinue | out-null
     name: powershell
     elevation_required: false
+  run_on:
+  - windows

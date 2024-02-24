@@ -33,6 +33,9 @@ atomic_tests:
       $which_python -c "import gzip;input_file=open('#{path_to_input_file}', 'rb');content=input_file.read();input_file.close();output_file=gzip.GzipFile('#{path_to_output_file}','wb',compresslevel=6);output_file.write(content);output_file.close();"
     cleanup_command: |
       rm #{path_to_output_file}
+  run_on:
+  - freebsd
+  - linux
 - name: Compressing data using bz2 in Python (FreeBSD/Linux)
   auto_generated_guid: c75612b2-9de0-4d7c-879c-10d7b077072d
   description: |
@@ -64,6 +67,9 @@ atomic_tests:
       $which_python -c "import bz2;input_file=open('#{path_to_input_file}','rb');content=input_file.read();input_file.close();bz2content=bz2.compress(content,compresslevel=9);output_file=open('#{path_to_output_file}','w+');output_file.write(str(bz2content));output_file.close();"
     cleanup_command: |
       rm #{path_to_output_file}
+  run_on:
+  - freebsd
+  - linux
 - name: Compressing data using zipfile in Python (FreeBSD/Linux)
   auto_generated_guid: 001a042b-859f-44d9-bf81-fd1c4e2200b0
   description: |
@@ -95,6 +101,9 @@ atomic_tests:
       $which_python -c "from zipfile import ZipFile; ZipFile('#{path_to_output_file}', mode='w').write('#{path_to_input_file}')"
     cleanup_command: |
       rm #{path_to_output_file}
+  run_on:
+  - freebsd
+  - linux
 - name: Compressing data using tarfile in Python (FreeBSD/Linux)
   auto_generated_guid: e86f1b4b-fcc1-4a2a-ae10-b49da01458db
   description: |
@@ -126,3 +135,7 @@ atomic_tests:
       $which_python -c "from zipfile import ZipFile; ZipFile('#{path_to_output_file}', mode='w').write('#{path_to_input_file}')" 
     cleanup_command: |
       rm #{path_to_output_file}
+  run_on:
+  - freebsd
+  - linux
+

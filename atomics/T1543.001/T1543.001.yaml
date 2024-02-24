@@ -34,6 +34,8 @@ atomic_tests:
     cleanup_command: |
       sudo launchctl unload ~/Library/LaunchAgents/#{plist_filename}
       sudo rm ~/Library/LaunchAgents/#{plist_filename}
+  run_on:
+  - macos
 - name: Event Monitor Daemon Persistence
   auto_generated_guid: 11979f23-9b9d-482a-9935-6fc9cd022c3e
   description: |
@@ -63,3 +65,5 @@ atomic_tests:
     cleanup_command: |-
       sudo rm #{script_destination}
       sudo rm /private/var/db/emondClients/#{empty_file}
+  run_on:
+  - macos

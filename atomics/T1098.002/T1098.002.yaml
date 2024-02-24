@@ -52,3 +52,5 @@ atomic_tests:
       Disconnect-ExchangeOnline -Confirm:$false
     name: powershell
     elevation_required: false
+  run_on:
+  - office-365

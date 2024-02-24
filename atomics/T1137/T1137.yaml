@@ -20,3 +20,5 @@ atomic_tests:
       reg delete "HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Outlook\Security\Level" /f >nul 2>&1
       del %APPDATA%\Microsoft\Outlook\VbaProject.OTM >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows

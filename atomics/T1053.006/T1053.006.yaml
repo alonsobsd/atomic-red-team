@@ -53,6 +53,8 @@ atomic_tests:
       systemctl daemon-reload
     name: bash
 
+  run_on:
+  - linux
 - name: Create a user level transient systemd service and timer
   auto_generated_guid: 3de33f5b-62e5-4e63-a2a0-6fd8808c80ec
   description: |
@@ -77,6 +79,8 @@ atomic_tests:
       rm /tmp/log
     name: sh
 
+  run_on:
+  - linux
 - name: Create a system level transient systemd service and timer
   auto_generated_guid: d3eda496-1fc0-49e9-aff5-3bec5da9fa22
   description: |
@@ -100,3 +104,5 @@ atomic_tests:
       systemctl stop Atomic-Red-Team.timer
       rm /tmp/log
     name: sh
+  run_on:
+  - linux

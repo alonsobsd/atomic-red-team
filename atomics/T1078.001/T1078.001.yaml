@@ -46,7 +46,8 @@ atomic_tests:
       if #{remove_rdp_access_during_cleanup} EQU 1 (reg delete "hklm\system\CurrentControlSet\Control\Terminal Server" /v "AllowTSConnections" /f >nul 2>&1)
     name: command_prompt
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Activate Guest Account
   auto_generated_guid: aa6cb8c4-b582-4f8e-b677-37733914abda
   description: |
@@ -65,7 +66,8 @@ atomic_tests:
       net user #{guest_user} /active:no
     name: command_prompt
     elevation_required: true
-    
+  run_on:
+  - windows
 - name: Enable Guest Account on macOS
   auto_generated_guid: 0315bdff-4178-47e9-81e4-f31a6d23f7e4
   description: This test enables the guest account on macOS using sysadminctl utility.
@@ -78,3 +80,5 @@ atomic_tests:
       sudo sysadminctl -guestAccount off
     name: command_prompt
     elevation_required: true
+  run_on:
+  - macos

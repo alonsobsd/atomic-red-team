@@ -17,3 +17,5 @@ atomic_tests:
       Remove-Item "$env:localappdata\Microsoft\WindowsApps\Get-Variable.exe" -ErrorAction Ignore
       Stop-Process -Name "calculator"
     name: powershell
+  run_on:
+  - windows

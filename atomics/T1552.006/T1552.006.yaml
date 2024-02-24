@@ -1,5 +1,5 @@
 attack_technique: T1552.006
-display_name: "Unsecured Credentials: Group Policy Preferences"
+display_name: 'Unsecured Credentials: Group Policy Preferences'
 atomic_tests:
 - name: GPP Passwords (findstr)
   auto_generated_guid: 870fe8fb-5e23-4f5f-b89d-dd7fe26f3b5f
@@ -19,7 +19,8 @@ atomic_tests:
     command: |
       findstr /S cpassword %logonserver%\sysvol\*.xml
     name: command_prompt
-
+  run_on:
+  - windows
 - name: GPP Passwords (Get-GPPPassword)
   auto_generated_guid: e9584f82-322c-474a-b831-940fd8b4455c
   description: |
@@ -34,7 +35,8 @@ atomic_tests:
     gpp_script_url:
       description: URL of the Get-GPPPassword PowerShell Script
       type: url
-      default: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/87630cac639f29c2adcb163f661f02890adf4bdd/Exfiltration/Get-GPPPassword.ps1
+      default: 
+        https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/87630cac639f29c2adcb163f661f02890adf4bdd/Exfiltration/Get-GPPPassword.ps1
     gpp_script_path:
       description: Path to the Get-GPPPassword PowerShell Script
       type: path
@@ -59,3 +61,5 @@ atomic_tests:
       . "#{gpp_script_path}"
       Get-GPPPassword -Verbose
     name: powershell
+  run_on:
+  - windows

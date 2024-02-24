@@ -33,7 +33,8 @@ atomic_tests:
     command: |
       #{regsvr32path}\#{regsvr32name} /s /u /i:"#{filename}" scrobj.dll
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Regsvr32 remote COM scriptlet execution
   auto_generated_guid: c9d0c4ef-8a96-4794-a75b-3d3a5e6f2a36
   description: |
@@ -45,7 +46,8 @@ atomic_tests:
     url:
       description: URL to hosted sct file
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.010/src/RegSvr32.sct
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.010/src/RegSvr32.sct
     regsvr32path:
       description: Default location of Regsvr32.exe
       type: path
@@ -58,7 +60,8 @@ atomic_tests:
     command: |
       #{regsvr32path}\#{regsvr32name} /s /u /i:#{url} scrobj.dll
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Regsvr32 local DLL execution
   auto_generated_guid: 08ffca73-9a3d-471a-aeb0-68b4aa3ab37b
   description: |
@@ -91,7 +94,8 @@ atomic_tests:
     command: |
       IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (C:\Windows\syswow64\regsvr32.exe /s #{dll_name}) ELSE ( #{regsvr32path}\#{regsvr32name} /s #{dll_name} )
     name: command_prompt
-
+  run_on:
+  - windows
 - name: Regsvr32 Registering Non DLL
   auto_generated_guid: 1ae5ea1f-0a4e-4e54-b2f5-4ac328a7f421
   description: |
@@ -128,10 +132,12 @@ atomic_tests:
       #{regsvr32path}\#{regsvr32name} /s #{dll_file}
     cleanup_command: |
       #{regsvr32path}\#{regsvr32name} /U /s #{dll_file}
-
+  run_on:
+  - windows
 - name: Regsvr32 Silent DLL Install Call DllRegisterServer
   auto_generated_guid: 9d71c492-ea2e-4c08-af16-c6994cdf029f
-  description: Regsvr32.exe is a command-line program used to register and unregister OLE controls. Normally, an install is executed with /n to prevent calling DllRegisterServer.
+  description: Regsvr32.exe is a command-line program used to register and unregister
+    OLE controls. Normally, an install is executed with /n to prevent calling DllRegisterServer.
   supported_platforms:
   - windows
   input_arguments:
@@ -159,3 +165,5 @@ atomic_tests:
     command: |
       #{regsvr32path}\#{regsvr32name} /s /i "#{dll_name}"
     name: command_prompt
+  run_on:
+  - windows

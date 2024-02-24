@@ -46,6 +46,8 @@ atomic_tests:
       Remove-ItemProperty -Path HKCU:\Environment -Name "COR_PROFILER" -Force -ErrorAction Ignore | Out-Null
       Remove-ItemProperty -Path HKCU:\Environment -Name "COR_PROFILER_PATH" -Force -ErrorAction Ignore | Out-Null
     name: powershell
+  run_on:
+  - windows
 - name: System Scope COR_PROFILER
   auto_generated_guid: f373b482-48c8-4ce4-85ed-d40c8b3f7310
   description: |
@@ -87,6 +89,8 @@ atomic_tests:
       Remove-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment' -Name "COR_PROFILER_PATH" -Force -ErrorAction Ignore | Out-Null
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Registry-free process scope COR_PROFILER
   auto_generated_guid: 79d57242-bbef-41db-b301-9d01d9f6e817
   description: |
@@ -124,3 +128,5 @@ atomic_tests:
       $env:COR_PROFILER = ''
       $env:COR_PROFILER_PATH = ''
     name: powershell
+  run_on:
+  - windows

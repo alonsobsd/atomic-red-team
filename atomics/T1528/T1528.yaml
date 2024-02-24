@@ -58,3 +58,5 @@ atomic_tests:
       remove-item #{output_file} -force -erroraction silentlycontinue
     name: powershell
     elevation_required: true
+  run_on:
+  - iaas:azure

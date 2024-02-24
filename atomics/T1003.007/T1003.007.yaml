@@ -48,6 +48,8 @@ atomic_tests:
     cleanup_command: |
       rm -f "#{output_file}"
 
+  run_on:
+  - linux
 - name: Dump individual process memory with sh on FreeBSD (Local)
   auto_generated_guid: fa37b633-e097-4415-b2b8-c5bf4c86e423
   description: |
@@ -95,6 +97,8 @@ atomic_tests:
     cleanup_command: |
       rm -f "#{output_file}"
 
+  run_on:
+  - freebsd
 - name: Dump individual process memory with Python (Local)
   auto_generated_guid: 437b2003-a20d-4ed8-834c-4964f24eec63
   description: |
@@ -149,6 +153,9 @@ atomic_tests:
       grep -i "PASS" "#{output_file}"
     cleanup_command: |
       rm -f "#{output_file}"
+  run_on:
+  - freebsd
+  - linux
 - name: Capture Passwords with MimiPenguin
   auto_generated_guid: a27418de-bdce-4ebd-b655-38f04842bf0c
   description: |
@@ -203,3 +210,5 @@ atomic_tests:
       rm -f #{output_file} > /dev/null
     name: bash
     elevation_required: true
+  run_on:
+  - linux

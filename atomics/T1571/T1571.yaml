@@ -12,7 +12,7 @@ atomic_tests:
     port:
       description: Specify uncommon port number
       type: string
-      default: "8081"
+      default: '8081'
     domain:
       description: Specify target hostname
       type: string
@@ -21,6 +21,8 @@ atomic_tests:
     command: |
       Test-NetConnection -ComputerName #{domain} -port #{port}
     name: powershell
+  run_on:
+  - windows
 - name: Testing usage of uncommonly used port
   auto_generated_guid: 5db21e1d-dd9c-4a50-b885-b1e748912767
   description: |
@@ -32,21 +34,25 @@ atomic_tests:
     port:
       description: Specify uncommon port number
       type: string
-      default: "8081"
+      default: '8081'
     domain:
       description: Specify target hostname
       type: string
       default: google.com
   dependency_executor_name: sh
   dependencies:
-    - description: |
-        Requires telnet
-      prereq_command: |
-        which telnet
-      get_prereq_command: |
-        echo "please install telnet to run this test"; exit 1
+  - description: |
+      Requires telnet
+    prereq_command: |
+      which telnet
+    get_prereq_command: |
+      echo "please install telnet to run this test"; exit 1
   executor:
     command: |
       echo quit | telnet #{domain} #{port}
       exit 0
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos

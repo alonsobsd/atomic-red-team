@@ -33,3 +33,5 @@ atomic_tests:
       $oldprofile = cat $profile | Select-Object -skiplast 1
       Set-Content $profile -Value $oldprofile
     name: powershell
+  run_on:
+  - windows

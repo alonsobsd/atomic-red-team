@@ -28,6 +28,8 @@ atomic_tests:
       tshark -c 5 -i #{interface}
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Packet Capture FreeBSD using tshark or tcpdump
   auto_generated_guid: c93f2492-9ebe-44b5-8b45-36574cccfe67
   description: |
@@ -55,6 +57,8 @@ atomic_tests:
       tshark -c 5 -i #{interface}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Packet Capture macOS using tcpdump or tshark
   auto_generated_guid: 9d04efee-eff5-4240-b8d2-07792b873608
   description: |
@@ -82,6 +86,8 @@ atomic_tests:
       if [ -x "$(command -v tshark)" ]; then sudo tshark -c 5 -i #{interface}; fi;
     name: bash
     elevation_required: true
+  run_on:
+  - macos
 - name: Packet Capture Windows Command Prompt
   auto_generated_guid: a5b2f6a0-24b4-493e-9590-c699f75723ca
   description: |
@@ -101,7 +107,7 @@ atomic_tests:
       type: url
       default: https://1.eu.dl.wireshark.org/win64/Wireshark-win64-latest.exe
     tshark_path:
-      description: path to tshark.exe 
+      description: path to tshark.exe
       type: path
       default: c:\program files\wireshark\tshark.exe
     npcap_url:
@@ -133,6 +139,8 @@ atomic_tests:
       "c:\Program Files\Wireshark\tshark.exe" -i #{interface} -c 5
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows Internal Packet Capture
   auto_generated_guid: b5656f67-d67f-4de8-8e62-b5581630f528
   description: |-
@@ -150,6 +158,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Windows Internal pktmon capture
   auto_generated_guid: c67ba807-f48b-446e-b955-e4928cd1bf91
   description: |-
@@ -167,6 +177,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Windows Internal pktmon set filter
   auto_generated_guid: 855fb8b4-b8ab-4785-ae77-09f5df7bff55
   description: |-
@@ -181,6 +193,8 @@ atomic_tests:
       pktmon filter remove
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Packet Capture macOS using /dev/bpfN with sudo
   auto_generated_guid: e6fe5095-545d-4c8b-a0ae-e863914be3aa
   description: |
@@ -215,6 +229,8 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
+  run_on:
+  - macos
 - name: Filtered Packet Capture macOS using /dev/bpfN with sudo
   auto_generated_guid: e2480aee-23f3-4f34-80ce-de221e27cd19
   description: |
@@ -249,6 +265,8 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
+  run_on:
+  - macos
 - name: Packet Capture FreeBSD using /dev/bpfN with sudo
   auto_generated_guid: e2028771-1bfb-48f5-b5e6-e50ee0942a14
   description: |
@@ -283,6 +301,8 @@ atomic_tests:
       rm -f #{program_path}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Filtered Packet Capture FreeBSD using /dev/bpfN with sudo
   auto_generated_guid: a3a0d4c9-c068-4563-a08d-583bd05b884c
   description: |
@@ -317,7 +337,8 @@ atomic_tests:
       rm -f #{program_path}
     name: sh
     elevation_required: true
-
+  run_on:
+  - freebsd
 - name: Packet Capture Linux socket AF_PACKET,SOCK_RAW with sudo
   auto_generated_guid: 10c710c9-9104-4d5f-8829-5b65391e2a29
   description: |
@@ -348,6 +369,8 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Packet Capture Linux socket AF_INET,SOCK_RAW,TCP with sudo
   auto_generated_guid: 7a0895f0-84c1-4adf-8491-a21510b1d4c1
   description: |
@@ -378,6 +401,8 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Packet Capture Linux socket AF_INET,SOCK_PACKET,UDP with sudo
   auto_generated_guid: 515575ab-d213-42b1-aa64-ef6a2dd4641b
   description: |
@@ -409,7 +434,10 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
-- name: Packet Capture Linux socket AF_PACKET,SOCK_RAW with BPF filter for UDP with sudo
+  run_on:
+  - linux
+- name: Packet Capture Linux socket AF_PACKET,SOCK_RAW with BPF filter for UDP with
+    sudo
   auto_generated_guid: b1cbdf8b-6078-48f5-a890-11ea19d7f8e9
   description: |
     Captures packets with domain=AF_PACKET,type=SOCK_RAW for a few seconds.
@@ -440,6 +468,8 @@ atomic_tests:
       rm -f #{program_path}
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: PowerShell Network Sniffing
   auto_generated_guid: 9c15a7de-de14-46c3-bc2a-6d94130986ae
   description: |-
@@ -458,3 +488,5 @@ atomic_tests:
       del $ENV:Temp\sniff.etl
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

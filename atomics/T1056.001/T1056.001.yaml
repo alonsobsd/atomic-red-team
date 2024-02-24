@@ -31,6 +31,8 @@ atomic_tests:
       Remove-Item $env:TEMP\key.log -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Living off the land Terminal Input Capture on Linux with pam.d
   auto_generated_guid: 9c6bdb34-a89f-4b90-acb1-5970614c711b
   description: |
@@ -61,6 +63,8 @@ atomic_tests:
       sudo cp -f /tmp/system-auth.bk /etc/pam.d/system-auth
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Logging bash history to syslog
   auto_generated_guid: 0e59d59d-3265-4d35-bebd-bf5c1ec40db5
   description: |
@@ -88,6 +92,9 @@ atomic_tests:
       tail /var/log/syslog
     cleanup_command: |
       unset PROMPT_COMMAND
+  run_on:
+  - freebsd
+  - linux
 - name: Logging sh history to syslog/messages
   auto_generated_guid: b04284dc-3bd9-4840-8d21-61b8d31c99f2
   description: |
@@ -114,6 +121,9 @@ atomic_tests:
       tail /var/log/messages
     cleanup_command: |
       unset PS2
+  run_on:
+  - freebsd
+  - linux
 - name: Bash session based keylogger
   auto_generated_guid: 7f85a946-a0ea-48aa-b6ac-8ff539278258
   description: |
@@ -144,6 +154,9 @@ atomic_tests:
       cat #{output_file}
     cleanup_command: |
       rm #{output_file}
+  run_on:
+  - freebsd
+  - linux
 - name: SSHD PAM keylogger
   auto_generated_guid: 81d7d2ad-d644-4b6a-bea7-28ffe43becca
   description: |
@@ -180,6 +193,8 @@ atomic_tests:
       exit
     cleanup_command: |
       cp -fv /tmp/sshd /etc/pam.d/
+  run_on:
+  - linux
 - name: Auditd keylogger
   auto_generated_guid: a668edb9-334e-48eb-8c2e-5413a40867af
   description: |
@@ -203,6 +218,8 @@ atomic_tests:
       whoami; ausearch -i --start $(date +"%d/%m/%y %H:%M:%S") 
     cleanup_command: |
       systemctl restart auditd
+  run_on:
+  - linux
 - name: MacOS Swift Keylogger
   auto_generated_guid: aee3a097-4c5c-4fff-bbd3-0a705867ae29
   description: |
@@ -231,3 +248,5 @@ atomic_tests:
       kill `pgrep swift-frontend`
     name: bash
     elevation_required: false
+  run_on:
+  - macos

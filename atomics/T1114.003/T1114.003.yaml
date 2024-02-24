@@ -19,11 +19,11 @@ atomic_tests:
     rule_name:
       description: email rule name
       type: string
-      default: "Atomic Red Team Email Rule"
+      default: Atomic Red Team Email Rule
     forwarding_email:
       description: destination email addresses
       type: string
-      default: "Atomic_Operator@fakeemail.aq"
+      default: Atomic_Operator@fakeemail.aq
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -48,3 +48,5 @@ atomic_tests:
       Get-InboxRule | Where-Object { $_.Name -eq "#{rule_name}" | ForEach-Object { Remove-InboxRule -Identity $_.Identity -Force -Confirm:$False }
     name: powershell
     elevation_required: false
+  run_on:
+  - office-365

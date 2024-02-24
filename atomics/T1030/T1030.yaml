@@ -31,3 +31,7 @@ atomic_tests:
     cleanup_command: |
       if [ -f #{folder_path}/safe_to_delete ]; then rm -rf #{folder_path}; fi;
     name: sh
+  run_on:
+  - freebsd
+  - macos
+  - linux

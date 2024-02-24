@@ -15,6 +15,8 @@ atomic_tests:
       fsutil usn createjournal m=1000 a=100 c:
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Indicator Manipulation using FSUtil
   auto_generated_guid: 96e86706-6afd-45b6-95d6-108d23eaf2e9
   description: |
@@ -41,3 +43,5 @@ atomic_tests:
       rm "#{file_to_manipulate}"
     name: powershell
     elevation_required: false
+  run_on:
+  - windows

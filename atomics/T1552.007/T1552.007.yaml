@@ -23,6 +23,8 @@ atomic_tests:
     name: bash
     elevation_required: false
 
+  run_on:
+  - containers
 - name: ListSecrets
   auto_generated_guid: 43c3a49d-d15c-45e6-b303-f6e177e44a9a
   description: |
@@ -47,6 +49,8 @@ atomic_tests:
     name: bash
     elevation_required: false
 
+  run_on:
+  - containers
 - name: Cat the contents of a Kubernetes service account token file
   auto_generated_guid: 788e0019-a483-45da-bcfe-96353d46820f
   description: |
@@ -103,3 +107,5 @@ atomic_tests:
     name: sh
     cleanup_command: |
       kubectl --context kind-atomic-cluster delete pod atomic-pod
+  run_on:
+  - linux

@@ -17,6 +17,8 @@ atomic_tests:
       net time \\#{computer_name}
       w32tm /tz
     name: command_prompt
+  run_on:
+  - windows
 - name: System Time Discovery - PowerShell
   auto_generated_guid: 1d5711d6-655c-4a47-ae9c-6503c74fa877
   description: |
@@ -27,6 +29,8 @@ atomic_tests:
     command: |
       Get-Date
     name: powershell
+  run_on:
+  - windows
 - name: System Time Discovery in FreeBSD/macOS
   auto_generated_guid: f449c933-0891-407f-821e-7916a21a1a6f
   description: |
@@ -38,6 +42,10 @@ atomic_tests:
     command: |
       date
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: System Time Discovery W32tm as a Delay
   auto_generated_guid: d5d5a6b0-0f92-42d8-985d-47aafa2dd4db
   description: |
@@ -50,6 +58,8 @@ atomic_tests:
     command: |
       W32tm /stripchart /computer:localhost /period:5 /dataonly /samples:2
     name: command_prompt
+  run_on:
+  - windows
 - name: System Time with Windows time Command
   auto_generated_guid: 53ead5db-7098-4111-bb3f-563be390e72e
   description: |
@@ -63,3 +73,5 @@ atomic_tests:
     command: |
       time
     name: command_prompt
+  run_on:
+  - windows

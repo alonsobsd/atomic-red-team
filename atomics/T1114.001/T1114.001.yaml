@@ -33,3 +33,5 @@ atomic_tests:
     cleanup_command: |
       Remove-Item #{output_file} -Force -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows

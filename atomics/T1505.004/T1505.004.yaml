@@ -35,6 +35,8 @@ atomic_tests:
     cleanup_command: |
       %windir%\system32\inetsrv\appcmd.exe uninstall module #{module_name}
     name: command_prompt
+  run_on:
+  - windows
 - name: Install IIS Module using PowerShell Cmdlet New-WebGlobalModule
   auto_generated_guid: cc3381fb-4bd0-405c-a8e4-6cacfac3b06c
   description: |
@@ -69,3 +71,5 @@ atomic_tests:
     cleanup_command: |
       Remove-WebGlobalModule -Name #{module_name}
     name: powershell
+  run_on:
+  - windows

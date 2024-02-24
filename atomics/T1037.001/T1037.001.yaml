@@ -1,5 +1,5 @@
 attack_technique: T1037.001
-display_name: "Boot or Logon Initialization Scripts: Logon Script (Windows)"
+display_name: 'Boot or Logon Initialization Scripts: Logon Script (Windows)'
 atomic_tests:
 - name: Logon Scripts
   auto_generated_guid: d6042746-07d4-4c92-9ad8-e644c114a231
@@ -26,3 +26,5 @@ atomic_tests:
       del #{script_path} >nul 2>&1
       del "%USERPROFILE%\desktop\T1037.001-log.txt" >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows

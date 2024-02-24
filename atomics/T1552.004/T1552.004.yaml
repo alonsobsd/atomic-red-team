@@ -13,6 +13,8 @@ atomic_tests:
       dir c:\ /b /s .key | findstr /e .key
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Discover Private SSH Keys
   auto_generated_guid: 46959285-906d-40fa-9437-5a439accd878
   description: |
@@ -36,6 +38,10 @@ atomic_tests:
     cleanup_command: |
       rm #{output_file}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Copy Private SSH Keys with CP
   auto_generated_guid: 7c247dc7-5128-4643-907b-73a76d9135c3
   description: |
@@ -59,7 +65,9 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
-- name: Copy Private SSH Keys with CP (freebsd)
+  run_on:
+  - linux
+- name: Copy Private SSH Keys with CP (FreeBSD)
   auto_generated_guid: 12e4a260-a7fd-4ed8-bf18-1a28c1395775
   description: |
     Copy private SSH keys on a FreeBSD system to a staging folder using the `cp` command.
@@ -89,6 +97,8 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
+  run_on:
+  - freebsd
 - name: Copy Private SSH Keys with rsync
   auto_generated_guid: 864bb0b2-6bb5-489a-b43b-a77b3a16d68a
   description: |
@@ -113,7 +123,10 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
-- name: Copy Private SSH Keys with rsync (freebsd)
+  run_on:
+  - macos
+  - linux
+- name: Copy Private SSH Keys with rsync (FreeBSD)
   auto_generated_guid: 922b1080-0b95-42b0-9585-b9a5ea0af044
   description: |
     Copy private SSH keys on a FreeBSD system to a staging folder using the `rsync` command.
@@ -143,6 +156,8 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
+  run_on:
+  - freebsd
 - name: Copy the users GnuPG directory with rsync
   auto_generated_guid: 2a5a0601-f5fb-4e2e-aa09-73282ae6afca
   description: |
@@ -167,7 +182,10 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
-- name: Copy the users GnuPG directory with rsync (freebsd)
+  run_on:
+  - macos
+  - linux
+- name: Copy the users GnuPG directory with rsync (FreeBSD)
   auto_generated_guid: b05ac39b-515f-48e9-88e9-2f141b5bcad0
   description: |
     Copy the users GnuPG (.gnupg) directory on a FreeBSD system to a staging folder using the `rsync` command.
@@ -197,6 +215,8 @@ atomic_tests:
     cleanup_command: |
       rm -rf #{output_folder}
     name: sh
+  run_on:
+  - freebsd
 - name: ADFS token signing and encryption certificates theft - Local
   auto_generated_guid: 78e95057-d429-4e66-8f82-0f060c1ac96f
   description: |
@@ -222,6 +242,8 @@ atomic_tests:
       Remove-Item -Path ".\ADFS_encryption.pfx" -ErrorAction Ignore
       Remove-Item -Path ".\ADFS_signing.pfx" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: ADFS token signing and encryption certificates theft - Remote
   auto_generated_guid: cab413d8-9e4a-4b8d-9b84-c985bd73a442
   description: |
@@ -233,19 +255,20 @@ atomic_tests:
     adfs_service_account_name:
       description: Name of the ADFS service account
       type: string
-      default: "adfs_svc"
+      default: adfs_svc
     replication_user:
-      description: Username with replication rights. It can be the Domain Admin running the script
+      description: Username with replication rights. It can be the Domain Admin running
+        the script
       type: string
-      default: "Administrator"
+      default: Administrator
     replication_password:
       description: Password of replication_username
       type: string
-      default: "ReallyStrongPassword"
+      default: ReallyStrongPassword
     adfs_server_name:
       description: Name of an ADFS server
       type: string
-      default: "sts.contoso.com"
+      default: sts.contoso.com
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -291,6 +314,8 @@ atomic_tests:
       Remove-Item -Path ".\ADFS_encryption.pfx" -ErrorAction Ignore
       Remove-Item -Path ".\ADFS_signing.pfx" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: CertUtil ExportPFX
   auto_generated_guid: 336b25bf-4514-4684-8924-474974f28137
   description: |
@@ -317,6 +342,8 @@ atomic_tests:
       Get-ChildItem -Path Cert:\ -Recurse | Where-Object { $_.Thumbprint -eq '1F3D38F280635F275BE92B87CF83E40E40458400' } | remove-item 
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Export Root Certificate with Export-PFXCertificate
   auto_generated_guid: 7617f689-bbd8-44bc-adcd-6f8968897848
   description: |
@@ -343,6 +370,8 @@ atomic_tests:
       } catch { }
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Export Root Certificate with Export-Certificate
   auto_generated_guid: 78b274f8-acb0-428b-b1f7-7b0d0e73330a
   description: |
@@ -368,7 +397,9 @@ atomic_tests:
       }
       catch { }
     name: powershell
-    elevation_required: true 
+    elevation_required: true
+  run_on:
+  - windows
 - name: Export Certificates with Mimikatz
   auto_generated_guid: 290df60e-4b5d-4a5e-b0c7-dc5348ea0c86
   description: |
@@ -399,3 +430,5 @@ atomic_tests:
       "#{mimikatz_exe}" "crypto::certificates /systemstore:local_machine /store:my /export"  exit
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

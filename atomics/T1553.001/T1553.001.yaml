@@ -17,3 +17,5 @@ atomic_tests:
       sudo xattr -d com.apple.quarantine #{app_path}
     elevation_required: true
     name: sh
+  run_on:
+  - macos

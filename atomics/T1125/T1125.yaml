@@ -14,3 +14,5 @@ atomic_tests:
     cleanup_command: |
       reg DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam\NonPackaged\C:#Windows#Temp#atomic.exe /f
     name: command_prompt
+  run_on:
+  - windows

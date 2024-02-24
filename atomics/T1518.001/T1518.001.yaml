@@ -30,6 +30,8 @@ atomic_tests:
       tasklist.exe | findstr /i mc
       tasklist.exe | findstr /i "virus cb defender cylance mc"
     name: command_prompt
+  run_on:
+  - windows
 - name: Security Software Discovery - powershell
   auto_generated_guid: 7f566051-f033-49fb-89de-b6bacab730f0
   description: |
@@ -51,6 +53,8 @@ atomic_tests:
       get-process | ?{$_.ProcessName -like "*mc*"}
       get-process | Where-Object { $_.ProcessName -eq "Sysmon" }
     name: powershell
+  run_on:
+  - windows
 - name: Security Software Discovery - ps (macOS)
   auto_generated_guid: ba62ce11-e820-485f-9c17-6f3c857cd840
   description: |
@@ -62,6 +66,8 @@ atomic_tests:
     command: |
       ps aux | egrep 'Little\ Snitch|CbOsxSensorService|falcond|nessusd|santad|CbDefense|td-agent|packetbeat|filebeat|auditbeat|osqueryd|BlockBlock|LuLu'
     name: sh
+  run_on:
+  - macos
 - name: Security Software Discovery - ps (Linux)
   auto_generated_guid: 23b91cd2-c99c-4002-9e41-317c63e024a2
   description: |
@@ -73,6 +79,8 @@ atomic_tests:
     command: |
       ps aux | egrep 'falcond|nessusd|cbagentd|td-agent|packetbeat|filebeat|auditbeat|osqueryd'
     name: sh
+  run_on:
+  - linux
 - name: Security Software Discovery - pgrep (FreeBSD)
   auto_generated_guid: fa96c21c-5fd6-4428-aa28-51a2fbecdbdc
   description: |
@@ -84,6 +92,8 @@ atomic_tests:
     command: |
       pgrep -l 'bareos-fd|icinga2|cbagentd|wazuh-agent|packetbeat|filebeat|osqueryd'
     name: sh
+  run_on:
+  - freebsd
 - name: Security Software Discovery - Sysmon Service
   auto_generated_guid: fe613cf3-8009-4446-9a0f-bc78a15b66c9
   description: |
@@ -97,6 +107,8 @@ atomic_tests:
       fltmc.exe | findstr.exe 385201
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Security Software Discovery - AV Discovery via WMI
   auto_generated_guid: 1553252f-14ea-4d3b-8a08-d7a4211aa945
   description: |
@@ -106,10 +118,14 @@ atomic_tests:
   supported_platforms:
   - windows
   executor:
-    command: wmic.exe /Namespace:\\root\SecurityCenter2 Path AntiVirusProduct Get displayName /Format:List
+    command: wmic.exe /Namespace:\\root\SecurityCenter2 Path AntiVirusProduct Get
+      displayName /Format:List
     name: command_prompt
     elevation_required: true
-- name: Security Software Discovery - AV Discovery via Get-CimInstance and Get-WmiObject cmdlets
+  run_on:
+  - windows
+- name: Security Software Discovery - AV Discovery via Get-CimInstance and Get-WmiObject
+    cmdlets
   auto_generated_guid: 015cd268-996e-4c32-8347-94c80c6286ee
   description: |
     Discovery of installed antivirus products via Get-CimInstance and Get-WmiObject cmdlets of powershell.
@@ -121,8 +137,10 @@ atomic_tests:
     command: |
       powershell Get-CimInstance -Namespace root/securityCenter2 -classname antivirusproduct
       powershell Get-WmiObject -Namespace root\securitycenter2 -Class antivirusproduct
-    name: command_prompt 
+    name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Security Software Discovery - Windows Defender Enumeration
   auto_generated_guid: d3415a0e-66ef-429b-acf4-a768876954f6
   description: |
@@ -135,8 +153,10 @@ atomic_tests:
       Get-Service WinDefend #check the service state of Windows Defender
       Get-MpComputerStatus #provides the current status of security solution elements, including Anti-Spyware, Antivirus, LoavProtection, Real-time protection, etc
       Get-MpThreat #threats details that have been detected using MS Defender
-    name: powershell 
+    name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Security Software Discovery - Windows Firewall Enumeration
   auto_generated_guid: 9dca5a1d-f78c-4a8d-accb-d6de67cfed6b
   description: |
@@ -150,5 +170,7 @@ atomic_tests:
       Get-NetFirewallProfile | Format-Table Name, Enabled
       Get-NetFirewallSetting
       Get-NetFirewallRule | select DisplayName, Enabled, Description
-    name: powershell 
+    name: powershell
     elevation_required: true
+  run_on:
+  - windows

@@ -33,3 +33,5 @@ atomic_tests:
       netsh.exe delete helper "#{helper_file}"
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

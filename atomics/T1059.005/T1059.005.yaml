@@ -28,7 +28,8 @@ atomic_tests:
     cleanup_command: |-
       Remove-Item $env:TEMP\T1059.005.out.txt -ErrorAction Ignore
     name: powershell
-
+  run_on:
+  - windows
 - name: Encoded VBS code execution
   auto_generated_guid: e8209d5f-e42d-45e6-9c2f-633ac4f1eefa
   description: |
@@ -60,7 +61,8 @@ atomic_tests:
     cleanup_command: |
       Get-WmiObject win32_process | Where-Object {$_.CommandLine -like "*mshta*"}  | % { "$(Stop-Process $_.ProcessID)" } | Out-Null
     name: powershell
-
+  run_on:
+  - windows
 - name: Extract Memory via VBA
   auto_generated_guid: 8faff437-a114-4547-9a60-749652a03df6
   description: |
@@ -95,3 +97,5 @@ atomic_tests:
     cleanup_command: |
       Remove-Item "$env:TEMP\atomic_t1059_005_test_output.bin" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows

@@ -15,6 +15,8 @@ atomic_tests:
       net use
       net sessions
     name: command_prompt
+  run_on:
+  - windows
 - name: System Network Connections Discovery with PowerShell
   auto_generated_guid: f069f0f1-baad-4831-aa2b-eddac4baac4a
   description: |
@@ -27,6 +29,8 @@ atomic_tests:
     command: |
       Get-NetTCPConnection
     name: powershell
+  run_on:
+  - windows
 - name: System Network Connections Discovery FreeBSD, Linux & MacOS
   auto_generated_guid: 9ae28d3f-190f-4fa0-b023-c7bd3e0eabf2
   description: |
@@ -50,6 +54,10 @@ atomic_tests:
       who -a
     name: sh
 
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: System Discovery using SharpView
   auto_generated_guid: 96f974bb-a0da-4d87-a744-ff33e73367e9
   description: |
@@ -62,13 +70,16 @@ atomic_tests:
     SharpView_url:
       description: sharpview download URL
       type: url
-      default: https://github.com/tevora-threat/SharpView/blob/b60456286b41bb055ee7bc2a14d645410cca9b74/Compiled/SharpView.exe?raw=true
+      default: 
+        https://github.com/tevora-threat/SharpView/blob/b60456286b41bb055ee7bc2a14d645410cca9b74/Compiled/SharpView.exe?raw=true
     SharpView:
-      description: Path of the executable opensource redteam tool used for the performing this atomic.
+      description: Path of the executable opensource redteam tool used for the performing
+        this atomic.
       type: path
       default: PathToAtomicsFolder\..\ExternalPayloads\SharpView.exe
     syntax:
-      description: Arguements method used along with SharpView to get listing of network connections, domains, domain users, and etc.
+      description: Arguements method used along with SharpView to get listing of network
+        connections, domains, domain users, and etc.
       type: string
       default: |
         "Invoke-ACLScanner", "Invoke-Kerberoast", "Find-DomainShare" 
@@ -88,3 +99,5 @@ atomic_tests:
       $syntaxList = #{syntax}
       foreach ($syntax in $syntaxList) {
       #{SharpView} $syntax -}
+  run_on:
+  - windows

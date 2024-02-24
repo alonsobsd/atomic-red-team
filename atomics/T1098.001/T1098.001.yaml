@@ -74,6 +74,8 @@ atomic_tests:
 
     name: powershell
     elevation_required: false
+  run_on:
+  - azure-ad
 - name: Azure AD Application Hijacking - App Registration
   auto_generated_guid: a12b5531-acab-4618-a470-0dafb294a87a
   description: |
@@ -145,6 +147,8 @@ atomic_tests:
       Get-ChildItem -Path Cert:\CurrentUser\My | where { $_.FriendlyName -eq "AtomicCert" } | Remove-Item
     name: powershell
     elevation_required: false
+  run_on:
+  - azure-ad
 - name: AWS - Create Access Key and Secret Key
   auto_generated_guid: 8822c3b0-d9f9-4daf-a043-491160a31122
   description: |
@@ -155,7 +159,7 @@ atomic_tests:
     username:
       description: Create new AWS access and secret keys for the user
       type: string
-      default: "atomicredteam"
+      default: atomicredteam
   dependencies:
   - description: |
       Check if the user exists.
@@ -173,3 +177,5 @@ atomic_tests:
       aws iam delete-access-key --access-key-id $access_key --user-name #{username}
       rm "$PathToAtomicsFolder/T1098.001/bin/aws_secret.creds"
     name: sh
+  run_on:
+  - iaas:aws

@@ -17,6 +17,8 @@ atomic_tests:
       shutdown /s /t #{timeout}
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Restart System - Windows
   auto_generated_guid: f4648f0d-bf78-483c-bafc-3ec99cd1c302
   description: |
@@ -33,6 +35,8 @@ atomic_tests:
       shutdown /r /t #{timeout}
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Restart System via `shutdown` - FreeBSD/macOS/Linux
   auto_generated_guid: 6326dbc4-444b-4c04-88f4-27e94d0327cb
   description: |
@@ -50,6 +54,10 @@ atomic_tests:
       shutdown -r #{timeout}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Shutdown System via `shutdown` - FreeBSD/macOS/Linux
   auto_generated_guid: 4963a81e-a3ad-4f02-adda-812343b351de
   description: |
@@ -67,6 +75,10 @@ atomic_tests:
       shutdown -h #{timeout}
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Restart System via `reboot` - FreeBSD/macOS/Linux
   auto_generated_guid: 47d0b042-a918-40ab-8cf9-150ffe919027
   description: |
@@ -79,6 +91,10 @@ atomic_tests:
       reboot
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Shutdown System via `halt` - FreeBSD/Linux
   auto_generated_guid: 918f70ab-e1ef-49ff-bc57-b27021df84dd
   description: |
@@ -90,6 +106,9 @@ atomic_tests:
       halt -p
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Reboot System via `halt` - FreeBSD
   auto_generated_guid: 7b1cee42-320f-4890-b056-d65c8b884ba5
   description: |
@@ -101,6 +120,8 @@ atomic_tests:
       halt -r
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Reboot System via `halt` - Linux
   auto_generated_guid: 78f92e14-f1e9-4446-b3e9-f1b921f2459e
   description: |
@@ -112,6 +133,8 @@ atomic_tests:
       halt --reboot
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Shutdown System via `poweroff` - FreeBSD/Linux
   auto_generated_guid: 73a90cd2-48a2-4ac5-8594-2af35fa909fa
   description: |
@@ -123,6 +146,9 @@ atomic_tests:
       poweroff
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
+  - linux
 - name: Reboot System via `poweroff` - FreeBSD
   auto_generated_guid: 5a282e50-86ff-438d-8cef-8ae01c9e62e1
   description: |
@@ -134,6 +160,8 @@ atomic_tests:
       poweroff -r 3
     name: sh
     elevation_required: true
+  run_on:
+  - freebsd
 - name: Reboot System via `poweroff` - Linux
   auto_generated_guid: 61303105-ff60-427b-999e-efb90b314e41
   description: |
@@ -145,6 +173,8 @@ atomic_tests:
       poweroff --reboot
     name: bash
     elevation_required: true
+  run_on:
+  - linux
 - name: Logoff System - Windows
   auto_generated_guid: 3d8c25b5-7ff5-4c9d-b21f-85ebd06654a4
   description: |
@@ -156,6 +186,8 @@ atomic_tests:
       shutdown /l 
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: ESXi - Terminates VMs using pkill
   auto_generated_guid: 987c9b4d-a637-42db-b1cb-e9e242c3991b
   description: |
@@ -179,11 +211,11 @@ atomic_tests:
     plink_file:
       description: Path to plink
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\plink.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\plink.exe
     cli_script:
       description: Path to text with commands
       type: path
-      default: PathToAtomicsFolder\T1529\src\esx_pkill.txt  
+      default: PathToAtomicsFolder\T1529\src\esx_pkill.txt
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -195,9 +227,11 @@ atomic_tests:
       Invoke-WebRequest "https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe" -OutFile "#{plink_file}"
   executor:
     command: |
-       echo "" | "#{plink_file}" "#{vm_host}" -ssh  -l "#{vm_user}" -pw "#{vm_pass}" -m "#{cli_script}"
+      echo "" | "#{plink_file}" "#{vm_host}" -ssh  -l "#{vm_user}" -pw "#{vm_pass}" -m "#{cli_script}"
     name: command_prompt
     elevation_required: false
+  run_on:
+  - linux
 - name: ESXi - Avoslocker enumerates VMs and forcefully kills VMs
   auto_generated_guid: 189f7d6e-9442-4160-9bc3-5e4104d93ece
   description: |
@@ -221,11 +255,11 @@ atomic_tests:
     plink_file:
       description: Path to plink
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\plink.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\plink.exe
     cli_script:
       description: Path to text with commands
       type: path
-      default: PathToAtomicsFolder\T1529\src\esx_avoslocker_kill_vm.txt  
+      default: PathToAtomicsFolder\T1529\src\esx_avoslocker_kill_vm.txt
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -237,6 +271,8 @@ atomic_tests:
       Invoke-WebRequest "https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe" -OutFile "#{plink_file}"
   executor:
     command: |
-       echo "" | "#{plink_file}" "#{vm_host}" -ssh  -l "#{vm_user}" -pw "#{vm_pass}" -m "#{cli_script}"
+      echo "" | "#{plink_file}" "#{vm_host}" -ssh  -l "#{vm_user}" -pw "#{vm_pass}" -m "#{cli_script}"
     name: command_prompt
     elevation_required: false
+  run_on:
+  - linux

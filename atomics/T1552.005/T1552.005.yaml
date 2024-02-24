@@ -44,6 +44,8 @@ atomic_tests:
       remove-item $env:temp\T1552.005Test1.txt -force -erroraction silentlycontinue
     name: powershell
     elevation_required: true
+  run_on:
+  - azure-ad
 - name: Azure - Dump Azure Instance Metadata from Virtual Machines
   auto_generated_guid: cc99e772-4e18-4f1f-b422-c5cdd1bfd7b7
   description: |
@@ -62,3 +64,5 @@ atomic_tests:
     cleanup_command: |
       remove-item #{output_file} -force -erroraction silentlycontinue
     name: powershell
+  run_on:
+  - iaas:azure

@@ -16,7 +16,8 @@ atomic_tests:
       Remove-Item -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy" -Recurse -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Copy and Delete Mailbox Data on Linux
   auto_generated_guid: 25e2be0e-96f7-4417-bd16-a4a2500e3802
   description: |
@@ -37,7 +38,8 @@ atomic_tests:
       rm -rf /var/spool/mail/copy
     name: bash
     elevation_required: true
-
+  run_on:
+  - linux
 - name: Copy and Delete Mailbox Data on macOS
   auto_generated_guid: 3824130e-a6e4-4528-8091-3a52eeb540f6
   description: |
@@ -53,7 +55,8 @@ atomic_tests:
       rm -rf ~/Library/Mail/copy
     name: bash
     elevation_required: true
-
+  run_on:
+  - macos
 - name: Copy and Modify Mailbox Data on Windows
   auto_generated_guid: edddff85-fee0-499d-9501-7d4d2892e79b
   description: |
@@ -69,7 +72,8 @@ atomic_tests:
       Remove-Item -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy" -Recurse -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Copy and Modify Mailbox Data on Linux
   auto_generated_guid: 6d99f93c-da56-49e3-b195-163090ace4f6
   description: |
@@ -92,7 +96,8 @@ atomic_tests:
       rm -rf /var/spool/mail/copy
     name: bash
     elevation_required: true
-
+  run_on:
+  - linux
 - name: Copy and Modify Mailbox Data on macOS
   auto_generated_guid: 8a0b1579-5a36-483a-9cde-0236983e1665
   description: |
@@ -108,4 +113,5 @@ atomic_tests:
       rm -rf ~/Library/Mail/copy
     name: bash
     elevation_required: true
-
+  run_on:
+  - macos

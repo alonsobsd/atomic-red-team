@@ -63,6 +63,9 @@ atomic_tests:
   supported_platforms:
     - windows
 
+  run_on:
+    - windows
+
   # inputs to the atomic test that are required to run the test (think of these like function arguments).
   # This is a hash where the key is the input name, value is a hash defining the input argument.
   input_arguments:
@@ -168,7 +171,9 @@ atomic_tests:
   supported_platforms:
     - macos
     - linux
-    
+  run_on:
+    - macos
+    - linux
   # in this example we have no input arguments
   input_arguments:
   executor:

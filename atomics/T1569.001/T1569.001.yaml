@@ -22,3 +22,5 @@ atomic_tests:
     cleanup_command: |
       launchctl remove #{label_name}
     name: bash
+  run_on:
+  - macos

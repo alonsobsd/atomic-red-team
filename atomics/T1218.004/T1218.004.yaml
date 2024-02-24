@@ -18,7 +18,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: CheckIfInstallable
     assembly_filename:
@@ -65,6 +66,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallHelper method call
   auto_generated_guid: d43a5bde-ae28-4c55-a850-3f4c80573503
   description: |
@@ -82,7 +85,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: InstallHelper
     assembly_filename:
@@ -131,6 +135,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallUtil class constructor method call
   auto_generated_guid: 9b7a7cfc-dd2e-43f5-a885-c0a3c270dd93
   description: |
@@ -147,7 +153,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: Executable
     assembly_filename:
@@ -196,6 +203,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallUtil Install method call
   auto_generated_guid: 9f9968a6-601a-46ca-b7b7-6d4fe0f98f0b
   description: |
@@ -212,7 +221,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: Executable
     assembly_filename:
@@ -261,6 +271,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallUtil Uninstall method call - /U variant
   auto_generated_guid: 34428cfa-8e38-41e5-aff4-9e1f8f3a7b4b
   description: |
@@ -277,7 +289,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: Executable
     assembly_filename:
@@ -326,7 +339,10 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
-- name: InstallUtil Uninstall method call - '/installtype=notransaction /action=uninstall' variant
+  run_on:
+  - windows
+- name: InstallUtil Uninstall method call - '/installtype=notransaction /action=uninstall'
+    variant
   auto_generated_guid: 06d9deba-f732-48a8-af8e-bdd6e4d98c1d
   description: |
     Executes the Uninstall Method. Upon execution, version information will be displayed the .NET framework install utility.
@@ -342,7 +358,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: Executable
     assembly_filename:
@@ -391,6 +408,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallUtil HelpText method call
   auto_generated_guid: 5a683850-1145-4326-a0e5-e91ced3c6022
   description: |
@@ -407,7 +426,8 @@ atomic_tests:
       type: path
       default: $Env:TEMP\
     invocation_method:
-      description: the type of InstallUtil invocation variant - Executable, InstallHelper, or CheckIfInstallable
+      description: the type of InstallUtil invocation variant - Executable, InstallHelper,
+        or CheckIfInstallable
       type: string
       default: Executable
     assembly_filename:
@@ -456,6 +476,8 @@ atomic_tests:
       $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath $InstallerAssemblyFileName
       Remove-Item -Path $InstallerAssemblyFullPath -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows
 - name: InstallUtil evasive invocation
   auto_generated_guid: 559e6d06-bb42-4307-bff7-3b95a8254bad
   description: |
@@ -516,3 +538,5 @@ atomic_tests:
       Remove-Item -Path "$Env:windir\System32\Tasks\readme.InstallState" -ErrorAction Ignore
       Remove-Item -Path "$Env:windir\System32\Tasks\notepad.exe" -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows

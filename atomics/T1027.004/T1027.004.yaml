@@ -32,6 +32,8 @@ atomic_tests:
     cleanup_command: |
       del #{output_file} >nul 2>&1
     name: command_prompt
+  run_on:
+  - windows
 - name: Dynamic C# Compile
   auto_generated_guid: 453614d8-3ba6-4147-acc0-7ec4b3e1faef
   description: |
@@ -59,6 +61,8 @@ atomic_tests:
       Invoke-Expression "#{input_file}"
     name: powershell
 
+  run_on:
+  - windows
 - name: C compile
   auto_generated_guid: d0377aa6-850a-42b2-95f0-de558d80be57
   description: |
@@ -84,6 +88,10 @@ atomic_tests:
       gcc #{input_file} && ./a.out
       clang #{input_file} && ./a.out
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: CC compile
   auto_generated_guid: da97bb11-d6d0-4fc1-b445-e443d1346efe
   description: |
@@ -109,6 +117,10 @@ atomic_tests:
       g++ #{input_file} && ./a.out
       clang++ #{input_file} && ./a.out
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Go compile
   auto_generated_guid: 78bd3fa7-773c-449e-a978-dc1f1500bc52
   description: |
@@ -133,3 +145,7 @@ atomic_tests:
     command: |
       go run #{input_file}
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos

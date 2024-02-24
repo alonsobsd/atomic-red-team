@@ -41,3 +41,5 @@ atomic_tests:
       }
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

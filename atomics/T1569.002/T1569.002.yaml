@@ -20,7 +20,8 @@ atomic_tests:
     executable_command:
       description: Command to execute as a service
       type: string
-      default: '%COMSPEC% /c powershell.exe -nop -w hidden -command New-Item -ItemType File C:\art-marker.txt'
+      default: '%COMSPEC% /c powershell.exe -nop -w hidden -command New-Item -ItemType
+        File C:\art-marker.txt'
   executor:
     command: |
       sc.exe create #{service_name} binPath= "#{executable_command}"
@@ -30,6 +31,8 @@ atomic_tests:
       del C:\art-marker.txt >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Use PsExec to execute a command on a remote host
   auto_generated_guid: 873106b7-cfed-454b-8680-fa9f6400431c
   description: |
@@ -67,6 +70,8 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" \\#{remote_host} -u #{user_name} -p #{password} -accepteula "C:\Windows\System32\calc.exe"
     name: command_prompt
+  run_on:
+  - windows
 - name: psexec.py (Impacket)
   auto_generated_guid: edbcd8c9-3639-4844-afad-455c91e95a35
   description: |
@@ -77,23 +82,23 @@ atomic_tests:
     remote_host:
       description: Remote hostname or IP address
       type: string
-      default: "127.0.0.1"
+      default: 127.0.0.1
     username:
       description: Username
       type: string
-      default: "Administrator"
+      default: Administrator
     domain:
       description: Target domain
       type: string
-      default: ""
+      default: ''
     password:
       description: Password
       type: string
-      default: "P@ssw0rd1"
+      default: P@ssw0rd1
     command:
       description: Command to execute in target computer
       type: string
-      default: "whoami"
+      default: whoami
   dependency_executor_name: bash
   dependencies:
   - description: |
@@ -103,20 +108,26 @@ atomic_tests:
       if [ -x "$(command -v psexec.py)" ]; then exit 0; else exit 1; fi;
 
     get_prereq_command: |
-      sudo pip3 install impacket
+      sudo pip3 install impacket || pkg install -y py39-impacket
 
   executor:
     command: |
       psexec.py '#{domain}/#{username}:#{password}@#{remote_host}' '#{command}'
     name: bash
+  run_on:
+  - freebsd
+  - linux
 - name: BlackCat pre-encryption cmds with Lateral Movement
   auto_generated_guid: 31eb7828-97d7-4067-9c1e-c6feb85edc4b
-  description: This atomic attempts to emulate the unique behavior of BlackCat ransomware prior to encryption and during Lateral Movement attempts via PsExec on Windows. Uses bundled PsExec like BlackCat
+  description: This atomic attempts to emulate the unique behavior of BlackCat ransomware
+    prior to encryption and during Lateral Movement attempts via PsExec on Windows.
+    Uses bundled PsExec like BlackCat
   supported_platforms:
   - windows
   input_arguments:
     targethost:
-      description: Target hostname to attempt psexec connection to for emulation of lateral movement.
+      description: Target hostname to attempt psexec connection to for emulation of
+        lateral movement.
       type: string
       default: $ENV:COMPUTERNAME
   dependencies:
@@ -144,7 +155,8 @@ atomic_tests:
       rm $env:temp\psexec.exe
     name: powershell
     elevation_required: true
-    
+  run_on:
+  - windows
 - name: Use RemCom to execute a command on a remote host
   auto_generated_guid: a5d8cdeb-be90-43a9-8b26-cc618deac1e0
   description: |
@@ -179,6 +191,8 @@ atomic_tests:
     command: |
       "PathToAtomicsFolder\..\ExternalPayloads\remcom.exe" \\#{remote_host} /user:#{user_name} /pwd:#{password} cmd.exe
     name: command_prompt
+  run_on:
+  - windows
 - name: Snake Malware Service Create
   auto_generated_guid: b8db787e-dbea-493c-96cb-9272296ddc49
   description: |
@@ -195,3 +209,5 @@ atomic_tests:
       sc.exe delete "WerFaultSvc"
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

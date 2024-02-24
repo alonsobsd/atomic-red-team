@@ -17,3 +17,5 @@ atomic_tests:
     name: sh
     elevation_required: true
 
+  run_on:
+  - macos

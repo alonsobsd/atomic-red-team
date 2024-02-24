@@ -17,6 +17,10 @@ atomic_tests:
       if [ -x "$(command -v getent)" ]; then getent group; else echo "getent is missing from the machine. skipping..."; fi;
       cat /etc/group
     name: sh
+  run_on:
+  - freebsd
+  - linux
+  - macos
 - name: Basic Permission Groups Discovery Windows (Local)
   auto_generated_guid: 1f454dd6-e134-44df-bebb-67de70fb6cd8
   description: |
@@ -29,6 +33,8 @@ atomic_tests:
       net localgroup
       net localgroup "Administrators"
     name: command_prompt
+  run_on:
+  - windows
 - name: Permission Groups Discovery PowerShell (Local)
   auto_generated_guid: a580462d-2c19-4bc7-8b9a-57a41b7d3ba4
   description: |
@@ -41,6 +47,8 @@ atomic_tests:
       get-localgroup
       Get-LocalGroupMember -Name "Administrators"
     name: powershell
+  run_on:
+  - windows
 - name: SharpHound3 - LocalAdmin
   auto_generated_guid: e03ada14-0980-4107-aff1-7783b2b59bb1
   description: |
@@ -55,11 +63,11 @@ atomic_tests:
     sharphound_path:
       description: SharpHound Windows executable
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\SharpHound.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\SharpHound.exe
     output_path:
       description: Output for SharpHound
       type: path
-      default: '$env:TEMP\SharpHound\'
+      default: $env:TEMP\SharpHound\
   dependency_executor_name: powershell
   dependencies:
   - description: |
@@ -78,7 +86,8 @@ atomic_tests:
       & "#{sharphound_path}" -d "#{domain}" --CollectionMethod LocalAdmin --NoSaveCache --OutputDirectory "#{output_path}"
     cleanup_command: |
       Remove-Item -Recurse #{output_path} -ErrorAction Ignore
-
+  run_on:
+  - windows
 - name: Wmic Group Discovery
   auto_generated_guid: 7413be50-be8e-430f-ad4d-07bf197884b2
   description: |
@@ -89,7 +98,8 @@ atomic_tests:
     command: |
       wmic group get name
     name: command_prompt
-
+  run_on:
+  - windows
 - name: WMIObject Group Discovery
   auto_generated_guid: 69119e58-96db-4110-ad27-954e48f3bb13
   description: |
@@ -100,9 +110,14 @@ atomic_tests:
     command: |
       Get-WMIObject Win32_Group
     name: powershell
+  run_on:
+  - windows
 - name: Permission Groups Discovery for Containers- Local Groups
   auto_generated_guid: 007d7aa4-8c4d-4f55-ba6a-7c965d51219c
-  description: Attackers may try to obtain a list of services that are operating on remote hosts and local network infrastructure devices, in order to identify potential vulnerabilities that can be exploited through remote software attacks. They typically use tools to conduct port and vulnerability scans in order to obtain this information.
+  description: Attackers may try to obtain a list of services that are operating on
+    remote hosts and local network infrastructure devices, in order to identify potential
+    vulnerabilities that can be exploited through remote software attacks. They typically
+    use tools to conduct port and vulnerability scans in order to obtain this information.
   supported_platforms:
   - containers
   dependency_executor_name: sh
@@ -126,3 +141,5 @@ atomic_tests:
       docker stop t1069_container
       docker rmi -f t1069
     name: sh
+  run_on:
+  - containers

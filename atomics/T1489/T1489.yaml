@@ -21,6 +21,8 @@ atomic_tests:
       sc.exe start #{service_name} >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows - Stop service using net.exe
   auto_generated_guid: 41274289-ec9c-4213-bea4-e43c4aa57954
   description: |
@@ -41,6 +43,8 @@ atomic_tests:
       net.exe start #{service_name} >nul 2>&1
     name: command_prompt
     elevation_required: true
+  run_on:
+  - windows
 - name: Windows - Stop service by killing process
   auto_generated_guid: f3191b84-c38b-400b-867e-3a217a27795f
   description: |
@@ -59,3 +63,5 @@ atomic_tests:
     command: |
       taskkill.exe /f /im #{process_name}
     name: command_prompt
+  run_on:
+  - windows

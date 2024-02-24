@@ -27,7 +27,8 @@ atomic_tests:
       net start w32time
     name: powershell
     elevation_required: true
-
+  run_on:
+  - windows
 - name: Edit an existing time provider
   auto_generated_guid: 29e0afca-8d1d-471a-8d34-25512fc48315
 
@@ -56,3 +57,5 @@ atomic_tests:
       net start w32time
     name: powershell
     elevation_required: true
+  run_on:
+  - windows

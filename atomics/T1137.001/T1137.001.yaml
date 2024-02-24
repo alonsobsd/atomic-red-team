@@ -5,7 +5,7 @@ atomic_tests:
   description: |
     Injects a Macro in the Word default template "Normal.dotm" and makes it execute each time that Word is opened. In this test, the Macro creates a sheduled task to open Calc.exe every evening.
   supported_platforms:
-    - windows
+  - windows
   dependencies:
   - description: |
       Microsoft Word must be installed
@@ -143,3 +143,5 @@ atomic_tests:
         # The value was already 1, do nothing
         Write-Host "The value $registryValue already existed in $registryKey."
       }
+  run_on:
+  - windows

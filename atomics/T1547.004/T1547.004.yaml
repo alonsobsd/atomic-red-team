@@ -21,7 +21,8 @@ atomic_tests:
     cleanup_command: |
       Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" -Name "Shell" -Force -ErrorAction Ignore
     name: powershell
-
+  run_on:
+  - windows
 - name: Winlogon Userinit Key Persistence - PowerShell
   auto_generated_guid: fb32c935-ee2e-454b-8fa3-1c46b42e8dfb
   description: |
@@ -41,7 +42,8 @@ atomic_tests:
     cleanup_command: |
       Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" -Name "Userinit" -Force -ErrorAction Ignore
     name: powershell
-
+  run_on:
+  - windows
 - name: Winlogon Notify Key Logon Persistence - PowerShell
   auto_generated_guid: d40da266-e073-4e5a-bb8b-2b385023e5f9
   description: |
@@ -71,7 +73,8 @@ atomic_tests:
     cleanup_command: |
       Remove-Item "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify" -Force -ErrorAction Ignore
     name: powershell
-
+  run_on:
+  - windows
 - name: Winlogon HKLM Shell Key Persistence - PowerShell
   auto_generated_guid: 95a3c42f-8c88-4952-ad60-13b81d929a9d
   description: |
@@ -91,7 +94,8 @@ atomic_tests:
     cleanup_command: |
       Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" -Name "Shell" -Force -ErrorAction Ignore
     name: powershell
-
+  run_on:
+  - windows
 - name: Winlogon HKLM Userinit Key Persistence - PowerShell
   auto_generated_guid: f9b8daff-8fa7-4e6a-a1a7-7c14675a545b
   description: |
@@ -111,3 +115,5 @@ atomic_tests:
     cleanup_command: |
       Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" -Name "Userinit" -Force -ErrorAction Ignore
     name: powershell
+  run_on:
+  - windows

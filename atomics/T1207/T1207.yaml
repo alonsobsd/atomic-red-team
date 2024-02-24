@@ -18,21 +18,23 @@ atomic_tests:
   - windows
   input_arguments:
     object:
-      description: Targeted object (for machine account do not forget to add final '$')
+      description: Targeted object (for machine account do not forget to add final
+        '$')
       type: string
       default: bruce.wayne
     attribute:
-      description: "Object attribute to edit, interesting ones: badpwdcount, primaryGroupId, SIDHistory..."
+      description: 'Object attribute to edit, interesting ones: badpwdcount, primaryGroupId,
+        SIDHistory...'
       type: string
       default: badpwdcount
     value:
       description: Value to assign to object attribute
       type: string
-      default: "9999"
+      default: '9999'
     mimikatz_path:
       description: Mimikatz windows executable
       type: path
-      default: 'PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe'
+      default: PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe
     psexec_path:
       description: Path to PsExec
       type: path
@@ -88,3 +90,5 @@ atomic_tests:
       Write-Host "End of DCShadow"
     cleanup_command: |
       Stop-Process -Name "mimikatz" -Force -ErrorAction Ignore
+  run_on:
+  - windows

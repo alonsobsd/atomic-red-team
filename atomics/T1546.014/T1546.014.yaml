@@ -21,3 +21,5 @@ atomic_tests:
       sudo rm /private/var/db/emondClients/T1546.014
     name: sh
     elevation_required: true
+  run_on:
+  - macos

@@ -25,3 +25,5 @@ atomic_tests:
       dir #{input_file} -Recurse | Compress-Archive -DestinationPath #{output_file}
     cleanup_command: |-
       Remove-Item -path #{output_file} -ErrorAction Ignore
+  run_on:
+  - windows
